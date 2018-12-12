@@ -16,3 +16,4 @@ $(TARGET): $(OBJ)
 clean:
 	$(RM) -f $(OBJ) $(TARGET)
 
+re: clean $(TARGET)

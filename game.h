@@ -21,7 +21,9 @@ class Game
     sf::RenderWindow window;
     sf::Texture texture;
     //sf::ContextSettings settings;
-    sf::Sprite sprite;
+    sf::Texture tSubmarine;
+    sf::Texture tBloc;
+    sf::Sprite sBloc;
     sf::Event event;
     sf::Clock clock;
     Entity* player;

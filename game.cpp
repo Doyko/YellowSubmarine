@@ -4,7 +4,7 @@ int map[23][40] =
 {
     1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
     1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-    1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+    1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
     1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
     1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
     1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
@@ -24,7 +24,7 @@ int map[23][40] =
     1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
     1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
     1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 
+    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 };
 
 Game::Game(std::string name)
@@ -34,14 +34,16 @@ Game::Game(std::string name)
     window.setVerticalSyncEnabled(true);
     //settings.antialiasingLevel = 8;
 
-    if(!texture.loadFromFile("texture.png"))
-    {
+    if(!tSubmarine.loadFromFile("Yellow_Submarine_texture.png"))
         exit(1);
-    }
 
-    sprite.setTexture(texture);
+    if(!tBloc.loadFromFile("Tile_Texture.png"))
+        exit(1);
 
-    player = new Entity(128, 128, 32, 32);
+    sBloc.setTexture(tBloc);
+    sBloc.setTextureRect(sf::IntRect(0,0,32,32));
+    player = new Entity(128, 128, 64, 25, &tSubmarine);
+    //std::cout << "player ready\n";
 }
 
 void Game::loop()
@@ -51,7 +53,7 @@ void Game::loop()
         if(clock.getElapsedTime() >= sf::milliseconds(20))
         {
             clock.restart();
-            
+
             if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
                 player->move(0, -5);
             if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
@@ -60,7 +62,7 @@ void Game::loop()
                 player->move(5, 0);
             if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
                 player->move(-5, 0);
-            
+
             while(window.pollEvent(event))
             {
                 switch(event.type)
@@ -75,21 +77,18 @@ void Game::loop()
         {
             //window.clear(sf::Color(34, 36, 125));
             window.clear(sf::Color(21, 96, 189));
-            sprite.setTextureRect(sf::IntRect(0, 0, 32, 32));
             for(int j = 0; j < WINDOW_HEIGHT / TILE_HEIGHT + 1; j++)
             {
                 for(int i = 0; i < WINDOW_WIDTH / TILE_WIDTH; i++)
                 {
                     if(map[j][i] == 1)
                     {
-                        sprite.setPosition(sf::Vector2f(i * TILE_WIDTH, j * TILE_HEIGHT));
-                        window.draw(sprite);
+                        sBloc.setPosition(sf::Vector2f(i * TILE_WIDTH, j * TILE_HEIGHT));
+                        window.draw(sBloc);
                     }
                 }
             }
-            sprite.setTextureRect(sf::IntRect(0, 0, 32, 32));
-            sprite.setPosition(sf::Vector2f(player->posX, player->posY));
-            window.draw(sprite);
+            window.draw(*(player->eSprite));
             window.display();
         }
     }
