@@ -7,8 +7,8 @@
 #include "entity.h"
 #include "param.h"
 
-#include <stdlib.h>
-#include <time.h>
+#define WINDOW_WIDTH 1280
+#define WINDOW_HEIGHT 720
 
 class Game
 {

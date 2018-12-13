@@ -15,5 +15,5 @@ class Entity
     int posY;
     int width;
     int height;
-    sf::Sprite *eSprite;
+    sf::Sprite* sprite;
 };

@@ -7,8 +7,8 @@ Entity::Entity(int x, int y, int w, int h, sf::Texture *t)
     width(w),
     height(h)
 {
-    eSprite = new sf::Sprite(*t, sf::IntRect(0,0,64,37));
-    eSprite->setPosition(posX,posY);
+    sprite = new sf::Sprite(*t, sf::IntRect(0,0,64,37));
+    sprite->setPosition(posX,posY);
     //std::cout << "constructor Entity\n";
 }
 

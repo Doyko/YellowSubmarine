@@ -10,7 +10,7 @@ $(TARGET): $(OBJ)
 	$(CC) $(OBJ) -o $(TARGET) $(G_FLAGS)
 
 
-%.o: %.c
+%.o: %.cpp
 	$(CC) -c $< -o $@
 
 clean:
