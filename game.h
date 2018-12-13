@@ -4,7 +4,7 @@
 #include <string>
 #include <iostream>
 #include <vector>
-#include "entity.h"
+#include "player.h"
 #include "param.h"
 
 #include <stdlib.h>
@@ -26,5 +26,5 @@ class Game
     sf::Sprite sBloc;
     sf::Event event;
     sf::Clock clock;
-    Entity* player;
+    Player* player;
 };

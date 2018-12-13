@@ -42,7 +42,7 @@ Game::Game(std::string name)
 
     sBloc.setTexture(tBloc);
     sBloc.setTextureRect(sf::IntRect(0,0,32,32));
-    player = new Entity(128, 128, 64, 25, &tSubmarine);
+    player = new Player(128, 128, &tSubmarine);
     //std::cout << "player ready\n";
 }
 
@@ -72,9 +72,7 @@ void Game::loop()
                         break;
                 }
             }
-        }
-        else
-        {
+
             //window.clear(sf::Color(34, 36, 125));
             window.clear(sf::Color(21, 96, 189));
             for(int j = 0; j < WINDOW_HEIGHT / TILE_HEIGHT + 1; j++)
@@ -88,7 +86,7 @@ void Game::loop()
                     }
                 }
             }
-            window.draw(*(player->eSprite));
+            window.draw(*(player->sprite));
             window.display();
         }
     }
