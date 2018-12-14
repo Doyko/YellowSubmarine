@@ -29,7 +29,8 @@ bool Entity::move(int x, int y)
     {
         for(int j = ymin; j <= ymax; j++)
         {
-            if(map->tileMap[i][j] != NULL && map->tileMap[j][i]->tangible == false)
+            //std::cout << i << " " << j << '\n';
+            if(map->tileMap[j][i] != NULL && map->tileMap[j][i]->tangible == true)
             {
                 if(x > 0)
                     move(x - 1, 0);

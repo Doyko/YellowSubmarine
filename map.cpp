@@ -62,7 +62,6 @@ void Map::draw(sf::RenderWindow &window) const
         {
             if(tileMap[i][j] != NULL)
             {
-                std::cout << "/* message */" << '\n';
                 tileMap[i][j]->sprite->setPosition(sf::Vector2f(j * TILE_WIDTH, i * TILE_HEIGHT));
                 window.draw(*(tileMap[i][j]->sprite));
             }
