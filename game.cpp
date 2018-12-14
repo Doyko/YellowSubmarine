@@ -17,7 +17,6 @@ Game::Game(std::string name)
     sBloc.setTextureRect(sf::IntRect(0,0,32,32));
     map = new Map("level.txt", &tBloc);
     player = new Entity(128, 128, 64, 25, &tSubmarine, map);
-    //std::cout << "player ready\n";
 }
 
 void Game::loop()

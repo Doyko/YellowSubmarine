@@ -4,6 +4,7 @@
 #include <string>
 #include <fstream>
 #include <iostream>
+
 #define TILE_WIDTH 32
 #define TILE_HEIGHT 32
 
@@ -24,6 +25,7 @@ class Map
     Map(std::string name, sf::Texture* t);
     int** readMap(std::string name, sf::Texture* t);
     void draw(sf::RenderWindow &window) const;
+    int getIdTile(int** m, int i, int j) const;
 
     int nbTileX;
     int nbTileY;

@@ -19,9 +19,12 @@ Map::Map(std::string name, sf::Texture* t)
             if(m[i][j] == 0)
                 tileMap[i][j] = NULL;
             else
-                tileMap[i][j] = tileList[0];
+                tileMap[i][j] = tileList[getIdTile(m, i, j)];
         }
     }
+    for(int i = 0; i < nbTileY; i++)
+        delete[] m[i];
+    delete[] m;
 }
 
 int** Map::readMap(std::string name, sf::Texture* t)
@@ -31,6 +34,11 @@ int** Map::readMap(std::string name, sf::Texture* t)
     int tangible;
 
     ifs >> nbTile;
+    if(nbTile < 16)
+    {
+        std::cout << "Error for loading the file " << name << " !" << '\n';
+        exit(1);
+    }
     for(int i = 0; i < nbTile; i++)
     {
         ifs >> tangible;
@@ -67,4 +75,18 @@ void Map::draw(sf::RenderWindow &window) const
             }
         }
     }
+}
+
+int Map::getIdTile(int** m, int i, int j) const
+{
+    int somme = 0;
+    if(i - 1 < 0 || m[i - 1][j] == 1)
+        somme += 1;
+    if(i + 1 >= nbTileY || m[i + 1][j] == 1)
+        somme += 4;
+    if(j - 1 < 0 || m[i][j - 1] == 1)
+        somme += 8;
+    if(j + 1 >= nbTileX || m[i][j + 1] == 1)
+        somme += 2;
+    return somme;
 }
