@@ -5,7 +5,6 @@
 #include <iostream>
 #include <vector>
 #include "entity.h"
-#include "param.h"
 
 #define WINDOW_WIDTH 1280
 #define WINDOW_HEIGHT 720
@@ -27,4 +26,5 @@ class Game
     sf::Event event;
     sf::Clock clock;
     Entity* player;
+    Map* map;
 };

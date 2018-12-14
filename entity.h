@@ -1,13 +1,13 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <vector>
-#include "param.h"
+#include "map.h"
 
 class Entity
 {
     public:
 
-    Entity(int x, int y, int l, int w, sf::Texture *t);
+    Entity(int x, int y, int l, int w, sf::Texture *t, Map* map);
     bool move(int x, int y);
     ~Entity();
 
@@ -16,4 +16,5 @@ class Entity
     int width;
     int height;
     sf::Sprite* sprite;
+    Map* map;
 };

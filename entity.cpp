@@ -1,11 +1,12 @@
 #include "entity.h"
 #include <iostream>
-Entity::Entity(int x, int y, int w, int h, sf::Texture *t)
+Entity::Entity(int x, int y, int w, int h, sf::Texture *t, Map* map)
 :
     posX(x),
     posY(y),
     width(w),
-    height(h)
+    height(h),
+    map(map)
 {
     sprite = new sf::Sprite(*t, sf::IntRect(0,0,64,37));
     sprite->setPosition(posX,posY);
@@ -28,7 +29,7 @@ bool Entity::move(int x, int y)
     {
         for(int j = ymin; j <= ymax; j++)
         {
-            if(map[j][i] == 1)
+            if(map->tileMap[i][j] != NULL && map->tileMap[j][i]->tangible == false)
             {
                 if(x > 0)
                     move(x - 1, 0);
@@ -44,6 +45,6 @@ bool Entity::move(int x, int y)
     }
     posX = posX + x;
     posY = posY + y;
-    eSprite->setPosition(posX,posY-12);
+    sprite->setPosition(posX,posY-12);
     return true;
 }

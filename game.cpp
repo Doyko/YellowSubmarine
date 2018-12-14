@@ -42,7 +42,8 @@ Game::Game(std::string name)
 
     sBloc.setTexture(tBloc);
     sBloc.setTextureRect(sf::IntRect(0,0,32,32));
-    player = new Entity(128, 128, 64, 25, &tSubmarine);
+    map = new Map("level.txt", &tBloc);
+    player = new Entity(128, 128, 64, 25, &tSubmarine, map);
     //std::cout << "player ready\n";
 }
 
@@ -76,18 +77,8 @@ void Game::loop()
         else
         {
             window.clear(sf::Color(21, 96, 189));
-            for(int j = 0; j < WINDOW_HEIGHT / TILE_HEIGHT + 1; j++)
-            {
-                for(int i = 0; i < WINDOW_WIDTH / TILE_WIDTH; i++)
-                {
-                    if(map[j][i] == 1)
-                    {
-                        sBloc.setPosition(sf::Vector2f(i * TILE_WIDTH, j * TILE_HEIGHT));
-                        window.draw(sBloc);
-                    }
-                }
-            }
-            window.draw(*(player->eSprite));
+            map->draw(window);
+            window.draw(*(player->sprite));
             window.display();
         }
     }
