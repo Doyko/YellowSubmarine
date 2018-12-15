@@ -1,9 +1,10 @@
 #include "player.h"
 #include <iostream>
-Player::Player(int x, int y, sf::Texture *t)
+Player::Player(int x, int y, sf::Texture *t, Map* m)
 :
     posX(x),
-    posY(y)
+    posY(y),
+    map(m)
 {
     sprite = new sf::Sprite(*t, sf::IntRect(0,0,64,37));
     sprite->setPosition(posX,posY);
@@ -26,7 +27,7 @@ bool Player::move(int x, int y)
         isEmpty = true;
         for(int j = 0; j < HEIGHT; j++){
             for(int i = 0; i < WIDTH; i++){
-                if(hitbox[j*WIDTH + i] == '1' && map[(posY + j)/32][(posX + moveX + i)/32] == 1)
+                if(hitbox[j*WIDTH + i] == '1' && map->tileMap[(posY + j)/32][(posX + moveX + i)/32] != NULL)
                     isEmpty = false;
             }
         }
@@ -43,7 +44,7 @@ bool Player::move(int x, int y)
         isEmpty = true;
         for(int i = 0; i < WIDTH; i++){
             for(int j = 0; j < HEIGHT; j++){
-                if(hitbox[j*WIDTH + i] == '1' && map[(posY + moveY + j)/32][(posX + i)/32] == 1)
+                if(hitbox[j*WIDTH + i] == '1' && map->tileMap[(posY + moveY + j)/32][(posX + i)/32] != NULL)
                     isEmpty = false;
             }
         }

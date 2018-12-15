@@ -6,9 +6,11 @@
 #include <vector>
 #include "player.h"
 #include "param.h"
+#include "map.h"
+#include "entity.h"
 
-#include <stdlib.h>
-#include <time.h>
+#define WINDOW_WIDTH 1280
+#define WINDOW_HEIGHT 720
 
 class Game
 {
@@ -26,5 +28,6 @@ class Game
     sf::Sprite sBloc;
     sf::Event event;
     sf::Clock clock;
+    Map* map;
     Player* player;
 };

@@ -11,7 +11,7 @@ $(TARGET): $(OBJ)
 
 
 %.o: %.cpp
-	$(CC) -c $< -o $@ $(G_FLAGS)
+	$(CC) $(G_FLAGS) -c $< -o $@
 
 clean:
 	$(RM) -f $(OBJ) $(TARGET)
