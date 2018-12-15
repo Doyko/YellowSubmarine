@@ -21,41 +21,12 @@ Player::~Player()
 bool Player::move(int x, int y)
 {
     int moveX = x, moveY = y;
-    bool isEmpty;
 
-    do {
-        isEmpty = true;
-        for(int j = 0; j < HEIGHT; j++){
-            for(int i = 0; i < WIDTH; i++){
-                if(hitbox->tab[j][i] == '1' && map->tileMap[(posY + j)/32][(posX + moveX + i)/32] != NULL){
-                    isEmpty = false;
-                    moveX > 0 ? moveX-- : moveX++;
-                    break;
-                }
-            }
-            if (!isEmpty)
-                break;
-        }
+    while (moveX != 0 && hitbox->checkMapCollision(posX + moveX, posY, map))
+        moveX > 0 ? moveX-- : moveX++;
 
-    } while(!isEmpty && moveX != 0);
-
-    do {
-        isEmpty = true;
-        for(int i = 0; i < WIDTH; i++){
-            for(int j = 0; j < HEIGHT; j++){
-                if(hitbox->tab[j][i] == '1' && map->tileMap[(posY + moveY + j)/32][(posX + i)/32] != NULL)
-                {
-                    isEmpty = false;
-                    moveY > 0 ? moveY-- : moveY++;
-                    break;
-                }
-            }
-            if (!isEmpty)
-                break;
-        }
-
-    } while(!isEmpty && moveY != 0);
-
+    while (moveY != 0 && hitbox->checkMapCollision(posX, posY + moveY, map))
+        moveY > 0 ? moveY-- : moveY++;
 
     posX = posX + moveX;
     posY = posY + moveY;

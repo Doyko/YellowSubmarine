@@ -44,6 +44,8 @@ void Game::loop()
                     case sf::Event::Closed:
                         window.close();
                         break;
+                    default :
+                        break;
                 }
             }
             window.clear(sf::Color(21, 96, 189));
