@@ -21,7 +21,6 @@ class Game
 
 
     sf::RenderWindow window;
-    sf::Texture texture;
     //sf::ContextSettings settings;
     sf::Texture tSubmarine;
     sf::Texture tBloc;
