@@ -1,24 +1,17 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <vector>
-#include "param.h"
 #include "hitbox.h"
-
-#define HEIGHT 37
-#define WIDTH 64
 #include "map.h"
+#include "entity.h"
+#include "param.h"
 
-class Player
+class Player : public MovableEntity, public TengibleEntity
 {
     public:
 
-    Player(int x, int y, sf::Texture *t, Map* m);
+    Player(int x, int y, Map* m, sf::Texture *t, sf::IntRect dimention);
+    void update();
     bool move(int x, int y);
     ~Player();
-
-    int posX;
-    int posY;
-    Map* map;
-    sf::Sprite *sprite;
-    Hitbox* hitbox;
 };

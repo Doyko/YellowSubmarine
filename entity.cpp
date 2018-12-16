@@ -1,51 +1,55 @@
 #include "entity.h"
 #include <iostream>
-Entity::Entity(int x, int y, int w, int h, sf::Texture *t, Map* map)
+
+Entity::Entity(int x, int y, Map* m, sf::Texture *t, sf::IntRect dimention)
 :
     posX(x),
     posY(y),
-    width(w),
-    height(h),
-    map(map)
+    map(m)
 {
-    sprite = new sf::Sprite(*t, sf::IntRect(0,0,64,37));
+    sprite = new sf::Sprite(*t, dimention);
     sprite->setPosition(posX,posY);
-    //std::cout << "constructor Entity\n";
+    std::cout << "constructor Entity" << std::endl;
 }
 
 Entity::~Entity()
 {
-
+    delete sprite;
 }
 
-bool Entity::move(int x, int y)
+MovableEntity::MovableEntity(int x, int y, Map* m, sf::Texture *t, sf::IntRect dimention):
+    Entity(x, y, m, t, dimention),
+    speedX(0),
+    speedY(0),
+    maxSpeed(20)
 {
-    int xmin = (posX + x) / TILE_WIDTH;
-    int xmax = (posX + width + x - 1) / TILE_WIDTH;
-    int ymin = (posY + y) / TILE_HEIGHT;
-    int ymax = (posY + height + y - 1) / TILE_HEIGHT;
+    std::cout << "constructor MovableEntity" << std::endl;
+}
 
-    for(int i = xmin; i <= xmax; i++)
-    {
-        for(int j = ymin; j <= ymax; j++)
-        {
-            //std::cout << i << " " << j << '\n';
-            if(map->tileMap[j][i] != NULL && map->tileMap[j][i]->tangible == true)
-            {
-                if(x > 0)
-                    move(x - 1, 0);
-                else if(x < 0)
-                    move(x + 1, 0);
-                if(y > 0)
-                    move(0, y - 1);
-                else if (y < 0)
-                    move(0, y + 1);
-                return false;
-            }
-        }
-    }
-    posX = posX + x;
-    posY = posY + y;
-    sprite->setPosition(posX,posY-12);
-    return true;
+void MovableEntity::changeSpeed(float x, float y)
+{
+    speedX += x;
+    speedY += y;
+
+    if(speedX > maxSpeed)
+        speedX = maxSpeed;
+    else if(speedX < -maxSpeed)
+        speedX = -maxSpeed;
+
+    if(speedY > maxSpeed)
+        speedY = maxSpeed;
+    else if(speedY < -maxSpeed)
+        speedY = -maxSpeed;
+}
+
+TengibleEntity::TengibleEntity(int x, int y, Map* m, sf::Texture *t, sf::IntRect dimention, Hitbox* hb):
+    Entity(x, y, m, t, dimention),
+    hitbox(hb)
+{
+    std::cout << "constructor TengibleEntity" << std::endl;
+}
+
+bool TengibleEntity::checkCollision(Map* m)
+{
+    return hitbox->checkCollision(posX, posY, m);
 }

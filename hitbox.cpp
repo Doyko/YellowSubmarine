@@ -46,7 +46,7 @@ Hitbox::~Hitbox()
     delete tab;
 }
 
-bool Hitbox::checkMapCollision(int x, int y, Map* m)
+bool Hitbox::checkCollision(int x, int y, Map* m)
 {
     //std::cout << "check collision" << std::endl;
     int xmin = x;
@@ -67,7 +67,7 @@ bool Hitbox::checkMapCollision(int x, int y, Map* m)
             if (m->tileMap[j][i] != NULL && m->tileMap[j][i]->tangible)
             {
                 //std::cout << "collision map" << i << j << std::endl;
-                if(checkTileCollision(x, y, m->tileMap[j][i], i, j))
+                if(checkCollision(x, y, m->tileMap[j][i], i, j))
                 {
                     return true;
                 }
@@ -77,7 +77,7 @@ bool Hitbox::checkMapCollision(int x, int y, Map* m)
     return false;
 }
 
-bool Hitbox::checkTileCollision(int x, int y, Tile* t, int xTile, int yTile)
+bool Hitbox::checkCollision(int x, int y, Tile* t, int xTile, int yTile)
 {
     int xTileRelatif = xTile * TILE_WIDTH - x;
     int yTileRelatif = yTile * TILE_HEIGHT - y;

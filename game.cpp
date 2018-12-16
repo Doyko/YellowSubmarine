@@ -16,7 +16,7 @@ Game::Game(std::string name)
     sBloc.setTexture(tBloc);
     sBloc.setTextureRect(sf::IntRect(0,0,32,32));
     map = new Map("level.txt", &tBloc);
-    player = new Player(128, 128, &tSubmarine, map);
+    player = new Player(128, 128, map, &tSubmarine, sf::IntRect(0,0,64,37));
 
 }
 
@@ -29,13 +29,15 @@ void Game::loop()
             clock.restart();
 
             if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-                player->move(0, -5);
+                player->changeSpeed(0, -ACCELERATION);
             if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-                player->move(0, 5);
+                player->changeSpeed(0, ACCELERATION);
             if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-                player->move(5, 0);
+                player->changeSpeed(ACCELERATION, 0);
             if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-                player->move(-5, 0);
+                player->changeSpeed(-ACCELERATION, 0);
+
+            player->update();
 
             while(window.pollEvent(event))
             {
