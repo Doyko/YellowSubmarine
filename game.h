@@ -24,9 +24,11 @@ class Game
     //sf::ContextSettings settings;
     sf::Texture tSubmarine;
     sf::Texture tBloc;
+    sf::Texture tBall;
     sf::Sprite sBloc;
     sf::Event event;
     sf::Clock clock;
     Map* map;
     Player* player;
+    TengibleEntity* ball;
 };

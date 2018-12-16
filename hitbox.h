@@ -12,6 +12,10 @@ public:
     Hitbox(const char* fileName);
     ~Hitbox();
 
+    int getWidth();
+    int getHeight();
+    char getTabXY(int x, int y);
+    virtual bool checkCollision(int x, int y, Hitbox* hb, int hbX, int hbY);
     virtual bool checkCollision(int x, int y, Map* m); //return true if there is collision
     virtual bool checkCollision(int x, int y, Tile* t, int xTile, int yTile); //return true if there is collision
 

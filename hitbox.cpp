@@ -46,6 +46,51 @@ Hitbox::~Hitbox()
     delete tab;
 }
 
+int Hitbox::getWidth()
+{
+    return width;
+}
+
+int Hitbox::getHeight()
+{
+    return height;
+}
+
+char Hitbox::getTabXY(int x, int y)
+{
+    if(x >= 0 && x < width && y >= 0 && y < height)
+        return tab[y][x];
+    else
+        return '\0';
+}
+
+bool Hitbox::checkCollision(int x, int y, Hitbox* hb, int hbX, int hbY)
+{
+    int xmin = x > hbX ? x : hbX;
+    int xmax = x + width < hbX + hb->getWidth() ? x + width : hbX + hb->getWidth();
+    int ymin = y > hbY ? y : hbY;
+    int ymax = y + height < hbY + hb->getHeight() ? y + height : hbY + hb->getHeight();
+
+    int InterWidth = xmax - xmin;
+    int InterHeight = ymax - ymin;
+
+    int OffsetX = xmin - x;
+    int OffsetY = ymin - y;
+    int OffsetHBX = xmin - hbX;
+    int OffsetHBY = ymin - hbY;
+
+    for(int i = 0 ; i < InterWidth ; i++)
+    {
+        for(int j = 0 ; j < InterHeight ; j++)
+        {
+            if(getTabXY(i + OffsetX, j + OffsetY) == '1' && hb->getTabXY(i + OffsetHBX, j + OffsetHBY) == '1')
+                return true;
+        }
+    }
+
+    return false;
+}
+
 bool Hitbox::checkCollision(int x, int y, Map* m)
 {
     //std::cout << "check collision" << std::endl;
@@ -99,7 +144,7 @@ bool Hitbox::checkCollision(int x, int y, Tile* t, int xTile, int yTile)
     {
         for (int j = ymin ; j < ymax ; j++)
         {
-            if (tab[j][i] == '1')
+            if (getTabXY(i, j) == '1')
             {
                 //std::cout << "collision tile" << std::endl;
                 return true;

@@ -49,7 +49,17 @@ TengibleEntity::TengibleEntity(int x, int y, Map* m, sf::Texture *t, sf::IntRect
     std::cout << "constructor TengibleEntity" << std::endl;
 }
 
+bool TengibleEntity::checkCollision(TengibleEntity* te)
+{
+    return hitbox->checkCollision(posX, posY, te->hitbox, te->posX, te->posY);
+}
+
 bool TengibleEntity::checkCollision(Map* m)
 {
     return hitbox->checkCollision(posX, posY, m);
+}
+
+void TengibleEntity::update()
+{
+    return;
 }

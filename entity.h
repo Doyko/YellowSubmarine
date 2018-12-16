@@ -37,7 +37,8 @@ class TengibleEntity : virtual public Entity
 public:
 
     TengibleEntity(int x, int y, Map* m, sf::Texture *t, sf::IntRect dimention, Hitbox* hb);
-    //virtual bool checkCollision(TengibleEntity* te);
+    void update();
+    virtual bool checkCollision(TengibleEntity* te);
     virtual bool checkCollision(Map* m);
 
     Hitbox* hitbox;
