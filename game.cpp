@@ -1,27 +1,21 @@
 #include "game.h"
 
-Game::Game(std::string name)
+Game::Game(std::string name):
+    HitboxEntity(Hitbox("HitboxEntity.pbm")),
+    map(new Map("level.txt", &TextureTile)),
+    player(new Player(128, 128, map, HitboxEntity, &TextureEntity, sf::IntRect(0,0,64,37))),
+    ball(new TengibleEntity(1024, 448, map, HitboxEntity, &TextureEntity, sf::IntRect(0,64,20,84)))
 {
     srand(time(NULL));
     window.create(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Yellow Submarine");
     window.setVerticalSyncEnabled(true);
     //settings.antialiasingLevel = 8;
 
-    if(!tSubmarine.loadFromFile("Yellow_Submarine_texture.png"))
+    if(!TextureEntity.loadFromFile("TextureEntity.png"))
         exit(1);
 
-    if(!tBloc.loadFromFile("Tile_Texture.png"))
+    if(!TextureTile.loadFromFile("TextureTile.png"))
         exit(1);
-
-    if(!tBall.loadFromFile("ball.png"))
-        exit(1);
-
-    sBloc.setTexture(tBloc);
-    sBloc.setTextureRect(sf::IntRect(0,0,32,32));
-    map = new Map("level.txt", &tBloc);
-    player = new Player(128, 128, map, &tSubmarine, sf::IntRect(0,0,64,37));
-    ball = new TengibleEntity(1024, 448, map, &tBall, sf::IntRect(0,0,32,32), new Hitbox("ball.pbm"));
-
 }
 
 void Game::loop()

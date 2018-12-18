@@ -18,7 +18,7 @@ Hitbox::Hitbox(const char* fileName){
 
     if (buffer != "HB")
     {
-        std::cout << "Error reading hitbox : wrong file format" << std::endl;
+        std::cout << "Error reading hitbox in \"" << fileName << "\" : wrong file format" << std::endl;
         exit(1);
     }
 
@@ -38,12 +38,42 @@ Hitbox::Hitbox(const char* fileName){
     ifs.close();
 }
 
+Hitbox::Hitbox(Hitbox& hb, int x, int y, int w, int h):
+    width(w),
+    height(h)
+{
+    tab = new char*[height];
+
+    for(int i = 0 ; i < height; i++){
+        tab[i] = new char[width];
+        for(int j = 0 ; j < width ; j++){
+            tab[i][j] = hb(j + x, i + y);
+            //std::cout << (char)(tab[y][x] -'0' +' ');
+        }
+    }
+}
+
+Hitbox::Hitbox(Hitbox& hb, sf::IntRect dimention):
+    width(dimention.width),
+    height(dimention.height)
+{
+    tab = new char*[height];
+
+    for(int i = 0 ; i < height ; i++){
+        tab[i] = new char[width];
+        for(int j = 0 ; j < width ; j++){
+            tab[i][j] = hb(j + dimention.left, i + dimention.top);
+            //std::cout << (char)(tab[y][x] -'0' +' ');
+        }
+    }
+}
+
 Hitbox::~Hitbox()
 {
     for(int y = 0 ; y < height ; y++){
-        delete tab[y];
+        delete[] tab[y];
     }
-    delete tab;
+    delete[] tab;
 }
 
 int Hitbox::getWidth()
@@ -56,7 +86,7 @@ int Hitbox::getHeight()
     return height;
 }
 
-char Hitbox::getTabXY(int x, int y)
+char Hitbox::operator()(int x, int y)
 {
     if(x >= 0 && x < width && y >= 0 && y < height)
         return tab[y][x];
@@ -83,7 +113,7 @@ bool Hitbox::checkCollision(int x, int y, Hitbox* hb, int hbX, int hbY)
     {
         for(int j = 0 ; j < InterHeight ; j++)
         {
-            if(getTabXY(i + OffsetX, j + OffsetY) == '1' && hb->getTabXY(i + OffsetHBX, j + OffsetHBY) == '1')
+            if((*this)(i + OffsetX, j + OffsetY) == '1' && (*hb)(i + OffsetHBX, j + OffsetHBY) == '1')
                 return true;
         }
     }
@@ -144,7 +174,7 @@ bool Hitbox::checkCollision(int x, int y, Tile* t, int xTile, int yTile)
     {
         for (int j = ymin ; j < ymax ; j++)
         {
-            if (getTabXY(i, j) == '1')
+            if ((*this)(i, j) == '1')
             {
                 //std::cout << "collision tile" << std::endl;
                 return true;
