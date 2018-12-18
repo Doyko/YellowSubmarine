@@ -1,15 +1,16 @@
 #include "map.h"
 
-Tile::Tile(bool b, sf::Texture* t, int x, int y, int w, int h)
+Tile::Tile(bool b, sf::Texture* t, Hitbox& hb, int x, int y, int w, int h)
 :
-    tangible(b)
+    tangible(b),
+    sprite(new sf::Sprite(*t, sf::IntRect(x, y, w, h))),
+    hitbox(new Hitbox(hb, x, y, w, h))
 {
-    sprite = new sf::Sprite(*t, sf::IntRect(x, y, w, h));
 }
 
-Map::Map(std::string name, sf::Texture* t)
+Map::Map(std::string name, sf::Texture* t, Hitbox& hb)
 {
-    int** m = readMap(name, t);
+    int** m = readMap(name, t, hb);
     tileMap = new Tile**[nbTileY];
     for(int i = 0; i < nbTileY; i++)
     {
@@ -27,7 +28,7 @@ Map::Map(std::string name, sf::Texture* t)
     delete[] m;
 }
 
-int** Map::readMap(std::string name, sf::Texture* t)
+int** Map::readMap(std::string name, sf::Texture* t, Hitbox& hb)
 {
     std::ifstream ifs(name);
     int nbTile;
@@ -43,9 +44,9 @@ int** Map::readMap(std::string name, sf::Texture* t)
     {
         ifs >> tangible;
         if(tangible == 0)
-            tileList.push_back(new Tile(false, t, i * TILE_WIDTH, 0, TILE_WIDTH, TILE_HEIGHT));
+            tileList.push_back(new Tile(false, t, hb, i * TILE_WIDTH, 0, TILE_WIDTH, TILE_HEIGHT));
         else
-            tileList.push_back(new Tile(true, t, i * TILE_WIDTH, 0, TILE_WIDTH, TILE_HEIGHT));
+            tileList.push_back(new Tile(true, t, hb, i * TILE_WIDTH, 0, TILE_WIDTH, TILE_HEIGHT));
     }
     ifs >> nbTileX;
     ifs >> nbTileY;

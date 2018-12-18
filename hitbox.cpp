@@ -142,7 +142,7 @@ bool Hitbox::checkCollision(int x, int y, Map* m)
             if (m->tileMap[j][i] != NULL && m->tileMap[j][i]->tangible)
             {
                 //std::cout << "collision map" << i << j << std::endl;
-                if(checkCollision(x, y, m->tileMap[j][i], i, j))
+                if(checkCollision(x, y, m->tileMap[j][i]->hitbox, i*32, j*32))
                 {
                     return true;
                 }

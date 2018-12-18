@@ -4,6 +4,9 @@
 #include <string>
 #include "map.h"
 
+class Map;
+class Tile;
+
 class Hitbox{
 
 public:

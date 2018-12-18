@@ -2,7 +2,8 @@
 
 Game::Game(std::string name):
     HitboxEntity(Hitbox("HitboxEntity.pbm")),
-    map(new Map("level.txt", &TextureTile)),
+    HitboxTile(Hitbox("HitboxTile.pbm")),
+    map(new Map("level.txt", &TextureTile, HitboxTile)),
     player(new Player(128, 128, map, HitboxEntity, &TextureEntity, sf::IntRect(0,0,64,37))),
     ball(new TengibleEntity(1024, 448, map, HitboxEntity, &TextureEntity, sf::IntRect(0,64,20,84)))
 {

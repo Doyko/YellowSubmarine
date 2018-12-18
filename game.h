@@ -25,6 +25,7 @@ class Game
     sf::Texture TextureEntity;
     sf::Texture TextureTile;
     Hitbox HitboxEntity;
+    Hitbox HitboxTile;
 
     sf::Event event;
     sf::Clock clock;
