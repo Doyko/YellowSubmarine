@@ -5,6 +5,7 @@
 #include "map.h"
 #include "entity.h"
 #include "param.h"
+#include "animation.h"
 
 class Player : public MovableEntity, public TengibleEntity
 {
@@ -14,4 +15,6 @@ class Player : public MovableEntity, public TengibleEntity
     void update();
     bool move(int x, int y);
     ~Player();
+
+    Animation* anim;
 };

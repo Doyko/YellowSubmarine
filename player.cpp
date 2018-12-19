@@ -1,10 +1,11 @@
 #include "player.h"
 #include <iostream>
-Player::Player(int x, int y, Map* m, sf::Texture *t, sf::IntRect dimention):
+Player::Player(int x, int y, Map* m, sf::Texture *t, sf::IntRect dimention)
+:
     Entity(x, y, m, t, dimention),
     MovableEntity(x, y, m, t, dimention),
-    TengibleEntity(x, y, m, t, dimention, new Hitbox("YShitbox.pbm"))
-
+    TengibleEntity(x, y, m, t, dimention, new Hitbox("YShitbox.pbm")),
+    anim(new Animation(t, dimention, 4, 10))
 {
     std::cout << "constructor Player" << std::endl;
 }
@@ -29,6 +30,9 @@ void Player::update()
         changeSpeed(0,DECCELERATION);
 
     move(speedX/4, speedY/4);
+
+    if(anim->update())
+        sprite = anim->currentSprite;
 }
 
 bool Player::move(int x, int y)
