@@ -22,10 +22,11 @@ class Game
 
     sf::RenderWindow window;
     //sf::ContextSettings settings;
-    sf::Texture tSubmarine;
-    sf::Texture tBloc;
-    sf::Texture tBall;
-    sf::Sprite sBloc;
+    sf::Texture TextureEntity;
+    sf::Texture TextureTile;
+    Hitbox HitboxEntity;
+    Hitbox HitboxTile;
+
     sf::Event event;
     sf::Clock clock;
     Map* map;

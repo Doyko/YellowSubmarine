@@ -11,8 +11,6 @@ public:
     Entity(int x, int y, Map* m, sf::Texture *t, sf::IntRect dimention);
     virtual ~Entity();
 
-    virtual void update() = 0;
-
     int posX;
     int posY;
     sf::Sprite* sprite;
@@ -24,6 +22,7 @@ class MovableEntity : virtual public Entity
 public:
 
     MovableEntity(int x, int y, Map* m, sf::Texture *t, sf::IntRect dimention);
+    
     void changeSpeed(float x, float y);
     virtual bool move(int x, int y) = 0;
 
@@ -37,7 +36,8 @@ class TengibleEntity : virtual public Entity
 public:
 
     TengibleEntity(int x, int y, Map* m, sf::Texture *t, sf::IntRect dimention, Hitbox* hb);
-    void update();
+    TengibleEntity(int x, int y, Map* m, Hitbox& hb, sf::Texture *t, sf::IntRect dimention);
+
     virtual bool checkCollision(TengibleEntity* te);
     virtual bool checkCollision(Map* m);
 
