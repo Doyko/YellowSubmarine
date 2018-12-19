@@ -36,5 +36,5 @@ class Map
     int nbTileY;
     std::vector<Tile*> tileList;
     Tile*** tileMap;
-    
+
 };

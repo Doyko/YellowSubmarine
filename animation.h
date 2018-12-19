@@ -7,10 +7,10 @@ class Animation
 {
     public:
 
-    Animation(sf::Texture *t, sf::IntRect dimension, int nbSprite, int spd);
+    Animation(sf::Texture *t, sf::IntRect dimension, int nbSprite, int spd, int l);
     ~Animation();
 
-    bool update();
+    bool update(int v);
 
     std::vector<sf::Sprite*> sprites;
     sf::Sprite* currentSprite;
@@ -18,4 +18,6 @@ class Animation
     int tick;
     int nb;
     int speed;
+    int loop;
+    int last;
 };

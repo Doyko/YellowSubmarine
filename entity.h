@@ -4,6 +4,9 @@
 #include "map.h"
 #include "hitbox.h"
 
+#define ACCELERATION 2
+#define DECCELERATION 1
+
 class Entity
 {
 public:
@@ -22,7 +25,7 @@ class MovableEntity : virtual public Entity
 public:
 
     MovableEntity(int x, int y, Map* m, sf::Texture *t, sf::IntRect dimention);
-    
+
     void changeSpeed(float x, float y);
     virtual bool move(int x, int y) = 0;
 
