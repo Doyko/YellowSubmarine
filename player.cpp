@@ -5,7 +5,7 @@ Player::Player(int x, int y, Map* m, Hitbox& hb, sf::Texture *t, sf::IntRect dim
     Entity(x, y, m, t, dimention),
     MovableEntity(x, y, m, t, dimention),
     TengibleEntity(x, y, m, hb, t, dimention),
-    anim(new Animation(t, dimention, 8, 10, 4))
+    anim(new AnimationHB(&sprite, &hitbox, t, hb, dimention, 8, 10, 4))
 
 {
     //std::cout << "constructor Player" << std::endl;
@@ -24,19 +24,16 @@ void Player::update()
     if(speedX > 0)
     {
         changeSpeed(-DECCELERATION,0);
-        if(anim->update(0))
-            sprite = anim->currentSprite;
+        anim->update(0);
     }
     else if(speedX < 0)
     {
         changeSpeed(DECCELERATION,0);
-        if(anim->update(4))
-            sprite = anim->currentSprite;
+        anim->update(4);
     }
     else
     {
-        if(anim->update(anim->last))
-            sprite = anim->currentSprite;
+        anim->update();
     }
 
     if(speedY > 0)

@@ -5,7 +5,7 @@ Game::Game(std::string name):
     HitboxTile(Hitbox("HitboxTile.pbm")),
     map(new Map("level.txt", &TextureTile, HitboxTile)),
     player(new Player(128, 128, map, HitboxEntity, &TextureEntity, sf::IntRect(0,0,64,37))),
-    ball(new TengibleEntity(1024, 448, map, HitboxEntity, &TextureEntity, sf::IntRect(0,64,20,84)))
+    ball(new TengibleEntity(1024, 448, map, HitboxEntity, &TextureEntity, sf::IntRect(0,64,25,89)))
 {
     srand(time(NULL));
     window.create(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Yellow Submarine");
