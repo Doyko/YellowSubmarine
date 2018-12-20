@@ -9,6 +9,7 @@
 
 class Entity
 {
+
 public:
 
     Entity(int x, int y, Map* m, sf::Texture *t, sf::IntRect dimention);
@@ -22,6 +23,7 @@ public:
 
 class MovableEntity : virtual public Entity
 {
+
 public:
 
     MovableEntity(int x, int y, Map* m, sf::Texture *t, sf::IntRect dimention);
@@ -36,6 +38,7 @@ public:
 
 class TengibleEntity : virtual public Entity
 {
+    
 public:
 
     TengibleEntity(int x, int y, Map* m, sf::Texture *t, sf::IntRect dimention, Hitbox* hb);

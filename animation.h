@@ -6,6 +6,7 @@
 
 class Animation
 {
+
 public:
 
     Animation(sf::Sprite** cs, sf::Texture *t, sf::IntRect dimension, int nbSprite, int spd, int l);
@@ -14,6 +15,7 @@ public:
     virtual bool update();
 
 protected:
+
     std::vector<sf::Sprite*> sprites;
     sf::Sprite** currentSprite;
     int tick;
@@ -25,6 +27,7 @@ protected:
 
 class AnimationHB : public Animation
 {
+
 public:
 
     AnimationHB(sf::Sprite** cs, Hitbox** chb, sf::Texture *t, Hitbox& hb, sf::IntRect dimension, int nbSprite, int spd, int l);
@@ -32,6 +35,7 @@ public:
     bool update();
 
 private:
+    
     std::vector<Hitbox*> hitboxs;
     Hitbox** currentHB;
 };

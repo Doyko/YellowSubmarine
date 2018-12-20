@@ -5,8 +5,7 @@ Tile::Tile(bool b, sf::Texture* t, Hitbox& hb, int x, int y, int w, int h)
     tangible(b),
     sprite(new sf::Sprite(*t, sf::IntRect(x, y, w, h))),
     hitbox(new Hitbox(hb, x, y, w, h))
-{
-}
+{}
 
 Map::Map(std::string name, sf::Texture* t, Hitbox& hb)
 {
@@ -17,10 +16,21 @@ Map::Map(std::string name, sf::Texture* t, Hitbox& hb)
         tileMap[i] = new Tile*[nbTileX];
         for(int j = 0; j < nbTileX; j++)
         {
-            if(m[i][j] == 0)
-                tileMap[i][j] = NULL;
-            else
-                tileMap[i][j] = tileList[getIdTile(m, i, j)];
+            switch(m[i][j])
+            {
+                case 0:
+                    tileMap[i][j] = NULL;
+                    break;
+                case 1:
+                    tileMap[i][j] = tileList[getIdTileRock(m, i, j)];
+                    break;
+                case 2:
+                    tileMap[i][j] = tileList[getIdTileSand(m, i, j)];
+                    break;
+                default:
+                    tileMap[i][j] = NULL;
+                    break;
+            }
         }
     }
     for(int i = 0; i < nbTileY; i++)
@@ -44,9 +54,9 @@ int** Map::readMap(std::string name, sf::Texture* t, Hitbox& hb)
     {
         ifs >> tangible;
         if(tangible == 0)
-            tileList.push_back(new Tile(false, t, hb, i * TILE_WIDTH, 0, TILE_WIDTH, TILE_HEIGHT));
+            tileList.push_back(new Tile(false, t, hb, (i % 20) * TILE_WIDTH, (i / 20) * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT));
         else
-            tileList.push_back(new Tile(true, t, hb, i * TILE_WIDTH, 0, TILE_WIDTH, TILE_HEIGHT));
+            tileList.push_back(new Tile(true, t, hb, (i % 20) * TILE_WIDTH, (i / 20) * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT));
     }
     ifs >> nbTileX;
     ifs >> nbTileY;
@@ -78,16 +88,36 @@ void Map::draw(sf::RenderWindow &window) const
     }
 }
 
-int Map::getIdTile(int** m, int i, int j) const
+int Map::getIdTileRock(int** m, int i, int j) const
 {
     int somme = 0;
-    if(i - 1 < 0 || m[i - 1][j] == 1)
+    if(i - 1 < 0 || m[i - 1][j] != 0)
         somme += 1;
-    if(i + 1 >= nbTileY || m[i + 1][j] == 1)
+    if(i + 1 >= nbTileY || m[i + 1][j] != 0)
         somme += 4;
-    if(j - 1 < 0 || m[i][j - 1] == 1)
+    if(j - 1 < 0 || m[i][j - 1] != 0)
         somme += 8;
-    if(j + 1 >= nbTileX || m[i][j + 1] == 1)
+    if(j + 1 >= nbTileX || m[i][j + 1] != 0)
         somme += 2;
+    return somme;
+}
+
+int Map::getIdTileSand(int** m, int i, int j) const
+{
+    int somme = 16;
+    if(i + 1 >= nbTileY || m[i + 1][j] == 2)//sand down
+        somme += 9;
+    if(j - 1 < 0 || m[i][j - 1] == 2)//sand left
+        somme += 6;
+    else if(m[i][j - 1] == 1)//rock left
+        somme += 3;
+    if(j + 1 >= nbTileX || m[i][j + 1] == 2)// sand right
+        somme += 2;
+    else if(m[i][j + 1] == 1)// rock right
+        somme += 1;
+    if(i - 1 < 0 || m[i - 1][j] == 2)//sand up
+        somme += 36;
+    else if(m[i - 1][j] == 1)// rock up
+        somme += 18;
     return somme;
 }

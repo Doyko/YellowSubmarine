@@ -14,7 +14,8 @@
 
 class Game
 {
-    public:
+
+public:
 
     Game(std::string name);
     void loop();

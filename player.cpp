@@ -1,7 +1,8 @@
 #include "player.h"
 #include <iostream>
 
-Player::Player(int x, int y, Map* m, Hitbox& hb, sf::Texture *t, sf::IntRect dimention):
+Player::Player(int x, int y, Map* m, Hitbox& hb, sf::Texture *t, sf::IntRect dimention)
+:
     Entity(x, y, m, t, dimention),
     MovableEntity(x, y, m, t, dimention),
     TengibleEntity(x, y, m, hb, t, dimention),

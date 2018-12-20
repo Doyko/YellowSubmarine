@@ -14,7 +14,8 @@ class Hitbox;
 
 class Tile
 {
-    public:
+
+public:
 
     Tile(bool b, sf::Texture* t, Hitbox& hb, int x, int y, int w, int h);
 
@@ -25,12 +26,14 @@ class Tile
 
 class Map
 {
-    public:
+
+public:
 
     Map(std::string name, sf::Texture* t, Hitbox& hb);
     int** readMap(std::string name, sf::Texture* t, Hitbox& hb);
     void draw(sf::RenderWindow &window) const;
-    int getIdTile(int** m, int i, int j) const;
+    int getIdTileRock(int** m, int i, int j) const; // 16 tiles => 0 -> 15
+    int getIdTileSand(int** m, int i, int j) const; // 54 tiles => 16 -> 69
 
     int nbTileX;
     int nbTileY;

@@ -9,7 +9,8 @@
 
 class Player : public MovableEntity, public TengibleEntity
 {
-    public:
+
+public:
 
     Player(int x, int y, Map* m, Hitbox& hb, sf::Texture *t, sf::IntRect dimention);
     void update();

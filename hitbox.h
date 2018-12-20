@@ -7,7 +7,8 @@
 class Map;
 class Tile;
 
-class Hitbox{
+class Hitbox
+{
 
 public:
     Hitbox();

@@ -1,6 +1,7 @@
 #include "game.h"
 
-Game::Game(std::string name):
+Game::Game(std::string name)
+:
     HitboxEntity(Hitbox("HitboxEntity.pbm")),
     HitboxTile(Hitbox("HitboxTile.pbm")),
     map(new Map("level.txt", &TextureTile, HitboxTile)),

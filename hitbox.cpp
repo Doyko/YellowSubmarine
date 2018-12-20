@@ -1,17 +1,20 @@
 #include "hitbox.h"
 
-Hitbox::Hitbox():
+Hitbox::Hitbox()
+:
     width(0),
     height(0),
-    tab(NULL){}
+    tab(NULL)
+{}
 
 Hitbox::Hitbox(int w, int h, char** t):
     width(w),
     height(h),
-    tab(t){}
+    tab(t)
+{}
 
-Hitbox::Hitbox(const char* fileName){
-
+Hitbox::Hitbox(const char* fileName)
+{
     std::ifstream ifs(fileName);
     std::string buffer;
     ifs >> buffer;
@@ -38,7 +41,8 @@ Hitbox::Hitbox(const char* fileName){
     ifs.close();
 }
 
-Hitbox::Hitbox(Hitbox& hb, int x, int y, int w, int h):
+Hitbox::Hitbox(Hitbox& hb, int x, int y, int w, int h)
+:
     width(w),
     height(h)
 {

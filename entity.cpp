@@ -17,7 +17,8 @@ Entity::~Entity()
     delete sprite;
 }
 
-MovableEntity::MovableEntity(int x, int y, Map* m, sf::Texture *t, sf::IntRect dimention):
+MovableEntity::MovableEntity(int x, int y, Map* m, sf::Texture *t, sf::IntRect dimention)
+:
     Entity(x, y, m, t, dimention),
     speedX(0),
     speedY(0),
