@@ -107,6 +107,8 @@ int Map::getIdTileSand(int** m, int i, int j) const
     int somme = 16;
     if(i + 1 >= nbTileY || m[i + 1][j] == 2)//sand down
         somme += 9;
+    else if(m[i + 1][j] == 0)//nothing down => rock
+        return getIdTileRock(m, i, j);
     if(j - 1 < 0 || m[i][j - 1] == 2)//sand left
         somme += 6;
     else if(m[i][j - 1] == 1)//rock left
