@@ -5,9 +5,9 @@ Player::Player(int x, int y, Map* m, Hitbox& hb, sf::Texture *t, sf::IntRect dim
 :
     Entity(x, y, m, t, dimention),
     MovableEntity(x, y, m, t, dimention),
-    TengibleEntity(x, y, m, hb, t, dimention),
-    anim(new AnimationHB(&sprite, &hitbox, t, hb, dimention, 8, 10, 4))
-
+    InteractiveEntity(x, y, m, hb, t, dimention),
+    anim(new Animation(&sprite, t , dimention, 8, 10, 4)),
+    life(3)
 {
     //std::cout << "constructor Player" << std::endl;
 }
@@ -44,6 +44,12 @@ void Player::update()
 
     move(speedX/4, speedY/4);
 }
+
+bool Player::interact(InteractiveEntity* te)
+{
+  return false;
+}
+
 
 bool Player::move(int x, int y)
 {

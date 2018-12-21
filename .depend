@@ -1,0 +1,16 @@
+map.o: map.cpp map.h param.h animation.h entity.h hitbox.h player.h \
+ game.h bonus.h
+player.o: player.cpp player.h param.h animation.h map.h entity.h hitbox.h \
+ game.h bonus.h
+game.o: game.cpp game.h param.h animation.h map.h entity.h hitbox.h \
+ player.h bonus.h
+animation.o: animation.cpp animation.h param.h map.h entity.h hitbox.h \
+ player.h game.h bonus.h
+bonus.o: bonus.cpp bonus.h param.h animation.h map.h entity.h hitbox.h \
+ player.h game.h
+entity.o: entity.cpp entity.h param.h animation.h map.h hitbox.h player.h \
+ game.h bonus.h
+hitbox.o: hitbox.cpp hitbox.h param.h animation.h map.h entity.h player.h \
+ game.h bonus.h
+main.o: main.cpp game.h param.h animation.h map.h entity.h hitbox.h \
+ player.h bonus.h

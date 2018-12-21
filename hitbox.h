@@ -1,10 +1,6 @@
 #pragma once
-#include <iostream>
-#include <fstream>
-#include <string>
-#include "map.h"
+#include "param.h"
 
-class Map;
 class Tile;
 
 class Hitbox

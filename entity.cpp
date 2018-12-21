@@ -43,24 +43,24 @@ void MovableEntity::changeSpeed(float x, float y)
         speedY = -maxSpeed;
 }
 
-TengibleEntity::TengibleEntity(int x, int y, Map* m, sf::Texture *t, sf::IntRect dimention, Hitbox* hb):
+/*InteractiveEntity::InteractiveEntity(int x, int y, Map* m, sf::Texture *t, sf::IntRect dimention, Hitbox* hb):
     Entity(x, y, m, t, dimention),
     hitbox(hb)
 {
-    //std::cout << "constructor TengibleEntity" << std::endl;
-}
+    //std::cout << "constructor InteractiveEntity" << std::endl;
+}*/
 
-TengibleEntity::TengibleEntity(int x, int y, Map* m, Hitbox& hb, sf::Texture *t, sf::IntRect dimention):
+InteractiveEntity::InteractiveEntity(int x, int y, Map* m, Hitbox& hb, sf::Texture *t, sf::IntRect dimention):
     Entity(x, y, m, t, dimention),
     hitbox(new Hitbox(hb, dimention))
 {}
 
-bool TengibleEntity::checkCollision(TengibleEntity* te)
+bool InteractiveEntity::checkCollision(InteractiveEntity* te)
 {
     return hitbox->checkCollision(posX, posY, te->hitbox, te->posX, te->posY);
 }
 
-bool TengibleEntity::checkCollision(Map* m)
+bool InteractiveEntity::checkCollision(Map* m)
 {
     return hitbox->checkCollision(posX, posY, m);
 }

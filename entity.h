@@ -1,11 +1,11 @@
 #pragma once
-#include <SFML/Graphics.hpp>
-#include <vector>
-#include "map.h"
-#include "hitbox.h"
+#include "param.h"
 
 #define ACCELERATION 2
 #define DECCELERATION 1
+
+class Map;
+class Hitbox;
 
 class Entity
 {
@@ -36,16 +36,17 @@ public:
     int maxSpeed;
 };
 
-class TengibleEntity : virtual public Entity
+class InteractiveEntity : virtual public Entity
 {
-    
+
 public:
 
-    TengibleEntity(int x, int y, Map* m, sf::Texture *t, sf::IntRect dimention, Hitbox* hb);
-    TengibleEntity(int x, int y, Map* m, Hitbox& hb, sf::Texture *t, sf::IntRect dimention);
+    //InteractiveEntity(int x, int y, Map* m, sf::Texture *t, sf::IntRect dimention, Hitbox* hb);
+    InteractiveEntity(int x, int y, Map* m, Hitbox& hb, sf::Texture *t, sf::IntRect dimention);
 
-    virtual bool checkCollision(TengibleEntity* te);
+    virtual bool checkCollision(InteractiveEntity* te);
     virtual bool checkCollision(Map* m);
+    virtual bool interact(InteractiveEntity* ie) = 0;
 
     Hitbox* hitbox;
 };

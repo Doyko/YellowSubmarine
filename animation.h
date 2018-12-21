@@ -1,8 +1,5 @@
 #pragma once
-#include <SFML/Graphics.hpp>
-#include <vector>
-#include <iostream>
-#include "hitbox.h"
+#include "param.h"
 
 class Animation
 {
@@ -23,19 +20,4 @@ protected:
     int speed;
     int loop;
     int last;
-};
-
-class AnimationHB : public Animation
-{
-
-public:
-
-    AnimationHB(sf::Sprite** cs, Hitbox** chb, sf::Texture *t, Hitbox& hb, sf::IntRect dimension, int nbSprite, int spd, int l);
-    bool update(int v);
-    bool update();
-
-private:
-    
-    std::vector<Hitbox*> hitboxs;
-    Hitbox** currentHB;
 };

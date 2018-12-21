@@ -7,9 +7,9 @@ Tile::Tile(bool b, sf::Texture* t, Hitbox& hb, int x, int y, int w, int h)
     hitbox(new Hitbox(hb, x, y, w, h))
 {}
 
-Map::Map(std::string name, sf::Texture* t, Hitbox& hb)
+Map::Map(std::string name, sf::Texture* tTile, Hitbox& hbTile, sf::Texture* tEntity, Hitbox& hbEntity)
 {
-    int** m = readMap(name, t, hb);
+    int** m = readMap(name, tTile, hbTile, tEntity, hbEntity);
     tileMap = new Tile**[nbTileY];
     for(int i = 0; i < nbTileY; i++)
     {
@@ -38,7 +38,7 @@ Map::Map(std::string name, sf::Texture* t, Hitbox& hb)
     delete[] m;
 }
 
-int** Map::readMap(std::string name, sf::Texture* t, Hitbox& hb)
+int** Map::readMap(std::string name, sf::Texture* tTile, Hitbox& hbTile, sf::Texture* tEntity, Hitbox& hbEntity)
 {
     std::ifstream ifs(name);
     int nbTile;
@@ -54,9 +54,9 @@ int** Map::readMap(std::string name, sf::Texture* t, Hitbox& hb)
     {
         ifs >> tangible;
         if(tangible == 0)
-            tileList.push_back(new Tile(false, t, hb, (i % 20) * TILE_WIDTH, (i / 20) * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT));
+            tileList.push_back(new Tile(false, tTile, hbTile, (i % 20) * TILE_WIDTH, (i / 20) * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT));
         else
-            tileList.push_back(new Tile(true, t, hb, (i % 20) * TILE_WIDTH, (i / 20) * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT));
+            tileList.push_back(new Tile(true, tTile, hbTile, (i % 20) * TILE_WIDTH, (i / 20) * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT));
     }
     ifs >> nbTileX;
     ifs >> nbTileY;
@@ -69,8 +69,38 @@ int** Map::readMap(std::string name, sf::Texture* t, Hitbox& hb)
             ifs >> m[i][j];
         }
     }
+
+    readEntity(ifs, tEntity, hbEntity);
+
     ifs.close();
     return m;
+}
+
+void Map::readEntity(std::ifstream& ifs, sf::Texture* tEntity, Hitbox& hbEntity)
+{
+  int type;
+  int x, y;
+
+  ifs >> type;
+  ifs >> x;
+  ifs >> y;
+
+  while(!ifs.eof())
+  {
+    std::cout << type << x << y << std::endl;
+
+    switch(type)
+    {
+      case 0://heart
+        entityList.push_back(new Bonus(x, y, this, hbEntity, tEntity, sf::IntRect(0,64,25,89)));
+        break;
+      default:
+        break;
+    }
+    ifs >> type;
+    ifs >> x;
+    ifs >> y;
+  }
 }
 
 void Map::draw(sf::RenderWindow &window) const

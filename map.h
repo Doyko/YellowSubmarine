@@ -1,16 +1,8 @@
 #pragma once
-#include <SFML/Graphics.hpp>
-#include <vector>
-#include <string>
-#include <fstream>
-#include <iostream>
-
-#include "hitbox.h"
-
-#define TILE_WIDTH 32
-#define TILE_HEIGHT 32
+#include "param.h"
 
 class Hitbox;
+class InteractiveEntity;
 
 class Tile
 {
@@ -29,8 +21,9 @@ class Map
 
 public:
 
-    Map(std::string name, sf::Texture* t, Hitbox& hb);
-    int** readMap(std::string name, sf::Texture* t, Hitbox& hb);
+    Map(std::string name, sf::Texture* tTile, Hitbox& hbTile, sf::Texture* tEntity, Hitbox& hbEntity);
+    int** readMap(std::string name, sf::Texture* tTile, Hitbox& hbTile, sf::Texture* tEntity, Hitbox& hbEntity);
+    void readEntity(std::ifstream& ifs, sf::Texture* tEntity, Hitbox& hbEntity);
     void draw(sf::RenderWindow &window) const;
     int getIdTileRock(int** m, int i, int j) const; // 16 tiles => 0 -> 15
     int getIdTileSand(int** m, int i, int j) const; // 54 tiles => 16 -> 69
@@ -38,6 +31,7 @@ public:
     int nbTileX;
     int nbTileY;
     std::vector<Tile*> tileList;
+    std::vector<InteractiveEntity*> entityList;
     Tile*** tileMap;
 
 };
