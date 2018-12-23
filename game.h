@@ -9,9 +9,6 @@
 #include "map.h"
 #include "entity.h"
 
-#define WINDOW_WIDTH 1280
-#define WINDOW_HEIGHT 720
-
 class Game
 {
 
@@ -19,6 +16,7 @@ public:
 
     Game(std::string name);
     void loop();
+    void updateView();
 
 
     sf::RenderWindow window;
@@ -30,6 +28,7 @@ public:
 
     sf::Event event;
     sf::Clock clock;
+    sf::View view;
     Map* map;
     Player* player;
     TengibleEntity* ball;

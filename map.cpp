@@ -73,11 +73,17 @@ int** Map::readMap(std::string name, sf::Texture* t, Hitbox& hb)
     return m;
 }
 
-void Map::draw(sf::RenderWindow &window) const
+void Map::draw(sf::RenderWindow &window, sf::View &view) const
 {
-    for(int i = 0; i < nbTileY; i++)
+    sf::Vector2f center = view.getCenter();
+    int minX = (center.x - WINDOW_WIDTH / 2) / TILE_WIDTH;
+    int minY = (center.y - WINDOW_HEIGHT / 2) / TILE_HEIGHT;
+    int maxX = ((center.x - 1 - WINDOW_WIDTH / 2) + WINDOW_WIDTH) / TILE_WIDTH;
+    int maxY = ((center.y - 1 - WINDOW_HEIGHT / 2) + WINDOW_HEIGHT) / TILE_HEIGHT;
+    std::cout << "minX = " << minX << " maxX = " << maxX << " minY = " << minY << " maxY = " << maxY << '\n';
+    for(int i = minY; i <= maxY; i++)
     {
-        for(int j = 0; j < nbTileX; j++)
+        for(int j = minX; j <= maxX; j++)
         {
             if(tileMap[i][j] != NULL)
             {

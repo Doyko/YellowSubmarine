@@ -11,6 +11,7 @@ Game::Game(std::string name)
     srand(time(NULL));
     window.create(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Yellow Submarine");
     window.setVerticalSyncEnabled(true);
+    view.reset(sf::FloatRect(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, WINDOW_WIDTH, WINDOW_HEIGHT));
     //settings.antialiasingLevel = 8;
 
     if(!TextureEntity.loadFromFile("TextureEntity.png"))
@@ -39,6 +40,7 @@ void Game::loop()
                 player->changeSpeed(-ACCELERATION, 0);
 
             player->update();
+            updateView();
 
             while(window.pollEvent(event))
             {
@@ -52,11 +54,34 @@ void Game::loop()
                 }
             }
             window.clear(sf::Color(21, 96, 189));
-            map->draw(window);
+            map->draw(window, view);
             window.draw(*(player->sprite));
             if(!player->checkCollision(ball))
                 window.draw(*(ball->sprite));
+            window.setView(view);
             window.display();
         }
     }
+}
+
+void Game::updateView()
+{
+    int x;
+    int y;
+
+    if(player->posX < WINDOW_WIDTH / 2)
+        x = WINDOW_WIDTH / 2;
+    else if(player->posX > map->nbTileX * TILE_WIDTH - WINDOW_WIDTH / 2)
+        x = map->nbTileX * TILE_WIDTH - WINDOW_WIDTH / 2;
+    else
+        x = player->posX;
+
+    if(player->posY < WINDOW_HEIGHT / 2)
+        y = WINDOW_HEIGHT / 2;
+    else if(player->posY > map->nbTileY * TILE_HEIGHT - WINDOW_HEIGHT / 2)
+        y = map->nbTileY * TILE_HEIGHT - WINDOW_HEIGHT / 2;
+    else
+        y = player->posY;
+
+    view.setCenter(x, y);
 }
