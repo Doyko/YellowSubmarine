@@ -80,7 +80,6 @@ void Map::draw(sf::RenderWindow &window, sf::View &view) const
     int minY = (center.y - WINDOW_HEIGHT / 2) / TILE_HEIGHT;
     int maxX = ((center.x - 1 - WINDOW_WIDTH / 2) + WINDOW_WIDTH) / TILE_WIDTH;
     int maxY = ((center.y - 1 - WINDOW_HEIGHT / 2) + WINDOW_HEIGHT) / TILE_HEIGHT;
-    std::cout << "minX = " << minX << " maxX = " << maxX << " minY = " << minY << " maxY = " << maxY << '\n';
     for(int i = minY; i <= maxY; i++)
     {
         for(int j = minX; j <= maxX; j++)

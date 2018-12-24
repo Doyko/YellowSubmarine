@@ -17,5 +17,12 @@ public:
     bool move(int x, int y);
     ~Player();
 
-    Animation* anim;
+    enum class AnimationIndex
+    {
+        moveRight,
+        moveLeft,
+        count,
+    };
+    Animation animations[int(AnimationIndex::count)];
+    AnimationIndex currentAnimation = AnimationIndex::moveRight;
 };

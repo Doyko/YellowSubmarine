@@ -19,7 +19,6 @@ Game::Game(std::string name)
 
     if(!TextureTile.loadFromFile("TextureTile.png"))
         exit(1);
-
 }
 
 void Game::loop()
