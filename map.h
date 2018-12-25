@@ -6,19 +6,32 @@
 #include <iostream>
 #include "hitbox.h"
 #include "param.h"
+#include "animation.h"
 
 class Hitbox;
+class Animation;
 
 class Tile
 {
 
 public:
 
-    Tile(bool b, sf::Texture* t, Hitbox& hb, int x, int y, int w, int h);
+    Tile(int tang, sf::Texture* t, Hitbox& hb, int x, int y, int w, int h);
 
-    bool tangible;
+    int tangible;
     sf::Sprite* sprite;
     Hitbox* hitbox;
+};
+
+class AnimatedTile : public Tile
+{
+
+public:
+
+    AnimatedTile(int tang, sf::Texture* t, Hitbox& hb, int x, int y, int w, int h, int nbSprite, int speed);
+    void update();
+
+    Animation* animation;
 };
 
 class Map
@@ -35,6 +48,7 @@ public:
     int nbTileX;
     int nbTileY;
     std::vector<Tile*> tileList;
+    std::vector<AnimatedTile*> animatedTiles;
     Tile*** tileMap;
 
 };

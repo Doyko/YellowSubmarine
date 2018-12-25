@@ -1,11 +1,23 @@
 #include "map.h"
 
-Tile::Tile(bool b, sf::Texture* t, Hitbox& hb, int x, int y, int w, int h)
+Tile::Tile(int tang, sf::Texture* t, Hitbox& hb, int x, int y, int w, int h)
 :
-    tangible(b),
+    tangible(tang),
     sprite(new sf::Sprite(*t, sf::IntRect(x, y, w, h))),
     hitbox(new Hitbox(hb, x, y, w, h))
 {}
+
+AnimatedTile::AnimatedTile(int tang, sf::Texture* t, Hitbox& hb, int x, int y, int w, int h, int nbSprite, int speed)
+:
+    Tile(tang, t, hb, x, y, w, h),
+    animation(new Animation(t, sf::IntRect(x, y, w, h), nbSprite, speed))
+{}
+
+void AnimatedTile::update()
+{
+    if(animation->update())
+        sprite = animation->currentSprite;
+}
 
 Map::Map(std::string name, sf::Texture* t, Hitbox& hb)
 {
@@ -28,7 +40,7 @@ Map::Map(std::string name, sf::Texture* t, Hitbox& hb)
                     tileMap[i][j] = tileList[getIdTileSand(m, i, j)];
                     break;
                 default:
-                    tileMap[i][j] = NULL;
+                    tileMap[i][j] = tileList[70];
                     break;
             }
         }
@@ -53,10 +65,22 @@ int** Map::readMap(std::string name, sf::Texture* t, Hitbox& hb)
     for(int i = 0; i < nbTile; i++)
     {
         ifs >> tangible;
-        if(tangible == 0)
-            tileList.push_back(new Tile(false, t, hb, (i % 20) * TILE_WIDTH, (i / 20) * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT));
-        else
-            tileList.push_back(new Tile(true, t, hb, (i % 20) * TILE_WIDTH, (i / 20) * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT));
+        tileList.push_back(new Tile(tangible, t, hb, (i % 20) * TILE_WIDTH, (i / 20) * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT));
+    }
+    int nbAnimatedTile;
+    int nbSprite;
+    int speed;
+    AnimatedTile* at;
+    ifs >> nbAnimatedTile;
+    for(int i = 0; i < nbAnimatedTile; i++)
+    {
+        ifs >> tangible;
+        ifs >> nbSprite;
+        ifs >> speed;
+        at = new AnimatedTile(tangible, t, hb, (nbTile % 20) * TILE_WIDTH, (nbTile / 20) * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT, nbSprite, speed);
+        tileList.push_back(at);
+        animatedTiles.push_back(at);
+        nbTile += nbSprite;
     }
     ifs >> nbTileX;
     ifs >> nbTileY;

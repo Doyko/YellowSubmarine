@@ -39,6 +39,8 @@ void Game::loop()
                 player->changeSpeed(-ACCELERATION, 0);
 
             player->update();
+            for(size_t i = 0; i < map->animatedTiles.size(); i++)
+                map->animatedTiles[i]->update();
             updateView();
 
             while(window.pollEvent(event))
