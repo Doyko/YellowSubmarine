@@ -18,8 +18,9 @@ Hitbox::Hitbox(const char* fileName)
     std::ifstream ifs(fileName);
     std::string buffer;
     ifs >> buffer;
+    std::cout << buffer << std::endl;
 
-    if (buffer != "HB")
+    if (buffer != "P1")
     {
         std::cout << "Error reading hitbox in \"" << fileName << "\" : wrong file format" << std::endl;
         exit(1);
