@@ -7,6 +7,8 @@
 #include "param.h"
 #include "animation.h"
 
+#define MAXLIFE 3
+
 class Player : public MovableEntity, public TengibleEntity
 {
 
@@ -25,4 +27,6 @@ public:
     };
     Animation animations[int(AnimationIndex::count)];
     AnimationIndex currentAnimation = AnimationIndex::moveRight;
+
+    int life;
 };

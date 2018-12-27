@@ -8,6 +8,7 @@
 #include "param.h"
 #include "map.h"
 #include "entity.h"
+#include "bonus.h"
 
 class Game
 {
@@ -32,5 +33,5 @@ public:
     sf::View view;
     Map* map;
     Player* player;
-    TengibleEntity* ball;
+    Bonus* heart;
 };

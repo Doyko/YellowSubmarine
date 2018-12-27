@@ -5,7 +5,8 @@ Player::Player(int x, int y, Map* m, Hitbox& hb, sf::Texture *t, sf::IntRect dim
 :
     Entity(x, y, m, t, dimention),
     MovableEntity(x, y, m, t, dimention),
-    TengibleEntity(x, y, m, hb, t, dimention)
+    TengibleEntity(x, y, m, hb, t, dimention),
+    life(MAXLIFE)
 {
     animations[int(AnimationIndex::moveRight)] = Animation(t, sf::IntRect(0, 0, 64, 37), 4, 10);
     animations[int(AnimationIndex::moveLeft)] = Animation(t, sf::IntRect(256, 0, 64, 37), 4, 10);

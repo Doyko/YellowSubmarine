@@ -6,7 +6,7 @@ Game::Game(std::string name)
     HitboxTile(Hitbox("HitboxTile.pbm")),
     map(new Map("level.txt", &textureTile, HitboxTile)),
     player(new Player(32, 32, map, HitboxEntity, &textureEntity, sf::IntRect(0,0,64,37))),
-    ball(new TengibleEntity(1024, 448, map, HitboxEntity, &textureEntity, sf::IntRect(0,64,25,89)))
+    heart(new Bonus(1024, 448, map, HitboxEntity, &textureEntity, sf::IntRect(0,64,25,89)))
 {
     srand(time(NULL));
     window.create(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Yellow Submarine");
@@ -63,8 +63,12 @@ void Game::loop()
             drawBackground();
             map->draw(window, view);
             window.draw(*(player->sprite));
-            if(!player->checkCollision(ball))
-                window.draw(*(ball->sprite));
+            
+            if(!player->checkCollision(heart))
+                window.draw(*(heart->sprite));
+            else
+                heart->interact(player);
+
             window.setView(view);
             window.display();
         }
