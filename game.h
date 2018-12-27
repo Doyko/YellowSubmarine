@@ -19,6 +19,7 @@ public:
     void loop();
     void updateView();
     void drawBackground();
+    void readEntity(const char* filename);
 
     sf::RenderWindow window;
     //sf::ContextSettings settings;
@@ -33,5 +34,5 @@ public:
     sf::View view;
     Map* map;
     Player* player;
-    Bonus* heart;
+    std::vector<Bonus*> vbonus;
 };

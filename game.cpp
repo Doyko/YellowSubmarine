@@ -5,8 +5,7 @@ Game::Game(std::string name)
     HitboxEntity(Hitbox("HitboxEntity.pbm")),
     HitboxTile(Hitbox("HitboxTile.pbm")),
     map(new Map("level.txt", &textureTile, HitboxTile)),
-    player(new Player(32, 32, map, HitboxEntity, &textureEntity, sf::IntRect(0,0,64,37))),
-    heart(new Bonus(1024, 448, map, HitboxEntity, &textureEntity, sf::IntRect(0,64,25,89)))
+    player(new Player(32, 32, map, HitboxEntity, &textureEntity, sf::IntRect(0,0,64,37)))
 {
     srand(time(NULL));
     window.create(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Yellow Submarine");
@@ -24,6 +23,8 @@ Game::Game(std::string name)
         exit(1);
 
     background.setTexture(textureBG);
+
+    readEntity("Entity.txt");
 }
 
 void Game::loop()
@@ -63,11 +64,18 @@ void Game::loop()
             drawBackground();
             map->draw(window, view);
             window.draw(*(player->sprite));
-            
-            if(!player->checkCollision(heart))
-                window.draw(*(heart->sprite));
-            else
-                heart->interact(player);
+
+            for(std::vector<Bonus*>::iterator i = vbonus.begin(); i != vbonus.end(); i++)
+            {
+                if(player->checkCollision(*i))
+                {
+                    (*i)->interact(player);
+                    (*i)->~Bonus();
+                    vbonus.erase(i);
+                    break;
+                }
+                window.draw(*((*i)->sprite));
+            }
 
             window.setView(view);
             window.display();
@@ -110,5 +118,20 @@ void Game::drawBackground()
     {
         window.draw(background);
         background.move(background.getTextureRect().width, 0);
+    }
+}
+
+void Game::readEntity(const char * filename)
+{
+    std::ifstream ifs(filename);
+
+    int nbBonus, x, y;
+    ifs >> nbBonus;
+
+    for(int i = 0 ; i < nbBonus ; i++)
+    {
+        ifs >> x;
+        ifs >> y;
+        vbonus.push_back(new Bonus(x, y, map, HitboxEntity, &textureEntity, sf::IntRect(0,64,25,89)));
     }
 }
