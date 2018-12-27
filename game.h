@@ -17,15 +17,16 @@ public:
     Game(std::string name);
     void loop();
     void updateView();
-
+    void drawBackground();
 
     sf::RenderWindow window;
     //sf::ContextSettings settings;
-    sf::Texture TextureEntity;
-    sf::Texture TextureTile;
+    sf::Texture textureEntity;
+    sf::Texture textureTile;
+    sf::Texture textureBG;
     Hitbox HitboxEntity;
     Hitbox HitboxTile;
-
+    sf::Sprite background;
     sf::Event event;
     sf::Clock clock;
     sf::View view;

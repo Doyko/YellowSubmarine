@@ -4,9 +4,9 @@ Game::Game(std::string name)
 :
     HitboxEntity(Hitbox("HitboxEntity.pbm")),
     HitboxTile(Hitbox("HitboxTile.pbm")),
-    map(new Map("level.txt", &TextureTile, HitboxTile)),
-    player(new Player(128, 128, map, HitboxEntity, &TextureEntity, sf::IntRect(0,0,64,37))),
-    ball(new TengibleEntity(1024, 448, map, HitboxEntity, &TextureEntity, sf::IntRect(0,64,25,89)))
+    map(new Map("level.txt", &textureTile, HitboxTile)),
+    player(new Player(32, 32, map, HitboxEntity, &textureEntity, sf::IntRect(0,0,64,37))),
+    ball(new TengibleEntity(1024, 448, map, HitboxEntity, &textureEntity, sf::IntRect(0,64,25,89)))
 {
     srand(time(NULL));
     window.create(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Yellow Submarine");
@@ -14,11 +14,16 @@ Game::Game(std::string name)
     view.reset(sf::FloatRect(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, WINDOW_WIDTH, WINDOW_HEIGHT));
     //settings.antialiasingLevel = 8;
 
-    if(!TextureEntity.loadFromFile("TextureEntity.png"))
+    if(!textureEntity.loadFromFile("TextureEntity.png"))
         exit(1);
 
-    if(!TextureTile.loadFromFile("TextureTile.png"))
+    if(!textureTile.loadFromFile("TextureTile.png"))
         exit(1);
+
+    if(!textureBG.loadFromFile("TextureBG.png"))
+        exit(1);
+
+    background.setTexture(textureBG);
 }
 
 void Game::loop()
@@ -55,6 +60,7 @@ void Game::loop()
                 }
             }
             window.clear(sf::Color(21, 96, 189));
+            drawBackground();
             map->draw(window, view);
             window.draw(*(player->sprite));
             if(!player->checkCollision(ball))
@@ -85,4 +91,20 @@ void Game::updateView()
         y = player->posY;
 
     view.setCenter(x, y);
+}
+
+void Game::drawBackground()
+{
+    float y = float(view.getCenter().y - WINDOW_HEIGHT / 2) / (map->nbTileY * TILE_HEIGHT - WINDOW_HEIGHT);
+    float x = float(view.getCenter().x - WINDOW_HEIGHT / 2) / (map->nbTileY * TILE_HEIGHT - WINDOW_HEIGHT);
+    background.setPosition(x * (map->nbTileY * TILE_HEIGHT - background.getTextureRect().height) - background.getTextureRect().width, y * (map->nbTileY * TILE_HEIGHT - background.getTextureRect().height));
+
+    while(background.getPosition().x + background.getTextureRect().width < view.getCenter().x - WINDOW_WIDTH / 2)
+        background.move(background.getTextureRect().width, 0);
+
+    for(int i = 0; i < WINDOW_WIDTH / background.getTextureRect().width + 1; i++)
+    {
+        window.draw(background);
+        background.move(background.getTextureRect().width, 0);
+    }
 }
