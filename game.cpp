@@ -124,14 +124,28 @@ void Game::drawBackground()
 void Game::readEntity(const char * filename)
 {
     std::ifstream ifs(filename);
-
     int nbBonus, x, y;
+    char type;
+
     ifs >> nbBonus;
 
     for(int i = 0 ; i < nbBonus ; i++)
     {
+        ifs >> type;
         ifs >> x;
         ifs >> y;
-        vbonus.push_back(new Bonus(x, y, map, HitboxEntity, &textureEntity, sf::IntRect(0,64,25,89)));
+        switch (type)
+        {
+            case 'l':
+                vbonus.push_back(new LifeBonus(x, y, map, HitboxEntity, &textureEntity, sf::IntRect(0,64,32,96)));
+                break;
+            case 'm':
+                vbonus.push_back(new MineBonus(x, y, map, HitboxEntity, &textureEntity, sf::IntRect(32,64,64,96)));
+                break;
+
+            default:
+                break;
+        }
+
     }
 }
