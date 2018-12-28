@@ -65,13 +65,12 @@ void Game::loop()
             map->draw(window, view);
             window.draw(*(player->sprite));
 
-            for(std::deque<Bonus*>::iterator i = vbonus.begin(); i != vbonus.end(); i++)
+            for(std::deque<Bonus*>::iterator i = vbonus.begin(); i < vbonus.end(); i++)
             {
                 if(!(*i)->interact(player, window))
                 {
                     (*i)->~Bonus();
                     vbonus.erase(i);
-                    break;
                 }
             }
 
