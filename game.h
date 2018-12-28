@@ -3,7 +3,7 @@
 #include <cstdlib>
 #include <string>
 #include <iostream>
-#include <vector>
+#include <deque>
 #include "player.h"
 #include "param.h"
 #include "map.h"
@@ -34,5 +34,5 @@ public:
     sf::View view;
     Map* map;
     Player* player;
-    std::vector<Bonus*> vbonus;
+    std::deque<Bonus*> vbonus;
 };

@@ -66,16 +66,14 @@ void Game::loop()
             map->draw(window, view);
             window.draw(*(player->sprite));
 
-            for(std::vector<Bonus*>::iterator i = vbonus.begin(); i != vbonus.end(); i++)
+            for(std::deque<Bonus*>::iterator i = vbonus.begin(); i != vbonus.end(); i++)
             {
-                if(player->checkCollision(*i))
+                if(!(*i)->interact(player, window))
                 {
-                    (*i)->interact(player);
                     (*i)->~Bonus();
                     vbonus.erase(i);
                     break;
                 }
-                window.draw(*((*i)->sprite));
             }
 
             window.setView(view);
@@ -138,10 +136,13 @@ void Game::readEntity(const char * filename)
         switch (type)
         {
             case 'l':
-                vbonus.push_back(new LifeBonus(x, y, map, HitboxEntity, &textureEntity, sf::IntRect(0,64,32,96)));
+                vbonus.push_back(new LifeBonus(x, y, map, HitboxEntity, &textureEntity, sf::IntRect(0,64,32,32)));
                 break;
             case 'm':
-                vbonus.push_back(new MineBonus(x, y, map, HitboxEntity, &textureEntity, sf::IntRect(32,64,64,96)));
+                vbonus.push_back(new MineBonus(x, y, map, HitboxEntity, &textureEntity, sf::IntRect(32,64,32,32)));
+                break;
+            case 's':
+                vbonus.push_back(new SpeedBonus(x, y, map, HitboxEntity, &textureEntity, sf::IntRect(64,64,32,32)));
                 break;
 
             default:
