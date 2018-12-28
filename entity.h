@@ -38,7 +38,7 @@ public:
 
 class TengibleEntity : virtual public Entity
 {
-    
+
 public:
 
     TengibleEntity(int x, int y, Map* m, sf::Texture *t, sf::IntRect dimention, Hitbox* hb);
