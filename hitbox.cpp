@@ -18,7 +18,6 @@ Hitbox::Hitbox(const char* fileName)
     std::ifstream ifs(fileName);
     std::string buffer;
     ifs >> buffer;
-    std::cout << buffer << std::endl;
 
     if (buffer != "P1")
     {

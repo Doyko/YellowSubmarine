@@ -24,6 +24,8 @@ Game::Game(std::string name)
         exit(1);
 
     background.setTexture(textureBG);
+
+    readEntity("Entity.txt");
 }
 
 void Game::loop()
@@ -63,8 +65,19 @@ void Game::loop()
             drawBackground();
             map->draw(window, view);
             window.draw(*(player->sprite));
-            if(!player->checkCollision(ball))
-                window.draw(*(ball->sprite));
+
+            for(std::vector<Bonus*>::iterator i = vbonus.begin(); i != vbonus.end(); i++)
+            {
+                if(player->checkCollision(*i))
+                {
+                    (*i)->interact(player);
+                    (*i)->~Bonus();
+                    vbonus.erase(i);
+                    break;
+                }
+                window.draw(*((*i)->sprite));
+            }
+
             window.setView(view);
             window.display();
         }
@@ -106,5 +119,34 @@ void Game::drawBackground()
     {
         window.draw(background);
         background.move(background.getTextureRect().width, 0);
+    }
+}
+
+void Game::readEntity(const char * filename)
+{
+    std::ifstream ifs(filename);
+    int nbBonus, x, y;
+    char type;
+
+    ifs >> nbBonus;
+
+    for(int i = 0 ; i < nbBonus ; i++)
+    {
+        ifs >> type;
+        ifs >> x;
+        ifs >> y;
+        switch (type)
+        {
+            case 'l':
+                vbonus.push_back(new LifeBonus(x, y, map, HitboxEntity, &textureEntity, sf::IntRect(0,64,32,96)));
+                break;
+            case 'm':
+                vbonus.push_back(new MineBonus(x, y, map, HitboxEntity, &textureEntity, sf::IntRect(32,64,64,96)));
+                break;
+
+            default:
+                break;
+        }
+
     }
 }
