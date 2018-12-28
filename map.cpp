@@ -39,8 +39,13 @@ Map::Map(std::string name, sf::Texture* t, Hitbox& hb)
                 case 2:
                     tileMap[i][j] = tileList[getIdTileSand(m, i, j)];
                     break;
-                default:
+                case 3:
                     tileMap[i][j] = tileList[70];
+                    break;
+                case 4:
+                    tileMap[i][j] = tileList[71];
+                    break;
+                default:
                     break;
             }
         }

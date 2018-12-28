@@ -5,7 +5,7 @@ Game::Game(std::string name)
     HitboxEntity(Hitbox("HitboxEntity.pbm")),
     HitboxTile(Hitbox("HitboxTile.pbm")),
     map(new Map("level.txt", &textureTile, HitboxTile)),
-    player(new Player(32, 32, map, HitboxEntity, &textureEntity, sf::IntRect(0,0,64,37)))
+    player(new Player(128, 32, map, HitboxEntity, &textureEntity, sf::IntRect(0,0,64,37)))
 {
     srand(time(NULL));
     window.create(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Yellow Submarine");
