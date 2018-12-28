@@ -4,12 +4,13 @@ Bonus::Bonus(int x, int y, Map* m, Hitbox& hb, sf::Texture *t, sf::IntRect dimen
 :
     Entity(x, y, m, t, dimention),
     TengibleEntity(x, y, m, hb, t, dimention),
+    draw(true),
     state(0)
 {}
 
 //-----LifeBonus-----
 LifeBonus::LifeBonus(int x, int y, Map* m, Hitbox& hb, sf::Texture *t, sf::IntRect dimention)
-: 
+:
     Entity(x, y, m, t, dimention),
     Bonus(x, y, m, hb, t, dimention)
 {}
@@ -33,7 +34,7 @@ bool LifeBonus::interact(Player* p)
 
 //-----MineBonus-----
 MineBonus::MineBonus(int x, int y, Map* m, Hitbox& hb, sf::Texture *t, sf::IntRect dimention)
-: 
+:
     Entity(x, y, m, t, dimention),
     Bonus(x, y, m, hb, t, dimention)
 {}
@@ -57,7 +58,7 @@ bool MineBonus::interact(Player* p)
 
 //-----SpeedBonus-----
 SpeedBonus::SpeedBonus(int x, int y, Map* m, Hitbox& hb, sf::Texture *t, sf::IntRect dimention)
-: 
+:
     Entity(x, y, m, t, dimention),
     Bonus(x, y, m, hb, t, dimention)
 {}
@@ -76,6 +77,7 @@ bool SpeedBonus::interact(Player* p)
             return true;
 
         case 1:
+            draw = false;
             if(timer > 0)
                 timer--;
             else

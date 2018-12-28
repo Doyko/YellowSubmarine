@@ -64,6 +64,7 @@ void Game::loop()
             }
             window.clear(sf::Color(21, 96, 189));
             drawBackground();
+            map->draw(window, view);
 
             for(size_t i = 0; i < entities.size(); i++)
             {
@@ -77,13 +78,12 @@ void Game::loop()
                     vbonus[i]->~Bonus();
                     vbonus.erase(vbonus.begin() + i);
                 }
-                else
+                else if(vbonus[i]->draw)
                     window.draw(*vbonus[i]->sprite);
             }
 
             window.draw(*(player->sprite));
             window.setView(view);
-            map->draw(window, view);
 
             window.display();
         }

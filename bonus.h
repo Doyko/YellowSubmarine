@@ -8,6 +8,8 @@ public:
     virtual bool interact(Player* p) = 0;
     //return true if the bonus is still usable. return false if the bonus is useless and should be destroy
 
+    bool draw;
+
 protected:
     int state;
 };
