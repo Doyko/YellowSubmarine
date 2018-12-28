@@ -71,7 +71,7 @@ void Game::loop()
                 {
                     (*i)->~Bonus();
                     vbonus.erase(i);
-                    break;
+                    //break;
                 }
             }
 
