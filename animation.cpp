@@ -23,7 +23,11 @@ bool Animation::update()
     tick = 0;
     nb++;
     if(nb == int(sprites.size()))
+    {
         nb = 0;
+        currentSprite = sprites[nb];
+        return true;
+    }
     currentSprite = sprites[nb];
-    return true;
+    return false;
 }

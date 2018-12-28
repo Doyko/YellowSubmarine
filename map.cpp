@@ -15,8 +15,8 @@ AnimatedTile::AnimatedTile(int tang, sf::Texture* t, Hitbox& hb, int x, int y, i
 
 void AnimatedTile::update()
 {
-    if(animation->update())
-        sprite = animation->currentSprite;
+    animation->update();
+    sprite = animation->currentSprite;
 }
 
 Map::Map(std::string name, sf::Texture* t, Hitbox& hb)

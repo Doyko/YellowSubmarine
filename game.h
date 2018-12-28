@@ -26,8 +26,8 @@ public:
     sf::Texture textureEntity;
     sf::Texture textureTile;
     sf::Texture textureBG;
-    Hitbox HitboxEntity;
-    Hitbox HitboxTile;
+    Hitbox hitboxEntity;
+    Hitbox hitboxTile;
     sf::Sprite background;
     sf::Event event;
     sf::Clock clock;
@@ -35,4 +35,5 @@ public:
     Map* map;
     Player* player;
     std::deque<Bonus*> vbonus;
+    std::vector<Entity*> entities;
 };

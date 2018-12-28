@@ -2,10 +2,10 @@
 
 Game::Game(std::string name)
 :
-    HitboxEntity(Hitbox("HitboxEntity.pbm")),
-    HitboxTile(Hitbox("HitboxTile.pbm")),
-    map(new Map("level.txt", &textureTile, HitboxTile)),
-    player(new Player(128, 32, map, HitboxEntity, &textureEntity, sf::IntRect(0,0,64,37)))
+    hitboxEntity(Hitbox("hitbox/hitboxEntity.pbm")),
+    hitboxTile(Hitbox("hitbox/hitboxTile.pbm")),
+    map(new Map("level.txt", &textureTile, hitboxTile)),
+    player(new Player(128, 32, map, hitboxEntity, &textureEntity, sf::IntRect(0,0,64,37)))
 {
     srand(time(NULL));
     window.create(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Yellow Submarine");
@@ -13,13 +13,13 @@ Game::Game(std::string name)
     view.reset(sf::FloatRect(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, WINDOW_WIDTH, WINDOW_HEIGHT));
     //settings.antialiasingLevel = 8;
 
-    if(!textureEntity.loadFromFile("TextureEntity.png"))
+    if(!textureEntity.loadFromFile("texture/textureEntity.png"))
         exit(1);
 
-    if(!textureTile.loadFromFile("TextureTile.png"))
+    if(!textureTile.loadFromFile("texture/textureTile.png"))
         exit(1);
 
-    if(!textureBG.loadFromFile("TextureBG.png"))
+    if(!textureBG.loadFromFile("texture/textureBG.png"))
         exit(1);
 
     background.setTexture(textureBG);
@@ -43,6 +43,8 @@ void Game::loop()
                 player->changeSpeed(ACCELERATION, 0);
             if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
                 player->changeSpeed(-ACCELERATION, 0);
+            if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+                player->shoot(entities, &textureEntity, hitboxEntity);
 
             player->update();
             for(size_t i = 0; i < map->animatedTiles.size(); i++)
@@ -62,19 +64,27 @@ void Game::loop()
             }
             window.clear(sf::Color(21, 96, 189));
             drawBackground();
-            map->draw(window, view);
-            window.draw(*(player->sprite));
 
-            for(std::deque<Bonus*>::iterator i = vbonus.begin(); i < vbonus.end(); i++)
+            for(size_t i = 0; i < entities.size(); i++)
             {
-                if(!(*i)->interact(player, window))
+                entities[i]->update();
+                window.draw(*entities[i]->sprite);
+            }
+            for(size_t i = 0; i < vbonus.size(); i++)
+            {
+                if(!vbonus[i]->interact(player))
                 {
-                    (*i)->~Bonus();
-                    vbonus.erase(i);
+                    vbonus[i]->~Bonus();
+                    vbonus.erase(vbonus.begin() + i);
                 }
+                else
+                    window.draw(*vbonus[i]->sprite);
             }
 
+            window.draw(*(player->sprite));
             window.setView(view);
+            map->draw(window, view);
+
             window.display();
         }
     }
@@ -134,13 +144,13 @@ void Game::readEntity(const char * filename)
         switch (type)
         {
             case 'l':
-                vbonus.push_back(new LifeBonus(x, y, map, HitboxEntity, &textureEntity, sf::IntRect(0,64,32,32)));
+                vbonus.push_back(new LifeBonus(x, y, map, hitboxEntity, &textureEntity, sf::IntRect(0,64,32,32)));
                 break;
             case 'm':
-                vbonus.push_back(new MineBonus(x, y, map, HitboxEntity, &textureEntity, sf::IntRect(32,64,32,32)));
+                vbonus.push_back(new MineBonus(x, y, map, hitboxEntity, &textureEntity, sf::IntRect(32,64,32,32)));
                 break;
             case 's':
-                vbonus.push_back(new SpeedBonus(x, y, map, HitboxEntity, &textureEntity, sf::IntRect(64,64,32,32)));
+                vbonus.push_back(new SpeedBonus(x, y, map, hitboxEntity, &textureEntity, sf::IntRect(64,64,32,32)));
                 break;
 
             default:

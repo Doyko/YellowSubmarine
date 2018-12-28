@@ -1,18 +1,20 @@
 #include "bonus.h"
 
 Bonus::Bonus(int x, int y, Map* m, Hitbox& hb, sf::Texture *t, sf::IntRect dimention)
-: Entity(x, y, m, t, dimention),
-  TengibleEntity(x, y, m, hb, t, dimention),
-  state(0)
+:
+    Entity(x, y, m, t, dimention),
+    TengibleEntity(x, y, m, hb, t, dimention),
+    state(0)
 {}
 
 //-----LifeBonus-----
 LifeBonus::LifeBonus(int x, int y, Map* m, Hitbox& hb, sf::Texture *t, sf::IntRect dimention)
-: Entity(x, y, m, t, dimention),
-Bonus(x, y, m, hb, t, dimention)
+: 
+    Entity(x, y, m, t, dimention),
+    Bonus(x, y, m, hb, t, dimention)
 {}
 
-bool LifeBonus::interact(Player* p, sf::RenderWindow& w)
+bool LifeBonus::interact(Player* p)
 {
     switch (state)
     {
@@ -23,8 +25,6 @@ bool LifeBonus::interact(Player* p, sf::RenderWindow& w)
                 p->life++;
                 std::cout << "life : " << p->life << std::endl;
             }
-            else
-                w.draw(*sprite);
             return true;
         default:
             return false;
@@ -33,11 +33,12 @@ bool LifeBonus::interact(Player* p, sf::RenderWindow& w)
 
 //-----MineBonus-----
 MineBonus::MineBonus(int x, int y, Map* m, Hitbox& hb, sf::Texture *t, sf::IntRect dimention)
-: Entity(x, y, m, t, dimention),
-Bonus(x, y, m, hb, t, dimention)
+: 
+    Entity(x, y, m, t, dimention),
+    Bonus(x, y, m, hb, t, dimention)
 {}
 
-bool MineBonus::interact(Player* p, sf::RenderWindow& w)
+bool MineBonus::interact(Player* p)
 {
     switch (state)
     {
@@ -48,8 +49,6 @@ bool MineBonus::interact(Player* p, sf::RenderWindow& w)
                 p->life--;
                 std::cout << "life : " << p->life << std::endl;
             }
-            else
-                w.draw(*sprite);
             return true;
         default:
             return false;
@@ -58,11 +57,12 @@ bool MineBonus::interact(Player* p, sf::RenderWindow& w)
 
 //-----SpeedBonus-----
 SpeedBonus::SpeedBonus(int x, int y, Map* m, Hitbox& hb, sf::Texture *t, sf::IntRect dimention)
-: Entity(x, y, m, t, dimention),
-Bonus(x, y, m, hb, t, dimention)
+: 
+    Entity(x, y, m, t, dimention),
+    Bonus(x, y, m, hb, t, dimention)
 {}
 
-bool SpeedBonus::interact(Player* p, sf::RenderWindow& w)
+bool SpeedBonus::interact(Player* p)
 {
     switch (state)
     {
@@ -73,8 +73,6 @@ bool SpeedBonus::interact(Player* p, sf::RenderWindow& w)
                 p->maxSpeed += 10;
                 timer = 500;
             }
-            else
-                w.draw(*sprite);
             return true;
 
         case 1:
