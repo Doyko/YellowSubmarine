@@ -1,4 +1,6 @@
 #include "game.h"
+#include <vector>
+#include <iostream>
 
 int main()
 {

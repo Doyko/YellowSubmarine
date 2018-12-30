@@ -52,9 +52,10 @@ bool Player::update()
 
 bool Player::move(int x, int y)
 {
-    int moveX = x, moveY = y;
+    int moveX = x;
+    int moveY = y;
 
-    while (moveX != 0 && hitbox->checkCollision(posX + moveX, posY, map))
+    while(moveX != 0 && hitbox->checkCollision(posX + moveX, posY, map))
     {
         moveX > 0 ? moveX-- : moveX++;
         speedX = 0;
@@ -62,7 +63,7 @@ bool Player::move(int x, int y)
 
     posX = posX + moveX;
 
-    while (moveY != 0 && hitbox->checkCollision(posX, posY + moveY, map))
+    while(moveY != 0 && hitbox->checkCollision(posX, posY + moveY, map))
     {
         moveY > 0 ? moveY-- : moveY++;
         speedY = 0;
@@ -73,7 +74,7 @@ bool Player::move(int x, int y)
     return true;
 }
 
-void Player::shoot(std::vector<Entity*>& entities, sf::Texture *t, Hitbox& hb)
+void Player::shoot(std::vector<Projectile*>& projectiles, sf::Texture *t, Hitbox& hb)
 {
     if(shootCD != 0)
         return;
@@ -83,9 +84,9 @@ void Player::shoot(std::vector<Entity*>& entities, sf::Texture *t, Hitbox& hb)
     if(rot > 180)
         rot = rot - 360;
     if(currentAnimation == AnimationIndex::moveRight)
-        entities.push_back(new Torpedo(posX + sprite->getTextureRect().width, posY + sprite->getTextureRect().height / 2 + 3 + rot, map, hb, t, sf::IntRect(0, 37, 25, 7), 1));
+        projectiles.push_back(new Torpedo(posX + sprite->getTextureRect().width, posY + sprite->getTextureRect().height / 2 + 3 + rot, map, hb, t, sf::IntRect(0, 37, 25, 7), sf::Vector2f(1, 0)));
     else
-        entities.push_back(new Torpedo(posX - 25, posY + sprite->getTextureRect().height / 2 + 3, map, hb, t, sf::IntRect(0, 44, 25, 7), -1));
+        projectiles.push_back(new Torpedo(posX - 25, posY + sprite->getTextureRect().height / 2 + 3, map, hb, t, sf::IntRect(0, 44, 25, 7), sf::Vector2f(-1, 0)));
 }
 
 void Player::setRotation()

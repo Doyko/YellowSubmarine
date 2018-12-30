@@ -44,11 +44,13 @@ void Game::loop()
             if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
                 player->changeSpeed(-ACCELERATION, 0);
             if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
-                player->shoot(entities, &textureEntity, hitboxEntity);
+                player->shoot(projectiles, &textureEntity, hitboxEntity);
 
             player->update();
+
             for(size_t i = 0; i < map->animatedTiles.size(); i++)
                 map->animatedTiles[i]->update();
+
             updateView();
 
             while(window.pollEvent(event))
@@ -66,20 +68,39 @@ void Game::loop()
             drawBackground();
             map->draw(window, view);
 
+            for(size_t i = 0; i < projectiles.size(); i++)
+            {
+                if(projectiles[i]->update())
+                {
+                    entities.push_back(new Explosion(projectiles[i]->posX - 48, projectiles[i]->posY - 48, map, hitboxEntity, &textureEntity, sf::IntRect(128, 64, 96, 96)));
+                    delete projectiles[i];
+                    projectiles.erase(projectiles.begin() + i);
+                    i--;
+                }
+                else
+                    window.draw(*projectiles[i]->sprite);
+            }
+
             for(size_t i = 0; i < entities.size(); i++)
             {
-                entities[i]->update();
-                window.draw(*entities[i]->sprite);
-            }
-            for(size_t i = 0; i < vbonus.size(); i++)
-            {
-                if(!vbonus[i]->interact(player))
+                if(entities[i]->update())
                 {
-                    vbonus[i]->~Bonus();
-                    vbonus.erase(vbonus.begin() + i);
+                    delete entities[i];
+                    entities.erase(entities.begin() + i);
+                    i--;
                 }
-                else if(vbonus[i]->draw)
-                    window.draw(*vbonus[i]->sprite);
+                else
+                    window.draw(*entities[i]->sprite);
+            }
+            for(size_t i = 0; i < bonus.size(); i++)
+            {
+                if(!bonus[i]->interact(player))
+                {
+                    delete bonus[i];
+                    bonus.erase(bonus.begin() + i);
+                }
+                else if(bonus[i]->draw)
+                    window.draw(*bonus[i]->sprite);
             }
 
             window.draw(*(player->sprite));
@@ -144,13 +165,13 @@ void Game::readEntity(const char * filename)
         switch (type)
         {
             case 'l':
-                vbonus.push_back(new LifeBonus(x, y, map, hitboxEntity, &textureEntity, sf::IntRect(0,64,32,32)));
+                bonus.push_back(new LifeBonus(x, y, map, hitboxEntity, &textureEntity, sf::IntRect(0,64,32,32)));
                 break;
             case 'm':
-                vbonus.push_back(new MineBonus(x, y, map, hitboxEntity, &textureEntity, sf::IntRect(32,64,32,32)));
+                bonus.push_back(new MineBonus(x, y, map, hitboxEntity, &textureEntity, sf::IntRect(32,64,32,64)));
                 break;
             case 's':
-                vbonus.push_back(new SpeedBonus(x, y, map, hitboxEntity, &textureEntity, sf::IntRect(64,64,32,32)));
+                bonus.push_back(new SpeedBonus(x, y, map, hitboxEntity, &textureEntity, sf::IntRect(64,64,32,32)));
                 break;
 
             default:

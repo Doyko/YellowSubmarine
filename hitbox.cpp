@@ -57,7 +57,8 @@ Hitbox::Hitbox(Hitbox& hb, int x, int y, int w, int h)
     }
 }
 
-Hitbox::Hitbox(Hitbox& hb, sf::IntRect dimention):
+Hitbox::Hitbox(Hitbox& hb, sf::IntRect dimention)
+:
     width(dimention.width),
     height(dimention.height)
 {
@@ -139,11 +140,11 @@ bool Hitbox::checkCollision(int x, int y, Map* m)
     << "\tymax = " << ymax/TILE_HEIGHT << std::endl;*/
 
 
-    for (int i = xmin/TILE_WIDTH ; i <= xmax/TILE_WIDTH ; i++)
+    for(int i = xmin/TILE_WIDTH ; i <= xmax/TILE_WIDTH ; i++)
     {
-        for (int j = ymin/TILE_HEIGHT ; j <= ymax/TILE_HEIGHT ; j++)
+        for(int j = ymin/TILE_HEIGHT ; j <= ymax/TILE_HEIGHT ; j++)
         {
-            if (m->tileMap[j][i] != NULL && m->tileMap[j][i]->tangible)
+            if(m->tileMap[j][i] != NULL && m->tileMap[j][i]->tangible)
             {
                 //std::cout << "collision map" << i << j << std::endl;
                 if(checkCollision(x, y, m->tileMap[j][i]->hitbox, i*32, j*32))

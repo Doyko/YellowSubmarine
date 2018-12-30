@@ -6,7 +6,7 @@
 #include "entity.h"
 #include "param.h"
 #include "animation.h"
-#include "torpedo.h"
+#include "projectile.h"
 
 #define MAXLIFE 3
 #define COOLDOWN 100
@@ -19,7 +19,7 @@ public:
     Player(int x, int y, Map* m, Hitbox& hb, sf::Texture *t, sf::IntRect dimention);
     bool update();
     bool move(int x, int y);
-    void shoot(std::vector<Entity*>& entities, sf::Texture *t, Hitbox& hb);
+    void shoot(std::vector<Projectile*>& projectiles, sf::Texture *t, Hitbox& hb);
     void setRotation();
     ~Player();
 
