@@ -1,16 +1,16 @@
 #include "player.h"
 #include <iostream>
 
-Player::Player(int x, int y, Map* m, Hitbox& hb, sf::Texture *t, sf::IntRect dimention)
+Player::Player(int x, int y, Map* m, sf::IntRect dimention)
 :
-    Entity(x, y, m, t, dimention),
-    MovableEntity(x, y, m, t, dimention),
-    TengibleEntity(x, y, m, hb, t, dimention),
+    Entity(x, y, m, dimention),
+    MovableEntity(x, y, m, dimention),
+    TengibleEntity(x, y, m, dimention),
     life(MAXLIFE),
     shootCD(0)
 {
-    animations[int(AnimationIndex::moveRight)] = Animation(t, sf::IntRect(0, 0, 64, 37), 4, 10);
-    animations[int(AnimationIndex::moveLeft)] = Animation(t, sf::IntRect(256, 0, 64, 37), 4, 10);
+    animations[int(AnimationIndex::moveRight)] = Animation(&Texture::textureEntity, sf::IntRect(0, 0, 64, 37), 4, 10);
+    animations[int(AnimationIndex::moveLeft)] = Animation(&Texture::textureEntity, sf::IntRect(256, 0, 64, 37), 4, 10);
     //std::cout << "constructor Player" << std::endl;
 }
 
@@ -74,7 +74,7 @@ bool Player::move(int x, int y)
     return true;
 }
 
-void Player::shoot(std::vector<Projectile*>& projectiles, sf::Texture *t, Hitbox& hb)
+void Player::shoot(std::vector<Projectile*>& projectiles)
 {
     if(shootCD != 0)
         return;
@@ -84,9 +84,9 @@ void Player::shoot(std::vector<Projectile*>& projectiles, sf::Texture *t, Hitbox
     if(rot > 180)
         rot = rot - 360;
     if(currentAnimation == AnimationIndex::moveRight)
-        projectiles.push_back(new Torpedo(posX + sprite->getTextureRect().width, posY + sprite->getTextureRect().height / 2 + 3 + rot, map, hb, t, sf::IntRect(0, 37, 25, 7), sf::Vector2f(1, 0)));
+        projectiles.push_back(new Torpedo(posX + sprite->getTextureRect().width, posY + sprite->getTextureRect().height / 2 + 3 + rot, map, sf::IntRect(0, 37, 25, 7), sf::Vector2f(1, 0)));
     else
-        projectiles.push_back(new Torpedo(posX - 25, posY + sprite->getTextureRect().height / 2 + 3, map, hb, t, sf::IntRect(0, 44, 25, 7), sf::Vector2f(-1, 0)));
+        projectiles.push_back(new Torpedo(posX - 25, posY + sprite->getTextureRect().height / 2 + 3, map, sf::IntRect(0, 44, 25, 7), sf::Vector2f(-1, 0)));
 }
 
 void Player::setRotation()

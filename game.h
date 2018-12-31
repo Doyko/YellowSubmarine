@@ -8,6 +8,7 @@
 #include "map.h"
 #include "entity.h"
 #include "bonus.h"
+#include "texture.h"
 
 class Game
 {
@@ -17,17 +18,15 @@ public:
     Game(std::string name);
     void loop();
     void updateView();
+    void draw();
     void drawBackground();
-    void readEntity(const char* filename);
+    void drawForeground();
+    void readEntity(std::string filename);
 
     sf::RenderWindow window;
     //sf::ContextSettings settings;
-    sf::Texture textureEntity;
-    sf::Texture textureTile;
-    sf::Texture textureBG;
-    Hitbox hitboxEntity;
-    Hitbox hitboxTile;
     sf::Sprite background;
+    sf::Sprite foreground;
     sf::Event event;
     sf::Clock clock;
     sf::View view;
@@ -35,5 +34,4 @@ public:
     Player* player;
     std::vector<Bonus*> bonus;
     std::vector<Projectile*> projectiles;
-    std::vector<Entity*> entities;
 };

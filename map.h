@@ -7,6 +7,7 @@
 #include "hitbox.h"
 #include "param.h"
 #include "animation.h"
+#include "texture.h"
 
 class Hitbox;
 class Animation;
@@ -16,7 +17,7 @@ class Tile
 
 public:
 
-    Tile(int tang, sf::Texture* t, Hitbox& hb, int x, int y, int w, int h);
+    Tile(int tang, int x, int y, int w, int h);
 
     int tangible;
     sf::Sprite* sprite;
@@ -28,7 +29,7 @@ class AnimatedTile : public Tile
 
 public:
 
-    AnimatedTile(int tang, sf::Texture* t, Hitbox& hb, int x, int y, int w, int h, int nbSprite, int speed);
+    AnimatedTile(int tang, int x, int y, int w, int h, int nbSprite, int speed);
     void update();
 
     Animation* animation;
@@ -39,8 +40,8 @@ class Map
 
 public:
 
-    Map(std::string name, sf::Texture* t, Hitbox& hb);
-    int** readMap(std::string name, sf::Texture* t, Hitbox& hb);
+    Map(std::string name);
+    int** readMap(std::string name);
     void draw(sf::RenderWindow &window, sf::View &view) const;
     int getIdTileRock(int** m, int i, int j) const; // 16 tiles => 0 -> 15
     int getIdTileSand(int** m, int i, int j) const; // 54 tiles => 16 -> 69

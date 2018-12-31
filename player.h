@@ -16,10 +16,10 @@ class Player : public MovableEntity, public TengibleEntity
 
 public:
 
-    Player(int x, int y, Map* m, Hitbox& hb, sf::Texture *t, sf::IntRect dimention);
+    Player(int x, int y, Map* m, sf::IntRect dimention);
     bool update();
     bool move(int x, int y);
-    void shoot(std::vector<Projectile*>& projectiles, sf::Texture *t, Hitbox& hb);
+    void shoot(std::vector<Projectile*>& projectiles);
     void setRotation();
     ~Player();
 

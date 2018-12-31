@@ -3,6 +3,7 @@
 #include <vector>
 #include "map.h"
 #include "hitbox.h"
+#include "texture.h"
 
 #define ACCELERATION 2
 #define DECCELERATION 1
@@ -12,7 +13,7 @@ class Entity
 
 public:
 
-    Entity(int x, int y, Map* m, sf::Texture *t, sf::IntRect dimention);
+    Entity(int x, int y, Map* m, sf::IntRect dimention);
     virtual ~Entity();
     virtual bool update();
 
@@ -20,6 +21,7 @@ public:
     int posY;
     sf::Sprite* sprite;
     Map* map;
+    static std::vector<Entity*> entities;
 };
 
 class MovableEntity : virtual public Entity
@@ -27,7 +29,7 @@ class MovableEntity : virtual public Entity
 
 public:
 
-    MovableEntity(int x, int y, Map* m, sf::Texture *t, sf::IntRect dimention);
+    MovableEntity(int x, int y, Map* m, sf::IntRect dimention);
 
     void changeSpeed(float x, float y);
     virtual bool move(int x, int y) = 0;
@@ -42,8 +44,7 @@ class TengibleEntity : virtual public Entity
 
 public:
 
-    TengibleEntity(int x, int y, Map* m, sf::Texture *t, sf::IntRect dimention, Hitbox* hb);
-    TengibleEntity(int x, int y, Map* m, Hitbox& hb, sf::Texture *t, sf::IntRect dimention);
+    TengibleEntity(int x, int y, Map* m, sf::IntRect dimention);
 
     virtual bool checkCollision(TengibleEntity* te);
     virtual bool checkCollision(Map* m);

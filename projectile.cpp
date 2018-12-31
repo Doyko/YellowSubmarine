@@ -1,10 +1,10 @@
 #include "projectile.h"
 
-Projectile::Projectile(int x, int y, Map* m, Hitbox& hb, sf::Texture *t, sf::IntRect dimention, sf::Vector2f speed)
+Projectile::Projectile(int x, int y, Map* m, sf::IntRect dimention, sf::Vector2f speed)
 :
-    Entity(x, y, m, t, dimention),
-    MovableEntity(x, y, m, t, dimention),
-    TengibleEntity(x, y, m, hb, t, dimention)
+    Entity(x, y, m, dimention),
+    MovableEntity(x, y, m, dimention),
+    TengibleEntity(x, y, m, dimention)
 {
     speedX = speed.x;
     speedY = speed.y;
@@ -15,16 +15,16 @@ Projectile::~Projectile()
 
 }
 
-Torpedo::Torpedo(int x, int y, Map* m, Hitbox& hb, sf::Texture *t, sf::IntRect dimention, sf::Vector2f speed)
+Torpedo::Torpedo(int x, int y, Map* m, sf::IntRect dimention, sf::Vector2f speed)
 :
-    Entity(x, y, m, t, dimention),
-    Projectile(x, y, m, hb, t, dimention, speed)
+    Entity(x, y, m, dimention),
+    Projectile(x, y, m, dimention, speed)
 {
     maxSpeed = 20;
     if(speedX > 0)
-        animation = new Animation(t, sf::IntRect(0, 37, 25, 7), 4, 10);
+        animation = new Animation(&Texture::textureEntity, sf::IntRect(0, 37, 25, 7), 4, 10);
     else
-        animation = new Animation(t, sf::IntRect(0, 44, 25, 7), 4, 10);
+        animation = new Animation(&Texture::textureEntity, sf::IntRect(0, 44, 25, 7), 4, 10);
 }
 
 bool Torpedo::update()
@@ -64,14 +64,15 @@ bool Torpedo::move(int x, int y)
 
 Torpedo::~Torpedo()
 {
+    Entity::entities.push_back(new Explosion(posX - 48, posY - 48, map, sf::IntRect(128, 64, 96, 96)));
     return;
 }
 
-Explosion::Explosion(int x, int y, Map* m, Hitbox& hb, sf::Texture *t, sf::IntRect dimention)
+Explosion::Explosion(int x, int y, Map* m, sf::IntRect dimention)
 :
-    Entity(x, y, m, t, dimention),
-    TengibleEntity(x, y, m, hb, t, dimention),
-    animation(new Animation(t, dimention, 5, 5))
+    Entity(x, y, m, dimention),
+    TengibleEntity(x, y, m, dimention),
+    animation(new Animation(&Texture::textureEntity, dimention, 5, 5))
 {}
 
 bool Explosion::update()

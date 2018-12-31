@@ -1,18 +1,18 @@
 #include "bonus.h"
 
-Bonus::Bonus(int x, int y, Map* m, Hitbox& hb, sf::Texture *t, sf::IntRect dimention)
+Bonus::Bonus(int x, int y, Map* m, sf::IntRect dimention)
 :
-    Entity(x, y, m, t, dimention),
-    TengibleEntity(x, y, m, hb, t, dimention),
+    Entity(x, y, m, dimention),
+    TengibleEntity(x, y, m, dimention),
     draw(true),
     state(0)
 {}
 
 //-----LifeBonus-----
-LifeBonus::LifeBonus(int x, int y, Map* m, Hitbox& hb, sf::Texture *t, sf::IntRect dimention)
+LifeBonus::LifeBonus(int x, int y, Map* m, sf::IntRect dimention)
 :
-    Entity(x, y, m, t, dimention),
-    Bonus(x, y, m, hb, t, dimention)
+    Entity(x, y, m, dimention),
+    Bonus(x, y, m, dimention)
 {}
 
 bool LifeBonus::interact(Player* p)
@@ -33,10 +33,10 @@ bool LifeBonus::interact(Player* p)
 }
 
 //-----MineBonus-----
-MineBonus::MineBonus(int x, int y, Map* m, Hitbox& hb, sf::Texture *t, sf::IntRect dimention)
+MineBonus::MineBonus(int x, int y, Map* m, sf::IntRect dimention)
 :
-    Entity(x, y, m, t, dimention),
-    Bonus(x, y, m, hb, t, dimention)
+    Entity(x, y, m, dimention),
+    Bonus(x, y, m, dimention)
 {}
 
 bool MineBonus::interact(Player* p)
@@ -57,10 +57,10 @@ bool MineBonus::interact(Player* p)
 }
 
 //-----SpeedBonus-----
-SpeedBonus::SpeedBonus(int x, int y, Map* m, Hitbox& hb, sf::Texture *t, sf::IntRect dimention)
+SpeedBonus::SpeedBonus(int x, int y, Map* m, sf::IntRect dimention)
 :
-    Entity(x, y, m, t, dimention),
-    Bonus(x, y, m, hb, t, dimention)
+    Entity(x, y, m, dimention),
+    Bonus(x, y, m, dimention)
 {}
 
 bool SpeedBonus::interact(Player* p)

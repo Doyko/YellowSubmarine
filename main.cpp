@@ -1,9 +1,8 @@
 #include "game.h"
-#include <vector>
-#include <iostream>
 
 int main()
 {
+    Texture::init();
     Game game("Yellow Submarine");
     game.loop();
     return 0;

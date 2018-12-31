@@ -13,7 +13,7 @@ public:
     Animation(sf::Texture *t, sf::IntRect dimension, int nbSprite, int spd);
 
     virtual bool update();
-    
+
     sf::Sprite* currentSprite;
 
 protected:

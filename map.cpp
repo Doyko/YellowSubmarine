@@ -1,16 +1,16 @@
 #include "map.h"
 
-Tile::Tile(int tang, sf::Texture* t, Hitbox& hb, int x, int y, int w, int h)
+Tile::Tile(int tang, int x, int y, int w, int h)
 :
     tangible(tang),
-    sprite(new sf::Sprite(*t, sf::IntRect(x, y, w, h))),
-    hitbox(new Hitbox(hb, x, y, w, h))
+    sprite(new sf::Sprite(Texture::textureTile, sf::IntRect(x, y, w, h))),
+    hitbox(new Hitbox(*Texture::hitboxTile, x, y, w, h))
 {}
 
-AnimatedTile::AnimatedTile(int tang, sf::Texture* t, Hitbox& hb, int x, int y, int w, int h, int nbSprite, int speed)
+AnimatedTile::AnimatedTile(int tang, int x, int y, int w, int h, int nbSprite, int speed)
 :
-    Tile(tang, t, hb, x, y, w, h),
-    animation(new Animation(t, sf::IntRect(x, y, w, h), nbSprite, speed))
+    Tile(tang, x, y, w, h),
+    animation(new Animation(&Texture::textureTile, sf::IntRect(x, y, w, h), nbSprite, speed))
 {}
 
 void AnimatedTile::update()
@@ -19,9 +19,9 @@ void AnimatedTile::update()
     sprite = animation->currentSprite;
 }
 
-Map::Map(std::string name, sf::Texture* t, Hitbox& hb)
+Map::Map(std::string name)
 {
-    int** m = readMap(name, t, hb);
+    int** m = readMap(name);
     tileMap = new Tile**[nbTileY];
     for(int i = 0; i < nbTileY; i++)
     {
@@ -55,7 +55,7 @@ Map::Map(std::string name, sf::Texture* t, Hitbox& hb)
     delete[] m;
 }
 
-int** Map::readMap(std::string name, sf::Texture* t, Hitbox& hb)
+int** Map::readMap(std::string name)
 {
     std::ifstream ifs(name);
     int nbTile;
@@ -70,7 +70,7 @@ int** Map::readMap(std::string name, sf::Texture* t, Hitbox& hb)
     for(int i = 0; i < nbTile; i++)
     {
         ifs >> tangible;
-        tileList.push_back(new Tile(tangible, t, hb, (i % 20) * TILE_WIDTH, (i / 20) * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT));
+        tileList.push_back(new Tile(tangible, (i % 20) * TILE_WIDTH, (i / 20) * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT));
     }
     int nbAnimatedTile;
     int nbSprite;
@@ -82,7 +82,7 @@ int** Map::readMap(std::string name, sf::Texture* t, Hitbox& hb)
         ifs >> tangible;
         ifs >> nbSprite;
         ifs >> speed;
-        at = new AnimatedTile(tangible, t, hb, (nbTile % 20) * TILE_WIDTH, (nbTile / 20) * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT, nbSprite, speed);
+        at = new AnimatedTile(tangible, (nbTile % 20) * TILE_WIDTH, (nbTile / 20) * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT, nbSprite, speed);
         tileList.push_back(at);
         animatedTiles.push_back(at);
         nbTile += nbSprite;
