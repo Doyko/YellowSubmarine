@@ -9,7 +9,7 @@ Entity::Entity(int x, int y, Map* m, sf::IntRect dimention)
     posY(y),
     map(m)
 {
-    sprite = new sf::Sprite(Texture::textureEntity, dimention);
+    sprite = new sf::Sprite(Data::textureEntity, dimention);
     sprite->setPosition(posX,posY);
     //std::cout << "constructor Entity" << std::endl;
 }
@@ -52,7 +52,7 @@ void MovableEntity::changeSpeed(float x, float y)
 
 TengibleEntity::TengibleEntity(int x, int y, Map* m, sf::IntRect dimention):
     Entity(x, y, m, dimention),
-    hitbox(new Hitbox(*Texture::hitboxEntity, dimention))
+    hitbox(new Hitbox(*Data::hitboxEntity, dimention))
 {
     //std::cout << "constructor TengibleEntity" << std::endl;
 }

@@ -3,7 +3,7 @@
 Game::Game(std::string name)
 :
     map(new Map("level.txt")),
-    player(new Player(128, 32, map, sf::IntRect(0,0,64,37)))
+    player(new Player(128, 32, map))
 {
     srand(time(NULL));
     window.create(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Yellow Submarine");
@@ -11,10 +11,10 @@ Game::Game(std::string name)
     view.reset(sf::FloatRect(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, WINDOW_WIDTH, WINDOW_HEIGHT));
     //settings.antialiasingLevel = 8;
 
-    Texture::init();
+    Entity::entities.push_back(new Octopus(400, 200, map));
 
-    background.setTexture(Texture::textureBG);
-    foreground.setTexture(Texture::textureFG);
+    background.setTexture(Data::textureBG);
+    foreground.setTexture(Data::textureFG);
 
     readEntity("Entity.txt");
 }
@@ -36,7 +36,7 @@ void Game::loop()
             if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
                 player->changeSpeed(-ACCELERATION, 0);
             if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
-                player->shoot(projectiles);
+                player->shoot();
 
             player->update();
 
@@ -67,16 +67,16 @@ void Game::draw()
     drawBackground();
     map->draw(window, view);
 
-    for(size_t i = 0; i < projectiles.size(); i++)
+    for(size_t i = 0; i < Projectile::projectiles.size(); i++)
     {
-        if(projectiles[i]->update())
+        if(Projectile::projectiles[i]->update())
         {
-            delete projectiles[i];
-            projectiles.erase(projectiles.begin() + i);
+            delete Projectile::projectiles[i];
+            Projectile::projectiles.erase(Projectile::projectiles.begin() + i);
             i--;
         }
         else
-            window.draw(*projectiles[i]->sprite);
+            window.draw(*Projectile::projectiles[i]->sprite);
     }
 
     for(size_t i = 0; i < Entity::entities.size(); i++)
@@ -90,6 +90,7 @@ void Game::draw()
         else
             window.draw(*Entity::entities[i]->sprite);
     }
+
     for(size_t i = 0; i < bonus.size(); i++)
     {
         if(!bonus[i]->interact(player))

@@ -5,9 +5,8 @@
 #include <fstream>
 #include <iostream>
 #include "hitbox.h"
-#include "param.h"
 #include "animation.h"
-#include "texture.h"
+#include "data.h"
 
 class Hitbox;
 class Animation;

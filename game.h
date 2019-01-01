@@ -4,11 +4,11 @@
 #include <string>
 #include <iostream>
 #include "player.h"
-#include "param.h"
 #include "map.h"
 #include "entity.h"
 #include "bonus.h"
-#include "texture.h"
+#include "data.h"
+#include "mob.h"
 
 class Game
 {
@@ -33,5 +33,4 @@ public:
     Map* map;
     Player* player;
     std::vector<Bonus*> bonus;
-    std::vector<Projectile*> projectiles;
 };

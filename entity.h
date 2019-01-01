@@ -3,7 +3,7 @@
 #include <vector>
 #include "map.h"
 #include "hitbox.h"
-#include "texture.h"
+#include "data.h"
 
 #define ACCELERATION 2
 #define DECCELERATION 1

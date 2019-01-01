@@ -4,7 +4,6 @@
 #include "hitbox.h"
 #include "map.h"
 #include "entity.h"
-#include "param.h"
 #include "animation.h"
 #include "projectile.h"
 
@@ -16,10 +15,10 @@ class Player : public MovableEntity, public TengibleEntity
 
 public:
 
-    Player(int x, int y, Map* m, sf::IntRect dimention);
+    Player(int x, int y, Map* m);
     bool update();
     bool move(int x, int y);
-    void shoot(std::vector<Projectile*>& projectiles);
+    void shoot();
     void setRotation();
     ~Player();
 

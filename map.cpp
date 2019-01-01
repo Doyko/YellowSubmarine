@@ -3,14 +3,14 @@
 Tile::Tile(int tang, int x, int y, int w, int h)
 :
     tangible(tang),
-    sprite(new sf::Sprite(Texture::textureTile, sf::IntRect(x, y, w, h))),
-    hitbox(new Hitbox(*Texture::hitboxTile, x, y, w, h))
+    sprite(new sf::Sprite(Data::textureTile, sf::IntRect(x, y, w, h))),
+    hitbox(new Hitbox(*Data::hitboxTile, x, y, w, h))
 {}
 
 AnimatedTile::AnimatedTile(int tang, int x, int y, int w, int h, int nbSprite, int speed)
 :
     Tile(tang, x, y, w, h),
-    animation(new Animation(&Texture::textureTile, sf::IntRect(x, y, w, h), nbSprite, speed))
+    animation(new Animation(&Data::textureTile, sf::IntRect(x, y, w, h), nbSprite, speed))
 {}
 
 void AnimatedTile::update()

@@ -1,16 +1,16 @@
 #include "player.h"
 #include <iostream>
 
-Player::Player(int x, int y, Map* m, sf::IntRect dimention)
+Player::Player(int x, int y, Map* m)
 :
-    Entity(x, y, m, dimention),
-    MovableEntity(x, y, m, dimention),
-    TengibleEntity(x, y, m, dimention),
+    Entity(x, y, m, Data::dimPlayer),
+    MovableEntity(x, y, m, Data::dimPlayer),
+    TengibleEntity(x, y, m, Data::dimPlayer),
     life(MAXLIFE),
     shootCD(0)
 {
-    animations[int(AnimationIndex::moveRight)] = Animation(&Texture::textureEntity, sf::IntRect(0, 0, 64, 37), 4, 10);
-    animations[int(AnimationIndex::moveLeft)] = Animation(&Texture::textureEntity, sf::IntRect(256, 0, 64, 37), 4, 10);
+    animations[int(AnimationIndex::moveRight)] = Animation(&Data::textureEntity, Data::animPlayerRight, 4, 10);
+    animations[int(AnimationIndex::moveLeft)] = Animation(&Data::textureEntity, Data::animPlayerLeft, 4, 10);
     //std::cout << "constructor Player" << std::endl;
 }
 
@@ -74,7 +74,7 @@ bool Player::move(int x, int y)
     return true;
 }
 
-void Player::shoot(std::vector<Projectile*>& projectiles)
+void Player::shoot()
 {
     if(shootCD != 0)
         return;
@@ -84,9 +84,9 @@ void Player::shoot(std::vector<Projectile*>& projectiles)
     if(rot > 180)
         rot = rot - 360;
     if(currentAnimation == AnimationIndex::moveRight)
-        projectiles.push_back(new Torpedo(posX + sprite->getTextureRect().width, posY + sprite->getTextureRect().height / 2 + 3 + rot, map, sf::IntRect(0, 37, 25, 7), sf::Vector2f(1, 0)));
+        Projectile::projectiles.push_back(new Torpedo(posX + sprite->getTextureRect().width, posY + sprite->getTextureRect().height / 2 + 3 + rot, map, Data::dimTorpedoRight, sf::Vector2f(1, 0)));
     else
-        projectiles.push_back(new Torpedo(posX - 25, posY + sprite->getTextureRect().height / 2 + 3, map, sf::IntRect(0, 44, 25, 7), sf::Vector2f(-1, 0)));
+        Projectile::projectiles.push_back(new Torpedo(posX - 25, posY + sprite->getTextureRect().height / 2 + 3, map, Data::dimTorpedoLeft, sf::Vector2f(-1, 0)));
 }
 
 void Player::setRotation()
