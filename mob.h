@@ -10,7 +10,7 @@ public:
 
     enum stateEnum{up, down};
 
-    Octopus(int x, int y, Map* m);
+    Octopus(int x, int y);
     bool update();
     bool move(int x, int y);
     ~Octopus();
@@ -19,4 +19,8 @@ public:
     int tick;
     sf::Sprite* spriteUp;
     sf::Sprite* spriteDown;
+
+    static sf::IntRect dimension;
+    static sf::IntRect dimSpriteUp;
+    static sf::IntRect dimSpriteDown;
 };

@@ -3,15 +3,17 @@
 Game::Game(std::string name)
 :
     map(new Map("level.txt")),
-    player(new Player(128, 32, map))
+    player(new Player(128, 32))
 {
     srand(time(NULL));
+    Data::initMap(map);
+
     window.create(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Yellow Submarine");
     window.setVerticalSyncEnabled(true);
     view.reset(sf::FloatRect(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, WINDOW_WIDTH, WINDOW_HEIGHT));
     //settings.antialiasingLevel = 8;
 
-    Entity::entities.push_back(new Octopus(400, 200, map));
+    Entity::entities.push_back(new Octopus(400, 200));
 
     background.setTexture(Data::textureBG);
     foreground.setTexture(Data::textureFG);
@@ -179,13 +181,13 @@ void Game::readEntity(std::string filename)
         switch (type)
         {
             case 'l':
-                bonus.push_back(new LifeBonus(x, y, map, sf::IntRect(0,64,32,32)));
+                bonus.push_back(new LifeBonus(x, y, sf::IntRect(0,64,32,32)));
                 break;
             case 'm':
-                bonus.push_back(new MineBonus(x, y, map, sf::IntRect(32,64,32,64)));
+                bonus.push_back(new MineBonus(x, y, sf::IntRect(32,64,32,64)));
                 break;
             case 's':
-                bonus.push_back(new SpeedBonus(x, y, map, sf::IntRect(64,64,32,32)));
+                bonus.push_back(new SpeedBonus(x, y, sf::IntRect(64,64,32,32)));
                 break;
 
             default:

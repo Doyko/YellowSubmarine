@@ -2,11 +2,11 @@
 
 std::vector<Projectile*> Projectile::projectiles;
 
-Projectile::Projectile(int x, int y, Map* m, sf::IntRect dimention, sf::Vector2f speed)
+Projectile::Projectile(int x, int y, sf::IntRect dimention, sf::Vector2f speed)
 :
-    Entity(x, y, m, dimention),
-    MovableEntity(x, y, m, dimention),
-    TengibleEntity(x, y, m, dimention)
+    Entity(x, y, dimention),
+    MovableEntity(x, y, dimention),
+    TengibleEntity(x, y, dimention)
 {
     speedX = speed.x;
     speedY = speed.y;
@@ -23,14 +23,14 @@ bool Projectile::move(int x, int y)
     int moveY = y;
     bool flag = false;
 
-    while(moveX != 0 && hitbox->checkCollision(posX + moveX, posY, map))
+    while(moveX != 0 && hitbox->checkCollision(posX + moveX, posY))
     {
         moveX > 0 ? moveX-- : moveX++;
         flag = true;
     }
     posX = posX + moveX;
 
-    while(moveY != 0 && hitbox->checkCollision(posX, posY + moveY, map))
+    while(moveY != 0 && hitbox->checkCollision(posX, posY + moveY))
     {
         moveY > 0 ? moveY-- : moveY++;
         flag = true;
@@ -46,16 +46,23 @@ Projectile::~Projectile()
 
 }
 
-Torpedo::Torpedo(int x, int y, Map* m, sf::IntRect dimention, sf::Vector2f speed)
+sf::IntRect Torpedo::dimRight = sf::IntRect(0, 37, 25, 7);
+sf::IntRect Torpedo::dimLeft = sf::IntRect(0, 44, 25, 7);
+sf::Vector2f Torpedo::speedRight = sf::Vector2f(1, 0);
+sf::Vector2f Torpedo::speedLeft = sf::Vector2f(-1, 0);
+int Torpedo::nbSprite = 4;
+int Torpedo::animSpeed = 10;
+
+Torpedo::Torpedo(int x, int y, sf::IntRect dimention, sf::Vector2f speed)
 :
-    Entity(x, y, m, dimention),
-    Projectile(x, y, m, dimention, speed)
+    Entity(x, y, dimention),
+    Projectile(x, y, dimention, speed)
 {
     maxSpeed = 20;
     if(speedX > 0)
-        animation = new Animation(&Data::textureEntity, Data::dimTorpedoRight, 4, 10);
+        animation = new Animation(&Data::textureEntity, Torpedo::dimRight, Torpedo::nbSprite, Torpedo::animSpeed);
     else
-        animation = new Animation(&Data::textureEntity, Data::dimTorpedoLeft, 4, 10);
+        animation = new Animation(&Data::textureEntity, Torpedo::dimLeft, Torpedo::nbSprite, Torpedo::animSpeed);
 }
 
 bool Torpedo::update()
@@ -71,15 +78,22 @@ bool Torpedo::update()
 
 Torpedo::~Torpedo()
 {
-    Entity::entities.push_back(new Explosion(posX - 48, posY - 48, map));
+    if(speedX > 0)
+        Entity::entities.push_back(new Explosion(posX - 41, posY - 48));
+    else
+        Entity::entities.push_back(new Explosion(posX - 41, posY - 48));
     return;
 }
 
-Explosion::Explosion(int x, int y, Map* m)
+sf::IntRect Explosion::dimension = sf::IntRect(128, 64, 96, 96);
+int Explosion::nbSprite = 5;
+int Explosion::animSpeed = 5;
+
+Explosion::Explosion(int x, int y)
 :
-    Entity(x, y, m, Data::dimExplosion),
-    TengibleEntity(x, y, m, Data::dimExplosion),
-    animation(new Animation(&Data::textureEntity, Data::dimExplosion, 5, 5))
+    Entity(x, y, Explosion::dimension),
+    TengibleEntity(x, y, Explosion::dimension),
+    animation(new Animation(&Data::textureEntity, Explosion::dimension, Explosion::nbSprite, Explosion::animSpeed))
 {}
 
 bool Explosion::update()
@@ -96,10 +110,13 @@ Explosion::~Explosion()
     return;
 }
 
-Ink::Ink(int x, int y, Map* m, sf::Vector2f speed)
+sf::IntRect Ink::dimension = sf::IntRect(64, 96, 32, 32);
+sf::Vector2f Ink::speed = sf::Vector2f(0, 2);
+
+Ink::Ink(int x, int y)
 :
-    Entity(x, y, m, Data::dimInk),
-    Projectile(x, y, m, Data::dimInk, speed)
+    Entity(x, y, Ink::dimension),
+    Projectile(x, y, Ink::dimension, Ink::speed)
 {}
 
 Ink::~Ink()

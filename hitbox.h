@@ -2,7 +2,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include "map.h"
+#include "data.h"
 
 class Map;
 class Tile;
@@ -22,7 +22,7 @@ public:
     int getHeight();
     char operator()(int x, int y);
     virtual bool checkCollision(int x, int y, Hitbox* hb, int hbX, int hbY);
-    virtual bool checkCollision(int x, int y, Map* m); //return true if there is collision
+    virtual bool checkCollision(int x, int y); //return true if there is collision
     virtual bool checkCollision(int x, int y, Tile* t, int xTile, int yTile); //return true if there is collision
 
 private :

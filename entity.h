@@ -13,14 +13,13 @@ class Entity
 
 public:
 
-    Entity(int x, int y, Map* m, sf::IntRect dimention);
+    Entity(int x, int y, sf::IntRect dimention);
     virtual ~Entity();
     virtual bool update();
 
     int posX;
     int posY;
     sf::Sprite* sprite;
-    Map* map;
     static std::vector<Entity*> entities;
 };
 
@@ -29,7 +28,7 @@ class MovableEntity : virtual public Entity
 
 public:
 
-    MovableEntity(int x, int y, Map* m, sf::IntRect dimention);
+    MovableEntity(int x, int y, sf::IntRect dimention);
 
     void changeSpeed(float x, float y);
     virtual bool move(int x, int y) = 0;
@@ -44,10 +43,10 @@ class TengibleEntity : virtual public Entity
 
 public:
 
-    TengibleEntity(int x, int y, Map* m, sf::IntRect dimention);
+    TengibleEntity(int x, int y, sf::IntRect dimention);
 
     virtual bool checkCollision(TengibleEntity* te);
-    virtual bool checkCollision(Map* m);
+    virtual bool checkCollision();
 
     Hitbox* hitbox;
 };

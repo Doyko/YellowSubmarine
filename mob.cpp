@@ -1,15 +1,19 @@
 #include "mob.h"
 
-Octopus::Octopus(int x, int y, Map* m)
+sf::IntRect Octopus::dimension = sf::IntRect(96, 64, 32, 32);
+sf::IntRect Octopus::dimSpriteUp = sf::IntRect(96, 96, 32, 32);
+sf::IntRect Octopus::dimSpriteDown = sf::IntRect(96, 64, 32, 32);
+
+Octopus::Octopus(int x, int y)
 :
-    Entity(x, y, m, Data::dimOctopus),
-    MovableEntity(x, y, m, Data::dimOctopus),
-    TengibleEntity(x, y, m, Data::dimOctopus),
+    Entity(x, y, Octopus::dimension),
+    MovableEntity(x, y, Octopus::dimension),
+    TengibleEntity(x, y, Octopus::dimension),
     state(down),
     tick(100)
 {
-    spriteUp = new sf::Sprite(Data::textureEntity, Data::spriteOctopusUp);
-    spriteDown = new sf::Sprite(Data::textureEntity, Data::spriteOctopusDown);
+    spriteUp = new sf::Sprite(Data::textureEntity, Octopus::dimSpriteUp);
+    spriteDown = new sf::Sprite(Data::textureEntity, Octopus::dimSpriteDown);
     sprite = spriteDown;
     speedY = 1;
 }
@@ -42,7 +46,7 @@ bool Octopus::update()
         else
         {
             if(tick > 25)
-                Projectile::projectiles.push_back(new Ink(posX, posY + 20, map, sf::Vector2f(0, 1)));
+                Projectile::projectiles.push_back(new Ink(posX, posY + 20));
             if(tick == 25)
                 speedY = -4;
             if(tick == 10)
@@ -60,14 +64,14 @@ bool Octopus::move(int x, int y)
     int moveY = y;
     bool flag = false;
 
-    while(moveX != 0 && hitbox->checkCollision(posX + moveX, posY, map))
+    while(moveX != 0 && hitbox->checkCollision(posX + moveX, posY))
     {
         moveX > 0 ? moveX-- : moveX++;
         flag = true;
     }
     posX = posX + moveX;
 
-    while(moveY != 0 && hitbox->checkCollision(posX, posY + moveY, map))
+    while(moveY != 0 && hitbox->checkCollision(posX, posY + moveY))
     {
         moveY > 0 ? moveY-- : moveY++;
         flag = true;

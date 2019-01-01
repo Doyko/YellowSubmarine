@@ -3,11 +3,10 @@
 
 std::vector<Entity*> Entity::entities;
 
-Entity::Entity(int x, int y, Map* m, sf::IntRect dimention)
+Entity::Entity(int x, int y, sf::IntRect dimention)
 :
     posX(x),
-    posY(y),
-    map(m)
+    posY(y)
 {
     sprite = new sf::Sprite(Data::textureEntity, dimention);
     sprite->setPosition(posX,posY);
@@ -24,9 +23,9 @@ bool Entity::update()
     return true;
 }
 
-MovableEntity::MovableEntity(int x, int y, Map* m, sf::IntRect dimention)
+MovableEntity::MovableEntity(int x, int y, sf::IntRect dimention)
 :
-    Entity(x, y, m, dimention),
+    Entity(x, y, dimention),
     speedX(0),
     speedY(0),
     maxSpeed(20)
@@ -50,8 +49,8 @@ void MovableEntity::changeSpeed(float x, float y)
         speedY = -maxSpeed;
 }
 
-TengibleEntity::TengibleEntity(int x, int y, Map* m, sf::IntRect dimention):
-    Entity(x, y, m, dimention),
+TengibleEntity::TengibleEntity(int x, int y, sf::IntRect dimention):
+    Entity(x, y, dimention),
     hitbox(new Hitbox(*Data::hitboxEntity, dimention))
 {
     //std::cout << "constructor TengibleEntity" << std::endl;
@@ -62,7 +61,7 @@ bool TengibleEntity::checkCollision(TengibleEntity* te)
     return hitbox->checkCollision(posX, posY, te->hitbox, te->posX, te->posY);
 }
 
-bool TengibleEntity::checkCollision(Map* m)
+bool TengibleEntity::checkCollision()
 {
-    return hitbox->checkCollision(posX, posY, m);
+    return hitbox->checkCollision(posX, posY);
 }

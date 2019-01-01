@@ -126,7 +126,7 @@ bool Hitbox::checkCollision(int x, int y, Hitbox* hb, int hbX, int hbY)
     return false;
 }
 
-bool Hitbox::checkCollision(int x, int y, Map* m)
+bool Hitbox::checkCollision(int x, int y)
 {
     //std::cout << "check collision" << std::endl;
     int xmin = x;
@@ -144,10 +144,10 @@ bool Hitbox::checkCollision(int x, int y, Map* m)
     {
         for(int j = ymin/TILE_HEIGHT ; j <= ymax/TILE_HEIGHT ; j++)
         {
-            if(m->tileMap[j][i] != NULL && m->tileMap[j][i]->tangible)
+            if(Data::map->tileMap[j][i] != NULL && Data::map->tileMap[j][i]->tangible)
             {
                 //std::cout << "collision map" << i << j << std::endl;
-                if(checkCollision(x, y, m->tileMap[j][i]->hitbox, i*32, j*32))
+                if(checkCollision(x, y, Data::map->tileMap[j][i]->hitbox, i*32, j*32))
                 {
                     return true;
                 }

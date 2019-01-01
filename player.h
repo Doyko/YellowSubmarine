@@ -15,7 +15,7 @@ class Player : public MovableEntity, public TengibleEntity
 
 public:
 
-    Player(int x, int y, Map* m);
+    Player(int x, int y);
     bool update();
     bool move(int x, int y);
     void shoot();
@@ -33,4 +33,10 @@ public:
 
     int life;
     int shootCD;
+
+    static sf::IntRect dimension;
+    static sf::IntRect animRight;
+    static sf::IntRect animLeft;
+    static int nbSprite;
+    static int animSpeed;
 };
