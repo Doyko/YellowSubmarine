@@ -4,9 +4,9 @@
 #include <string>
 #include <fstream>
 #include <iostream>
+#include "data.h"
 #include "hitbox.h"
 #include "animation.h"
-#include "data.h"
 
 class Hitbox;
 class Animation;

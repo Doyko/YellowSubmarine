@@ -20,6 +20,11 @@ void Data::initMap(Map* m)
     map = m;
 }
 
+void Data::initPlayer(Player* p)
+{
+    player = p;
+}
+
 sf::Texture Data::textureEntity;
 sf::Texture Data::textureTile;
 sf::Texture Data::textureBG;
@@ -27,5 +32,11 @@ sf::Texture Data::textureFG;
 
 Hitbox* Data::hitboxEntity = new Hitbox("hitbox/hitboxEntity.pbm");
 Hitbox* Data::hitboxTile = new Hitbox("hitbox/hitboxTile.pbm");
+
+std::vector<Mob*> Data::mobs;
+std::vector<Projectile*> Data::projectiles;
+std::vector<Bonus*> Data::bonus;
+
+Player* Data::player;
 
 Map* Data::map;

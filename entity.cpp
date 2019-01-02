@@ -1,21 +1,22 @@
 #include "entity.h"
 #include <iostream>
 
-std::vector<Entity*> Entity::entities;
-
-Entity::Entity(int x, int y, sf::IntRect dimention)
+Entity::Entity(int x, int y, sf::IntRect dimension)
 :
     posX(x),
     posY(y)
 {
-    sprite = new sf::Sprite(Data::textureEntity, dimention);
+    sprite = new sf::Sprite(Data::textureEntity, dimension);
     sprite->setPosition(posX,posY);
     //std::cout << "constructor Entity" << std::endl;
 }
 
 Entity::~Entity()
 {
-    delete sprite;
+    if(sprite != NULL)
+    {
+        delete sprite;
+    }
 }
 
 bool Entity::update()
@@ -23,9 +24,9 @@ bool Entity::update()
     return true;
 }
 
-MovableEntity::MovableEntity(int x, int y, sf::IntRect dimention)
+MovableEntity::MovableEntity(int x, int y, sf::IntRect dimension)
 :
-    Entity(x, y, dimention),
+    Entity(x, y, dimension),
     speedX(0),
     speedY(0),
     maxSpeed(20)
@@ -49,9 +50,9 @@ void MovableEntity::changeSpeed(float x, float y)
         speedY = -maxSpeed;
 }
 
-TengibleEntity::TengibleEntity(int x, int y, sf::IntRect dimention):
-    Entity(x, y, dimention),
-    hitbox(new Hitbox(*Data::hitboxEntity, dimention))
+TengibleEntity::TengibleEntity(int x, int y, sf::IntRect dimension):
+    Entity(x, y, dimension),
+    hitbox(new Hitbox(*Data::hitboxEntity, dimension))
 {
     //std::cout << "constructor TengibleEntity" << std::endl;
 }

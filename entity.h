@@ -1,26 +1,25 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <vector>
-#include "map.h"
-#include "hitbox.h"
 #include "data.h"
 
 #define ACCELERATION 2
 #define DECCELERATION 1
+
+class Hitbox;
 
 class Entity
 {
 
 public:
 
-    Entity(int x, int y, sf::IntRect dimention);
+    Entity(int x, int y, sf::IntRect dimension);
     virtual ~Entity();
     virtual bool update();
 
     int posX;
     int posY;
     sf::Sprite* sprite;
-    static std::vector<Entity*> entities;
 };
 
 class MovableEntity : virtual public Entity
@@ -28,7 +27,7 @@ class MovableEntity : virtual public Entity
 
 public:
 
-    MovableEntity(int x, int y, sf::IntRect dimention);
+    MovableEntity(int x, int y, sf::IntRect dimension);
 
     void changeSpeed(float x, float y);
     virtual bool move(int x, int y) = 0;
@@ -43,7 +42,7 @@ class TengibleEntity : virtual public Entity
 
 public:
 
-    TengibleEntity(int x, int y, sf::IntRect dimention);
+    TengibleEntity(int x, int y, sf::IntRect dimension);
 
     virtual bool checkCollision(TengibleEntity* te);
     virtual bool checkCollision();

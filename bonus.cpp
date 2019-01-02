@@ -1,18 +1,19 @@
 #include "bonus.h"
 
-Bonus::Bonus(int x, int y, sf::IntRect dimention)
+Bonus::Bonus(int x, int y, sf::IntRect dimension)
 :
-    Entity(x, y, dimention),
-    TengibleEntity(x, y, dimention),
+    Entity(x, y, dimension),
+    TengibleEntity(x, y, dimension),
     draw(true),
     state(0)
 {}
 
 //-----LifeBonus-----
-LifeBonus::LifeBonus(int x, int y, sf::IntRect dimention)
+sf::IntRect LifeBonus::dimension = sf::IntRect(0,64,32,32);
+LifeBonus::LifeBonus(int x, int y)
 :
-    Entity(x, y, dimention),
-    Bonus(x, y, dimention)
+    Entity(x, y, dimension),
+    Bonus(x, y, dimension)
 {}
 
 bool LifeBonus::interact(Player* p)
@@ -23,31 +24,10 @@ bool LifeBonus::interact(Player* p)
             if(this->checkCollision(p) && p->life < MAXLIFE)
             {
                 state = 1;
-                p->life++;
-                std::cout << "life : " << p->life << std::endl;
-            }
-            return true;
-        default:
-            return false;
-    }
-}
-
-//-----MineBonus-----
-MineBonus::MineBonus(int x, int y, sf::IntRect dimention)
-:
-    Entity(x, y, dimention),
-    Bonus(x, y, dimention)
-{}
-
-bool MineBonus::interact(Player* p)
-{
-    switch (state)
-    {
-        case 0:
-            if(this->checkCollision(p))
-            {
-                state = 1;
-                p->life--;
+                p->life += 25;
+                if (p->life > MAXLIFE)
+                    p->life = MAXLIFE;
+                    
                 std::cout << "life : " << p->life << std::endl;
             }
             return true;
@@ -57,10 +37,11 @@ bool MineBonus::interact(Player* p)
 }
 
 //-----SpeedBonus-----
-SpeedBonus::SpeedBonus(int x, int y, sf::IntRect dimention)
+sf::IntRect SpeedBonus::dimension = sf::IntRect(64,64,32,32);
+SpeedBonus::SpeedBonus(int x, int y)
 :
-    Entity(x, y, dimention),
-    Bonus(x, y, dimention)
+    Entity(x, y, dimension),
+    Bonus(x, y, dimension)
 {}
 
 bool SpeedBonus::interact(Player* p)

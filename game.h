@@ -3,12 +3,15 @@
 #include <cstdlib>
 #include <string>
 #include <iostream>
+#include "data.h"
 #include "player.h"
 #include "map.h"
 #include "entity.h"
-#include "bonus.h"
-#include "data.h"
 #include "mob.h"
+#include "projectile.h"
+#include "bonus.h"
+
+class Player;
 
 class Game
 {
@@ -17,6 +20,7 @@ public:
 
     Game(std::string name);
     void loop();
+    void update();
     void updateView();
     void draw();
     void drawBackground();
@@ -32,5 +36,4 @@ public:
     sf::View view;
     Map* map;
     Player* player;
-    std::vector<Bonus*> bonus;
 };

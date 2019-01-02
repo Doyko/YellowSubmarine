@@ -1,9 +1,19 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-#include "entity.h"
+//#include "entity.h"
 #include "data.h"
 #include "projectile.h"
-class Octopus : public TengibleEntity, public MovableEntity
+#include "game.h"
+
+class Mob : public MovableEntity, public TengibleEntity
+{
+public :
+    Mob(int x, int y, sf::IntRect dimension);
+    bool update();
+    bool move(int x, int y);
+};
+
+class Octopus : public Mob
 {
 
 public:
@@ -12,7 +22,6 @@ public:
 
     Octopus(int x, int y);
     bool update();
-    bool move(int x, int y);
     ~Octopus();
 
     stateEnum state;
@@ -23,4 +32,14 @@ public:
     static sf::IntRect dimension;
     static sf::IntRect dimSpriteUp;
     static sf::IntRect dimSpriteDown;
+};
+
+class Mine : public Mob
+{
+public:
+    Mine(int x, int y);
+    ~Mine();
+    bool update();
+
+    static sf::IntRect dimension;
 };

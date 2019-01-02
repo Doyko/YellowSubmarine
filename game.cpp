@@ -7,13 +7,12 @@ Game::Game(std::string name)
 {
     srand(time(NULL));
     Data::initMap(map);
+    Data::initPlayer(player);
 
     window.create(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Yellow Submarine");
     window.setVerticalSyncEnabled(true);
     view.reset(sf::FloatRect(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, WINDOW_WIDTH, WINDOW_HEIGHT));
     //settings.antialiasingLevel = 8;
-
-    Entity::entities.push_back(new Octopus(400, 200));
 
     background.setTexture(Data::textureBG);
     foreground.setTexture(Data::textureFG);
@@ -40,13 +39,6 @@ void Game::loop()
             if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
                 player->shoot();
 
-            player->update();
-
-            for(size_t i = 0; i < map->animatedTiles.size(); i++)
-                map->animatedTiles[i]->update();
-
-            updateView();
-
             while(window.pollEvent(event))
             {
                 switch(event.type)
@@ -58,7 +50,48 @@ void Game::loop()
                         break;
                 }
             }
+            update();
             draw();
+        }
+    }
+}
+
+void Game::update()
+{
+    player->update();
+
+    for(size_t i = 0; i < map->animatedTiles.size(); i++)
+        map->animatedTiles[i]->update();
+
+    updateView();
+
+    for(size_t i = 0; i < Data::projectiles.size(); i++)
+    {
+        if(Data::projectiles[i]->update())
+        {
+            delete Data::projectiles[i];
+            Data::projectiles.erase(Data::projectiles.begin() + i);
+            i--;
+        }
+    }
+
+    for(size_t i = 0; i < Data::mobs.size(); i++)
+    {
+        if(Data::mobs[i]->update())
+        {
+            delete Data::mobs[i];
+            Data::mobs.erase(Data::mobs.begin() + i);
+            i--;
+        }
+    }
+
+    for(size_t i = 0; i < Data::bonus.size(); i++)
+    {
+        if(!Data::bonus[i]->interact(player))
+        {
+            delete Data::bonus[i];
+            Data::bonus.erase(Data::bonus.begin() + i);
+            i--;
         }
     }
 }
@@ -69,39 +102,20 @@ void Game::draw()
     drawBackground();
     map->draw(window, view);
 
-    for(size_t i = 0; i < Projectile::projectiles.size(); i++)
+    for(size_t i = 0; i < Data::projectiles.size(); i++)
     {
-        if(Projectile::projectiles[i]->update())
-        {
-            delete Projectile::projectiles[i];
-            Projectile::projectiles.erase(Projectile::projectiles.begin() + i);
-            i--;
-        }
-        else
-            window.draw(*Projectile::projectiles[i]->sprite);
+        window.draw(*Data::projectiles[i]->sprite);
     }
 
-    for(size_t i = 0; i < Entity::entities.size(); i++)
+    for(size_t i = 0; i < Data::mobs.size(); i++)
     {
-        if(Entity::entities[i]->update())
-        {
-            delete Entity::entities[i];
-            Entity::entities.erase(Entity::entities.begin() + i);
-            i--;
-        }
-        else
-            window.draw(*Entity::entities[i]->sprite);
+        window.draw(*Data::mobs[i]->sprite);
     }
 
-    for(size_t i = 0; i < bonus.size(); i++)
+    for(size_t i = 0; i < Data::bonus.size(); i++)
     {
-        if(!bonus[i]->interact(player))
-        {
-            delete bonus[i];
-            bonus.erase(bonus.begin() + i);
-        }
-        else if(bonus[i]->draw)
-            window.draw(*bonus[i]->sprite);
+        if(Data::bonus[i]->draw)
+            window.draw(*Data::bonus[i]->sprite);
     }
 
     window.draw(*(player->sprite));
@@ -181,15 +195,17 @@ void Game::readEntity(std::string filename)
         switch (type)
         {
             case 'l':
-                bonus.push_back(new LifeBonus(x, y, sf::IntRect(0,64,32,32)));
+                Data::bonus.push_back(new LifeBonus(x, y));
                 break;
             case 'm':
-                bonus.push_back(new MineBonus(x, y, sf::IntRect(32,64,32,64)));
+                Data::mobs.push_back(new Mine(x, y));
                 break;
             case 's':
-                bonus.push_back(new SpeedBonus(x, y, sf::IntRect(64,64,32,32)));
+                Data::bonus.push_back(new SpeedBonus(x, y));
                 break;
-
+            case 'o':
+                Data::mobs.push_back(new Octopus(x, y));
+                break;
             default:
                 break;
         }

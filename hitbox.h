@@ -15,7 +15,7 @@ public:
     Hitbox(int w, int h, char** t);
     Hitbox(const char* fileName);
     Hitbox(Hitbox& hb, int x, int y, int w, int h);
-    Hitbox(Hitbox& hb, sf::IntRect dimention);
+    Hitbox(Hitbox& hb, sf::IntRect dimension);
     ~Hitbox();
 
     int getWidth();

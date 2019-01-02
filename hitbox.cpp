@@ -57,17 +57,17 @@ Hitbox::Hitbox(Hitbox& hb, int x, int y, int w, int h)
     }
 }
 
-Hitbox::Hitbox(Hitbox& hb, sf::IntRect dimention)
+Hitbox::Hitbox(Hitbox& hb, sf::IntRect dimension)
 :
-    width(dimention.width),
-    height(dimention.height)
+    width(dimension.width),
+    height(dimension.height)
 {
     tab = new char*[height];
 
     for(int i = 0 ; i < height ; i++){
         tab[i] = new char[width];
         for(int j = 0 ; j < width ; j++){
-            tab[i][j] = hb(j + dimention.left, i + dimention.top);
+            tab[i][j] = hb(j + dimension.left, i + dimension.top);
             //std::cout << (char)(tab[y][x] -'0' +' ');
         }
     }
