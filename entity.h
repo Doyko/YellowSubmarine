@@ -37,14 +37,14 @@ public:
     int maxSpeed;
 };
 
-class TengibleEntity : virtual public Entity
+class TangibleEntity : virtual public Entity
 {
 
 public:
 
-    TengibleEntity(int x, int y, sf::IntRect dimension);
+    TangibleEntity(int x, int y, sf::IntRect dimension);
 
-    virtual bool checkCollision(TengibleEntity* te);
+    virtual bool checkCollision(TangibleEntity* te);
     virtual bool checkCollision();
 
     Hitbox* hitbox;

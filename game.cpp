@@ -65,22 +65,32 @@ void Game::update()
 
     updateView();
 
-    for(size_t i = 0; i < Data::projectiles.size(); i++)
+    for(size_t i = 0; i < Data::effects.size(); i++)
     {
-        if(Data::projectiles[i]->update())
+        if(Data::effects[i]->update())
         {
-            delete Data::projectiles[i];
-            Data::projectiles.erase(Data::projectiles.begin() + i);
+            delete Data::effects[i];
+            Data::effects.erase(Data::effects.begin() + i);
             i--;
         }
     }
 
-    for(size_t i = 0; i < Data::mobs.size(); i++)
+    for(size_t i = 0; i < Data::explosable.size(); i++)
     {
-        if(Data::mobs[i]->update())
+        if(Data::explosable[i]->update())
         {
-            delete Data::mobs[i];
-            Data::mobs.erase(Data::mobs.begin() + i);
+            delete Data::explosable[i];
+            Data::explosable.erase(Data::explosable.begin() + i);
+            i--;
+        }
+    }
+
+    for(size_t i = 0; i < Data::entities.size(); i++)
+    {
+        if(Data::entities[i]->update())
+        {
+            delete Data::entities[i];
+            Data::entities.erase(Data::entities.begin() + i);
             i--;
         }
     }
@@ -102,14 +112,19 @@ void Game::draw()
     drawBackground();
     map->draw(window, view);
 
-    for(size_t i = 0; i < Data::projectiles.size(); i++)
+    for(size_t i = 0; i < Data::effects.size(); i++)
     {
-        window.draw(*Data::projectiles[i]->sprite);
+        window.draw(*Data::effects[i]->sprite);
     }
 
-    for(size_t i = 0; i < Data::mobs.size(); i++)
+    for(size_t i = 0; i < Data::explosable.size(); i++)
     {
-        window.draw(*Data::mobs[i]->sprite);
+        window.draw(*Data::explosable[i]->sprite);
+    }
+
+    for(size_t i = 0; i < Data::entities.size(); i++)
+    {
+        window.draw(*Data::entities[i]->sprite);
     }
 
     for(size_t i = 0; i < Data::bonus.size(); i++)
@@ -151,7 +166,7 @@ void Game::updateView()
 void Game::drawBackground()
 {
     float y = float(view.getCenter().y - WINDOW_HEIGHT / 2) / (map->nbTileY * TILE_HEIGHT - WINDOW_HEIGHT);
-    float x = float(view.getCenter().x - WINDOW_HEIGHT / 2) / (map->nbTileY * TILE_HEIGHT - WINDOW_HEIGHT);
+    float x = - float(view.getCenter().x - WINDOW_HEIGHT / 2) / (map->nbTileY * TILE_HEIGHT - WINDOW_HEIGHT);
     background.setPosition(x * (map->nbTileY * TILE_HEIGHT - background.getTextureRect().height) - background.getTextureRect().width, y * (map->nbTileY * TILE_HEIGHT - background.getTextureRect().height));
 
     while(background.getPosition().x + background.getTextureRect().width < view.getCenter().x - WINDOW_WIDTH / 2)
@@ -198,13 +213,16 @@ void Game::readEntity(std::string filename)
                 Data::bonus.push_back(new LifeBonus(x, y));
                 break;
             case 'm':
-                Data::mobs.push_back(new Mine(x, y));
+                Data::entities.push_back(new Mine(x, y));
                 break;
             case 's':
                 Data::bonus.push_back(new SpeedBonus(x, y));
                 break;
             case 'o':
-                Data::mobs.push_back(new Octopus(x, y));
+                Data::entities.push_back(new Octopus(x, y));
+                break;
+            case 'b':
+                Data::explosable.push_back(new Barricade(x, y));
                 break;
             default:
                 break;

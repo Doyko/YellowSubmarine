@@ -7,10 +7,10 @@
 #include "animation.h"
 #include "projectile.h"
 
-#define MAXLIFE 100
-#define COOLDOWN 20
+#define MAXLIFE 3
+#define COOLDOWN 100
 
-class Player : public MovableEntity, public TengibleEntity
+class Player : public MovableEntity, public TangibleEntity
 {
 
 public:

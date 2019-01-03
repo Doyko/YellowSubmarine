@@ -33,8 +33,9 @@ sf::Texture Data::textureFG;
 Hitbox* Data::hitboxEntity = new Hitbox("hitbox/hitboxEntity.pbm");
 Hitbox* Data::hitboxTile = new Hitbox("hitbox/hitboxTile.pbm");
 
-std::vector<Mob*> Data::mobs;
-std::vector<Projectile*> Data::projectiles;
+std::vector<Entity*> Data::effects;
+std::vector<TangibleEntity*> Data::explosable;
+std::vector<TangibleEntity*> Data::entities;
 std::vector<Bonus*> Data::bonus;
 
 Player* Data::player;

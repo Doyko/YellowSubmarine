@@ -4,9 +4,9 @@
 #include "map.h"
 #include "animation.h"
 #include "mob.h"
+#include "effect.h"
 
-
-class Projectile : public MovableEntity, public TengibleEntity
+class Projectile : public MovableEntity, public TangibleEntity
 {
 
 public:
@@ -27,6 +27,7 @@ public:
     ~Torpedo();
 
     Animation* animation;
+    int tick;
 
     static sf::IntRect dimRight;
     static sf::IntRect dimLeft;
@@ -48,21 +49,4 @@ public :
 
     static sf::IntRect dimension;
     static sf::Vector2f speed;
-};
-
-class Explosion : public Projectile
-{
-
-public:
-
-    Explosion(int x, int y);
-    bool update();
-    ~Explosion();
-
-    Animation* animation;
-
-    static sf::IntRect dimension;
-    static sf::Vector2f speed;
-    static int nbSprite;
-    static int animSpeed;
 };

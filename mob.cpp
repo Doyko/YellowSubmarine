@@ -2,9 +2,9 @@
 
 Mob::Mob(int x, int y, sf::IntRect dimension)
 :
-    Entity(x, y, Octopus::dimension),
-    MovableEntity(x, y, Octopus::dimension),
-    TengibleEntity(x, y, Octopus::dimension)
+    Entity(x, y, dimension),
+    MovableEntity(x, y, dimension),
+    TangibleEntity(x, y, dimension)
 {
 
 }
@@ -23,6 +23,7 @@ bool Mob::move(int x, int y)
     while(moveX != 0 && hitbox->checkCollision(posX + moveX, posY))
     {
         moveX > 0 ? moveX-- : moveX++;
+        speedX = 0;
         flag = true;
     }
     posX = posX + moveX;
@@ -30,11 +31,12 @@ bool Mob::move(int x, int y)
     while(moveY != 0 && hitbox->checkCollision(posX, posY + moveY))
     {
         moveY > 0 ? moveY-- : moveY++;
+        speedY = 0;
         flag = true;
     }
 
     posY = posY + moveY;
-    sprite->setPosition(posX,posY);
+    sprite->setPosition(posX, posY);
     return flag;
 }
 
@@ -53,7 +55,6 @@ Octopus::Octopus(int x, int y)
 {
     spriteUp = new sf::Sprite(Data::textureEntity, Octopus::dimSpriteUp);
     spriteDown = sprite; //new sf::Sprite(Data::textureEntity, Octopus::dimSpriteDown);
-    sprite = spriteDown;
     speedY = 1;
 }
 
@@ -68,7 +69,8 @@ bool Octopus::update()
             tick = 30;
             speedY = -5;
             sprite = spriteUp;
-            sprite->setPosition(posX,posY);
+            sprite->setPosition(posX, posY);
+            Data::explosable.push_back(new Ink(posX, posY + 32));
         }
     }
     else
@@ -80,12 +82,10 @@ bool Octopus::update()
             tick = 110;
             speedY = 1;
             sprite = spriteDown;
-            sprite->setPosition(posX,posY);
+            sprite->setPosition(posX, posY);
         }
         else
         {
-            if(tick > 25)
-                Data::projectiles.push_back(new Ink(posX, posY + 32));
             if(tick == 25)
                 speedY = -4;
             if(tick == 10)
@@ -104,32 +104,52 @@ Octopus::~Octopus()
     sprite = NULL;
 }
 
-//-----MineBonus-----
+//-----Mine-----
 
 sf::IntRect Mine::dimension = sf::IntRect(32,64,32,64);
 
 Mine::Mine(int x, int y)
 :
     Entity(x, y, Mine::dimension),
-    Mob(x, y, Mine::dimension)
-{}
+    Mob(x, y, Mine::dimension),
+    center(y),
+    tick(10)
+{
+    speedY = 2;
+}
 
 Mine::~Mine()
 {
-
+    Data::effects.push_back(new Explosion(posX - 32, posY - 32));
 }
 
 bool Mine::update()
 {
-
     if(checkCollision(Data::player))
-    {
-        Data::projectiles.push_back(new Explosion(posX - 32, posY - 32));
         return true;
-    }
-    else
+    tick--;
+    if(tick == 0)
     {
-        return false;
+        tick = 20;
+        if(posY > center)
+            speedY--;
+        else
+            speedY++;
+            move(0, speedY);
     }
+    return false;
 
+}
+
+sf::IntRect Barricade::dimension = sf::IntRect(32, 160, 32, 64);
+
+Barricade::Barricade(int x, int y)
+:
+    Entity(x, y, Barricade::dimension),
+    TangibleEntity(x, y, Barricade::dimension)
+{}
+
+Barricade::~Barricade()
+{
+    Data::effects.push_back(new Debris(posX - 32, posY));
 }

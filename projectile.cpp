@@ -4,7 +4,7 @@ Projectile::Projectile(int x, int y, sf::IntRect dimension, sf::Vector2f speed)
 :
     Entity(x, y, dimension),
     MovableEntity(x, y, dimension),
-    TengibleEntity(x, y, dimension)
+    TangibleEntity(x, y, dimension)
 {
     speedX = speed.x;
     speedY = speed.y;
@@ -35,7 +35,7 @@ bool Projectile::move(int x, int y)
     }
 
     posY = posY + moveY;
-    sprite->setPosition(posX,posY);
+    sprite->setPosition(posX, posY);
     return flag;
 }
 
@@ -51,12 +51,13 @@ sf::IntRect Torpedo::dimLeft = sf::IntRect(0, 44, 25, 7);
 sf::Vector2f Torpedo::speedRight = sf::Vector2f(1, 0);
 sf::Vector2f Torpedo::speedLeft = sf::Vector2f(-1, 0);
 int Torpedo::nbSprite = 4;
-int Torpedo::animSpeed = 10;
+int Torpedo::animSpeed = 4;
 
 Torpedo::Torpedo(int x, int y, sf::IntRect dimension, sf::Vector2f speed)
 :
     Entity(x, y, dimension),
-    Projectile(x, y, dimension, speed)
+    Projectile(x, y, dimension, speed),
+    tick(4)
 {
     maxSpeed = 20;
     if(speedX > 0)
@@ -71,72 +72,46 @@ bool Torpedo::update()
         changeSpeed(ACCELERATION, 0);
     else
         changeSpeed(-ACCELERATION, 0);
-    animation->update();
+
+    if(animation->update())
+
+
     sprite = animation->currentSprite;
 
-    for(size_t i = 0; i < Data::mobs.size(); i++)
+    tick--;
+    if(tick == 0)
     {
-        if(checkCollision(Data::mobs[i]))
+        tick = 4;
+        if(speedX > 0)
+            Data::effects.push_back(new Bubble(posX, posY));
+        else
+            Data::effects.push_back(new Bubble(posX + 21, posY));
+    }
+
+    for(size_t i = 0; i < Data::explosable.size(); i++)
+    {
+        if(checkCollision(Data::explosable[i]))
         {
-            delete Data::mobs[i];
-            Data::mobs.erase(Data::mobs.begin() + i);
             return true;
         }
     }
 
+    for(size_t i = 0; i < Data::entities.size(); i++)
+    {
+        if(checkCollision(Data::entities[i]))
+        {
+            return true;
+        }
+    }
     return move(speedX, speedY);
 }
 
 Torpedo::~Torpedo()
 {
     if(speedX > 0)
-        Data::projectiles.push_back(new Explosion(posX - 41, posY - 48));
+        Data::effects.push_back(new Explosion(posX - 41, posY - 48));
     else
-        Data::projectiles.push_back(new Explosion(posX - 41, posY - 48));
-    return;
-}
-
-//-----Explosion-----
-
-sf::IntRect Explosion::dimension = sf::IntRect(128, 64, 96, 96);
-sf::Vector2f Explosion::speed = sf::Vector2f(0,0);
-int Explosion::nbSprite = 5;
-int Explosion::animSpeed = 5;
-
-Explosion::Explosion(int x, int y)
-:
-    Entity(x, y, Explosion::dimension),
-    Projectile(x, y, Explosion::dimension, Explosion::speed),
-    animation(new Animation(&Data::textureEntity, Explosion::dimension, Explosion::nbSprite, Explosion::animSpeed))
-{}
-
-bool Explosion::update()
-{
-    if(animation->update())
-        return true;
-    sprite = animation->currentSprite;
-    sprite->setPosition(posX, posY);
-
-    if(checkCollision(Data::player))
-    {
-        Data::player->life--;
-        std::cout << "life : " << Data::player->life << std::endl;
-    }
-
-    for(size_t i = 0; i < Data::mobs.size(); i++)
-    {
-        if(checkCollision(Data::mobs[i]))
-        {
-            delete Data::mobs[i];
-            Data::mobs.erase(Data::mobs.begin() + i);
-        }
-    }
-
-    return false;
-}
-
-Explosion::~Explosion()
-{
+        Data::effects.push_back(new Explosion(posX - 41, posY - 48));
     return;
 }
 
@@ -153,23 +128,24 @@ Ink::Ink(int x, int y)
 
 Ink::~Ink()
 {
+
 }
 
 bool Ink::update()
 {
     if(checkCollision(Data::player))
     {
-        Data::player->life -= 2;
+        Data::player->life--;
         std::cout << "life : " << Data::player->life << std::endl;
         return true;
     }
 
-    for(size_t i = 0; i < Data::mobs.size(); i++)
+    for(size_t i = 0; i < Data::entities.size(); i++)
     {
-        if(checkCollision(Data::mobs[i]))
+        if(checkCollision(Data::entities[i]))
         {
-            delete Data::mobs[i];
-            Data::mobs.erase(Data::mobs.begin() + i);
+            delete Data::entities[i];
+            Data::entities.erase(Data::entities.begin() + i);
             return true;
         }
     }

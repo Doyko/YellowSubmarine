@@ -122,7 +122,6 @@ bool Hitbox::checkCollision(int x, int y, Hitbox* hb, int hbX, int hbY)
                 return true;
         }
     }
-
     return false;
 }
 

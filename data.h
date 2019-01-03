@@ -10,10 +10,10 @@
 #define WINDOW_HEIGHT 720
 
 class Hitbox;
+class Entity;
+class TangibleEntity;
 class Map;
 class Player;
-class Mob;
-class Projectile;
 class Bonus;
 
 class Data
@@ -33,8 +33,9 @@ public:
     static Hitbox* hitboxEntity;
     static Hitbox* hitboxTile;
 
-    static std::vector<Mob*> mobs;
-    static std::vector<Projectile*> projectiles;
+    static std::vector<Entity*> effects;
+    static std::vector<TangibleEntity*> explosable;
+    static std::vector<TangibleEntity*> entities;
     static std::vector<Bonus*> bonus;
 
     static Player* player;

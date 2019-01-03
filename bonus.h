@@ -3,7 +3,7 @@
 
 class Player;
 
-class Bonus : public TengibleEntity
+class Bonus : public TangibleEntity
 {
 public:
     Bonus(int x, int y, sf::IntRect dimension);

@@ -11,7 +11,7 @@ Player::Player(int x, int y)
 :
     Entity(x, y, Player::dimension),
     MovableEntity(x, y, Player::dimension),
-    TengibleEntity(x, y, Player::dimension),
+    TangibleEntity(x, y, Player::dimension),
     life(MAXLIFE),
     shootCD(0)
 {
@@ -76,7 +76,7 @@ bool Player::move(int x, int y)
     }
 
     posY = posY + moveY;
-    sprite->setPosition(posX,posY);
+    sprite->setPosition(posX, posY);
     return true;
 }
 
@@ -90,9 +90,9 @@ void Player::shoot()
     if(rot > 180)
         rot = rot - 360;
     if(currentAnimation == AnimationIndex::moveRight)
-        Data::projectiles.push_back(new Torpedo(posX + sprite->getTextureRect().width, posY + sprite->getTextureRect().height / 2 + 3 + rot, Torpedo::dimRight, Torpedo::speedRight));
+        Data::effects.push_back(new Torpedo(posX + sprite->getTextureRect().width, posY + sprite->getTextureRect().height / 2 + 3 + rot, Torpedo::dimRight, Torpedo::speedRight));
     else
-        Data::projectiles.push_back(new Torpedo(posX - 25, posY + sprite->getTextureRect().height / 2 + 3, Torpedo::dimLeft, Torpedo::speedLeft));
+        Data::effects.push_back(new Torpedo(posX - 25, posY + sprite->getTextureRect().height / 2 + 3, Torpedo::dimLeft, Torpedo::speedLeft));
 }
 
 void Player::setRotation()

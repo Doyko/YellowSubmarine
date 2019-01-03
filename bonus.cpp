@@ -3,7 +3,7 @@
 Bonus::Bonus(int x, int y, sf::IntRect dimension)
 :
     Entity(x, y, dimension),
-    TengibleEntity(x, y, dimension),
+    TangibleEntity(x, y, dimension),
     draw(true),
     state(0)
 {}
@@ -24,10 +24,7 @@ bool LifeBonus::interact(Player* p)
             if(this->checkCollision(p) && p->life < MAXLIFE)
             {
                 state = 1;
-                p->life += 25;
-                if (p->life > MAXLIFE)
-                    p->life = MAXLIFE;
-                    
+                p->life ++;
                 std::cout << "life : " << p->life << std::endl;
             }
             return true;
