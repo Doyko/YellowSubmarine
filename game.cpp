@@ -16,12 +16,14 @@ Game::Game(std::string name)
 
     background.setTexture(Data::textureBG);
     foreground.setTexture(Data::textureFG);
+    menu.setTexture(Data::textureMenu);
 
     readEntity("Entity.txt");
 }
 
 void Game::loop()
 {
+    menuLoop();
     while(window.isOpen())
     {
         if(clock.getElapsedTime() >= sf::milliseconds(20))
@@ -53,6 +55,37 @@ void Game::loop()
             update();
             draw();
         }
+    }
+}
+
+void Game::menuLoop()
+{
+    menu.setPosition(WINDOW_WIDTH / 2 - menu.getTextureRect().width / 2, WINDOW_HEIGHT / 2 - menu.getTextureRect().height / 2);
+    while(window.isOpen())
+    {
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Return))
+            break;
+
+        while(window.pollEvent(event))
+        {
+            switch(event.type)
+            {
+                case sf::Event::Closed:
+                    window.close();
+                    break;
+                default :
+                    break;
+            }
+        }
+        window.clear(sf::Color(21, 96, 189));
+        background.setPosition(0, 0);
+        for(int i = 0; i < WINDOW_WIDTH / background.getTextureRect().width + 1; i++)
+        {
+            window.draw(background);
+            background.move(background.getTextureRect().width, 0);
+        }
+        window.draw(menu);
+        window.display();
     }
 }
 

@@ -20,6 +20,7 @@ public:
 
     Game(std::string name);
     void loop();
+    void menuLoop();
     void update();
     void updateView();
     void draw();
@@ -29,6 +30,7 @@ public:
 
     sf::RenderWindow window;
     //sf::ContextSettings settings;
+    sf::Sprite menu;
     sf::Sprite background;
     sf::Sprite foreground;
     sf::Event event;

@@ -2,6 +2,9 @@
 
 void Data::init()
 {
+    if(!Data::textureMenu.loadFromFile("texture/textureMenu.png"))
+        exit(1);
+
     if(!Data::textureEntity.loadFromFile("texture/textureEntity.png"))
         exit(1);
 
@@ -29,6 +32,7 @@ sf::Texture Data::textureEntity;
 sf::Texture Data::textureTile;
 sf::Texture Data::textureBG;
 sf::Texture Data::textureFG;
+sf::Texture Data::textureMenu;
 
 Hitbox* Data::hitboxEntity = new Hitbox("hitbox/hitboxEntity.pbm");
 Hitbox* Data::hitboxTile = new Hitbox("hitbox/hitboxTile.pbm");
