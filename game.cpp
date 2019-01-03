@@ -209,20 +209,23 @@ void Game::readEntity(std::string filename)
         ifs >> y;
         switch (type)
         {
+            case 'b':
+                Data::explosable.push_back(new Barricade(x, y));
+                break;
             case 'l':
                 Data::bonus.push_back(new LifeBonus(x, y));
                 break;
             case 'm':
                 Data::entities.push_back(new Mine(x, y));
                 break;
-            case 's':
-                Data::bonus.push_back(new SpeedBonus(x, y));
-                break;
             case 'o':
                 Data::entities.push_back(new Octopus(x, y));
                 break;
-            case 'b':
-                Data::explosable.push_back(new Barricade(x, y));
+            case 'r':
+                Data::entities.push_back(new Shark(x, y));
+                break;
+            case 's':
+                Data::bonus.push_back(new SpeedBonus(x, y));
                 break;
             default:
                 break;

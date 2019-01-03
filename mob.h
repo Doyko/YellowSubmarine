@@ -1,6 +1,5 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-#include "entity.h"
 #include "data.h"
 #include "projectile.h"
 #include "game.h"
@@ -58,4 +57,27 @@ public:
     ~Barricade();
 
     static sf::IntRect dimension;
+};
+
+class Shark : public Mob
+{
+public:
+
+    Shark(int x, int y);
+    bool update();
+
+    enum class AnimationIndex
+    {
+        moveRight,
+        moveLeft,
+        count,
+    };
+    Animation animations[int(AnimationIndex::count)];
+    AnimationIndex currentAnimation = AnimationIndex::moveRight;
+
+    static sf::IntRect dimension;
+    static sf::IntRect animRight;
+    static sf::IntRect animLeft;
+    static int nbSprite;
+    static int animSpeed;
 };

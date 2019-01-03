@@ -135,11 +135,13 @@ bool Mine::update()
             speedY--;
         else
             speedY++;
-            move(0, speedY);
+        move(0, speedY);
     }
     return false;
 
 }
+
+//-----Barricade-----
 
 sf::IntRect Barricade::dimension = sf::IntRect(32, 160, 32, 64);
 
@@ -152,4 +154,61 @@ Barricade::Barricade(int x, int y)
 Barricade::~Barricade()
 {
     Data::effects.push_back(new Debris(posX - 32, posY));
+}
+
+//-----Shark-----
+
+sf::IntRect Shark::dimension = sf::IntRect(0, 224, 64, 32);
+sf::IntRect Shark::animRight = sf::IntRect(0, 224, 64, 32);
+sf::IntRect Shark::animLeft = sf::IntRect(256, 224, 64, 32);
+int Shark::nbSprite = 4;
+int Shark::animSpeed = 12;
+
+Shark::Shark(int x, int y)
+:
+    Entity(x, y, Shark::dimension),
+    Mob(x, y, Shark::dimension)
+{
+    maxSpeed = 8;
+    animations[int(AnimationIndex::moveRight)] = Animation(&Data::textureEntity, Shark::animRight, Shark::nbSprite, Shark::animSpeed);
+    animations[int(AnimationIndex::moveLeft)] = Animation(&Data::textureEntity, Shark::animLeft, Shark::nbSprite, Shark::animSpeed);
+}
+
+bool Shark::update()
+{
+    if(checkCollision(Data::player))
+    {
+        Data::player->life--;
+        std::cout << "life : " << Data::player->maxSpeed <<Data::player->life << '\n';
+    }
+
+    if(Data::player->posX > posX)
+    {
+        if(speedX < maxSpeed)
+            speedX++;
+        currentAnimation = AnimationIndex::moveRight;
+    }
+    else
+    {
+        if(speedX > -maxSpeed)
+            speedX--;
+        currentAnimation = AnimationIndex::moveLeft;
+    }
+
+    if(Data::player->posY > posY)
+    {
+        if(speedY < maxSpeed)
+            speedY++;
+    }
+    else
+    {
+        if(speedY > -maxSpeed)
+            speedY--;
+    }
+
+    animations[int(currentAnimation)].update();
+    sprite = animations[int(currentAnimation)].currentSprite;
+
+    move(speedX/4,speedY/4);
+    return false;
 }
