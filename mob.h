@@ -48,17 +48,6 @@ public:
     int tick;
 };
 
-class Barricade : public TangibleEntity
-{
-
-public:
-
-    Barricade(int x, int y);
-    ~Barricade();
-
-    static sf::IntRect dimension;
-};
-
 class Shark : public Mob
 {
 public:

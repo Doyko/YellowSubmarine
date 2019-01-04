@@ -141,21 +141,6 @@ bool Mine::update()
 
 }
 
-//-----Barricade-----
-
-sf::IntRect Barricade::dimension = sf::IntRect(32, 160, 32, 64);
-
-Barricade::Barricade(int x, int y)
-:
-    Entity(x, y, Barricade::dimension),
-    TangibleEntity(x, y, Barricade::dimension)
-{}
-
-Barricade::~Barricade()
-{
-    Data::effects.push_back(new Debris(posX - 32, posY));
-}
-
 //-----Shark-----
 
 sf::IntRect Shark::dimension = sf::IntRect(0, 224, 64, 32);

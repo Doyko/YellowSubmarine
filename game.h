@@ -21,7 +21,9 @@ public:
     Game(std::string name);
     void loop();
     void menuLoop();
+    void drawMenu(int choice, int tick);
     void update();
+    void pollEvent();
     void updateView();
     void draw();
     void drawBackground();

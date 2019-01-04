@@ -55,3 +55,14 @@ public:
     static sf::IntRect dimension;
     static sf::IntRect dimSpriteBoop;
 };
+
+class Barricade : public TangibleEntity
+{
+
+public:
+
+    Barricade(int x, int y);
+    ~Barricade();
+
+    static sf::IntRect dimension;
+};

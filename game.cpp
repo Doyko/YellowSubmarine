@@ -41,17 +41,7 @@ void Game::loop()
             if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
                 player->shoot();
 
-            while(window.pollEvent(event))
-            {
-                switch(event.type)
-                {
-                    case sf::Event::Closed:
-                        window.close();
-                        break;
-                    default :
-                        break;
-                }
-            }
+            pollEvent();
             update();
             draw();
         }
@@ -61,32 +51,62 @@ void Game::loop()
 void Game::menuLoop()
 {
     menu.setPosition(WINDOW_WIDTH / 2 - menu.getTextureRect().width / 2, WINDOW_HEIGHT / 2 - menu.getTextureRect().height / 2);
+    int tick = 255;
+    int choice = 0;
     while(window.isOpen())
     {
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Return))
-            break;
-
-        while(window.pollEvent(event))
+        if(clock.getElapsedTime() >= sf::milliseconds(20))
         {
-            switch(event.type)
+            if(tick == 0)
             {
-                case sf::Event::Closed:
-                    window.close();
-                    break;
-                default :
-                    break;
+                if(sf::Keyboard::isKeyPressed(sf::Keyboard::Return))
+                {
+                    if(choice == 0)
+                        break;
+                    else if(choice == 1)
+                    {
+                        window.close();
+                        break;
+                    }
+                }
+                if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+                {
+                    if(choice != 0)
+                        choice--;
+                }
+                if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+                {
+                    if(choice != 1)
+                        choice++;;
+                }
             }
+            else
+                tick -= 3;
+
+            pollEvent();
+            player->update();
+            drawMenu(choice, tick);
         }
-        window.clear(sf::Color(21, 96, 189));
-        background.setPosition(0, 0);
-        for(int i = 0; i < WINDOW_WIDTH / background.getTextureRect().width + 1; i++)
-        {
-            window.draw(background);
-            background.move(background.getTextureRect().width, 0);
-        }
-        window.draw(menu);
-        window.display();
     }
+}
+
+void Game::drawMenu(int choice, int tick)
+{
+    window.clear(sf::Color(21, 96, 189));
+    background.setPosition(0, 0);
+    for(int i = 0; i < WINDOW_WIDTH / background.getTextureRect().width + 1; i++)
+    {
+        window.draw(background);
+        background.move(background.getTextureRect().width, 0);
+    }
+    menu.setColor(sf::Color(255, 255, 255, 255 - tick));
+    window.draw(menu);
+    if(tick == 0)
+    {
+        player->sprite->setPosition(WINDOW_WIDTH / 2 - menu.getTextureRect().width / 2 + 40, WINDOW_HEIGHT / 2 + menu.getTextureRect().height / 2 - (2 - choice) * 70 + 15);
+        window.draw(*player->sprite);
+    }
+    window.display();
 }
 
 void Game::update()
@@ -139,6 +159,20 @@ void Game::update()
     }
 }
 
+void Game::pollEvent()
+{
+    while(window.pollEvent(event))
+    {
+        switch(event.type)
+        {
+            case sf::Event::Closed:
+                window.close();
+                break;
+            default :
+                break;
+        }
+    }
+}
 void Game::draw()
 {
     window.clear(sf::Color(21, 96, 189));
