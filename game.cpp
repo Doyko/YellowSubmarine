@@ -17,6 +17,7 @@ Game::Game(std::string name)
     background.setTexture(Data::textureBG);
     foreground.setTexture(Data::textureFG);
     menu.setTexture(Data::textureMenu);
+    hub.setTexture(Data::textureHub);
 
     readEntity("Entity.txt");
 }
@@ -204,7 +205,7 @@ void Game::draw()
     drawForeground();
 
     window.setView(view);
-
+    drawHub();
     window.display();
 }
 
@@ -259,6 +260,18 @@ void Game::drawForeground()
         window.draw(foreground);
         foreground.move(foreground.getTextureRect().width, 0);
     }
+}
+
+void Game::drawHub()
+{
+    int x = view.getCenter().x - WINDOW_WIDTH / 2;
+    int y = view.getCenter().y + WINDOW_HEIGHT / 2 - hub.getTextureRect().height;
+    hub.setPosition(x, y);
+    hub.setTextureRect(sf::IntRect(0, 0, 50, 50));
+    window.draw(hub);
+    hub.setTextureRect(sf::IntRect(player->life * 40 + 50, 0, 40, 50));
+    hub.setPosition(x + 60, y);
+    window.draw(hub);
 }
 
 void Game::readEntity(std::string filename)

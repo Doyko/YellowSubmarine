@@ -163,8 +163,8 @@ bool Shark::update()
 {
     if(checkCollision(Data::player))
     {
-        Data::player->life--;
-        std::cout << "life : " << Data::player->life << '\n';
+        if(Data::player->life != 0)
+            Data::player->life--;
     }
 
     if(Data::player->posX > posX)

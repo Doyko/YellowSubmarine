@@ -28,8 +28,8 @@ void Explosion::trigger()
 {
     if(checkCollision(Data::player))
     {
-        Data::player->life--;
-        std::cout << "BOOM life = " << Data::player->life << std::endl;
+        if(Data::player->life != 0)
+            Data::player->life--;
     }
 
     for(size_t i = 0; i < Data::explosable.size(); i++)

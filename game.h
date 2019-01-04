@@ -28,6 +28,7 @@ public:
     void draw();
     void drawBackground();
     void drawForeground();
+    void drawHub();
     void readEntity(std::string filename);
 
     sf::RenderWindow window;
@@ -35,6 +36,7 @@ public:
     sf::Sprite menu;
     sf::Sprite background;
     sf::Sprite foreground;
+    sf::Sprite hub;
     sf::Event event;
     sf::Clock clock;
     sf::View view;

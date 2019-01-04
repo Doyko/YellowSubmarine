@@ -25,7 +25,6 @@ bool LifeBonus::interact(Player* p)
             {
                 state = 1;
                 p->life ++;
-                std::cout << "life : " << p->life << std::endl;
             }
             return true;
         default:

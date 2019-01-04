@@ -135,8 +135,8 @@ bool Ink::update()
 {
     if(checkCollision(Data::player))
     {
-        Data::player->life--;
-        std::cout << "life : " << Data::player->life << std::endl;
+        if(Data::player->life != 0)
+            Data::player->life--;
         return true;
     }
 
