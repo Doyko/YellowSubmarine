@@ -66,3 +66,19 @@ public:
 
     static sf::IntRect dimension;
 };
+
+class Chest : public TangibleEntity
+{
+
+public:
+
+    Chest(int x, int y);
+    bool update();
+    ~Chest();
+
+    bool open;
+    sf::Sprite* spriteOpen;
+
+    static sf::IntRect dimension;
+    static sf::IntRect dimSpriteOpen;
+};

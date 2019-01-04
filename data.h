@@ -31,7 +31,7 @@ public:
     static sf::Texture textureBG;
     static sf::Texture textureFG;
     static sf::Texture textureHub;
-    
+
     static Hitbox* hitboxEntity;
     static Hitbox* hitboxTile;
 
@@ -43,4 +43,6 @@ public:
     static Player* player;
 
     static Map* map;
+
+    static int nbChest;
 };

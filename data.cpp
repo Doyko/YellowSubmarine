@@ -49,3 +49,5 @@ std::vector<Bonus*> Data::bonus;
 Player* Data::player;
 
 Map* Data::map;
+
+int Data::nbChest = 0;

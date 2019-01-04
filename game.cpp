@@ -158,6 +158,8 @@ void Game::update()
             i--;
         }
     }
+    if(Data::nbChest == 0)
+        std::cout << "WIN" << '\n';
 }
 
 void Game::pollEvent()
@@ -277,38 +279,50 @@ void Game::drawHub()
 void Game::readEntity(std::string filename)
 {
     std::ifstream ifs(filename);
-    int nbBonus, x, y;
-    char type;
+    int nbEntities;
+    int x;
+    int y;
+    int idEntity;
 
-    ifs >> nbBonus;
+    ifs >> nbEntities;
 
-    for(int i = 0 ; i < nbBonus ; i++)
+    for(int i = 0 ; i < nbEntities; i++)
     {
-        ifs >> type;
+        ifs >> idEntity;
         ifs >> x;
         ifs >> y;
-        switch (type)
-        {
-            case 'b':
-                Data::explosable.push_back(new Barricade(x, y));
-                break;
-            case 'l':
-                Data::bonus.push_back(new LifeBonus(x, y));
-                break;
-            case 'm':
-                Data::entities.push_back(new Mine(x, y));
-                break;
-            case 'o':
-                Data::entities.push_back(new Octopus(x, y));
-                break;
-            case 'r':
-                Data::entities.push_back(new Shark(x, y));
-                break;
-            case 's':
-                Data::bonus.push_back(new SpeedBonus(x, y));
-                break;
-            default:
-                break;
-        }
+        addEntity(x, y, idEntity);
+    }
+    ifs.close();
+}
+
+void Game::addEntity(int x, int y, int idEntity)
+{
+    switch (idEntity)
+    {
+        case 1:
+            Data::nbChest++;
+            Data::effects.push_back(new Chest(x, y));
+            break;
+        case 2:
+            Data::bonus.push_back(new LifeBonus(x, y));
+            break;
+        case 3:
+            Data::bonus.push_back(new SpeedBonus(x, y));
+            break;
+        case 4:
+            Data::entities.push_back(new Shark(x, y));
+            break;
+        case 5:
+            Data::entities.push_back(new Octopus(x, y));
+            break;
+        case 6:
+            Data::entities.push_back(new Mine(x, y));
+            break;
+        case 7:
+            Data::explosable.push_back(new Barricade(x, y));
+            break;
+        default:
+            break;
     }
 }

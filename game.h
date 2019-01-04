@@ -30,6 +30,7 @@ public:
     void drawForeground();
     void drawHub();
     void readEntity(std::string filename);
+    void addEntity(int x, int y, int idEntity);
 
     sf::RenderWindow window;
     //sf::ContextSettings settings;

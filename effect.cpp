@@ -145,3 +145,37 @@ Barricade::~Barricade()
 {
     Data::effects.push_back(new Debris(posX - 32, posY));
 }
+
+//-----Chest-----
+
+sf::IntRect Chest::dimension = sf::IntRect(64, 128, 32, 32);
+sf::IntRect Chest::dimSpriteOpen = sf::IntRect(96, 128, 32, 32);
+
+Chest::Chest(int x, int y)
+:
+    Entity(x, y, Chest::dimension),
+    TangibleEntity(x, y, Chest::dimension),
+    open(false)
+{
+    spriteOpen = new sf::Sprite(Data::textureEntity, Chest::dimSpriteOpen);
+    spriteOpen->setPosition(x, y);
+}
+
+bool Chest::update()
+{
+    if(open == false)
+    {
+        if(checkCollision(Data::player))
+        {
+            Data::nbChest--;
+            open = true;
+            sprite = spriteOpen;
+        }
+    }
+    return false;
+}
+
+Chest::~Chest()
+{
+
+}
