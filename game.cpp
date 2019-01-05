@@ -18,6 +18,7 @@ Game::Game(std::string name)
     foreground.setTexture(Data::textureFG);
     menu.setTexture(Data::textureMenu);
     hub.setTexture(Data::textureHub);
+    message.setTexture(Data::textureMessage);
 
     readEntity("Entity.txt");
 }
@@ -25,6 +26,7 @@ Game::Game(std::string name)
 void Game::loop()
 {
     menuLoop();
+    state = play;
     while(window.isOpen())
     {
         if(clock.getElapsedTime() >= sf::milliseconds(20))
@@ -45,6 +47,12 @@ void Game::loop()
             pollEvent();
             update();
             draw();
+            window.display();
+            if(state != play)
+            {
+                printMessage();
+                break;
+            }
         }
     }
 }
@@ -58,6 +66,8 @@ void Game::menuLoop()
     {
         if(clock.getElapsedTime() >= sf::milliseconds(20))
         {
+            clock.restart();
+
             if(tick == 0)
             {
                 if(sf::Keyboard::isKeyPressed(sf::Keyboard::Return))
@@ -78,7 +88,7 @@ void Game::menuLoop()
                 if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
                 {
                     if(choice != 1)
-                        choice++;;
+                        choice++;
                 }
             }
             else
@@ -87,6 +97,7 @@ void Game::menuLoop()
             pollEvent();
             player->update();
             drawMenu(choice, tick);
+            window.display();
         }
     }
 }
@@ -107,7 +118,6 @@ void Game::drawMenu(int choice, int tick)
         player->sprite->setPosition(WINDOW_WIDTH / 2 - menu.getTextureRect().width / 2 + 40, WINDOW_HEIGHT / 2 + menu.getTextureRect().height / 2 - (2 - choice) * 70 + 15);
         window.draw(*player->sprite);
     }
-    window.display();
 }
 
 void Game::update()
@@ -119,47 +129,17 @@ void Game::update()
 
     updateView();
 
-    for(size_t i = 0; i < Data::effects.size(); i++)
+    updateVector(Data::effects);
+    updateVector(Data::explosable);
+    updateVector(Data::entities);
+    updateVector(Data::bonus);
+    if(state == play)
     {
-        if(Data::effects[i]->update())
-        {
-            delete Data::effects[i];
-            Data::effects.erase(Data::effects.begin() + i);
-            i--;
-        }
+        if(player->life == 0)
+            state = death;
+        if(Data::nbChest == 0)
+            state = win;
     }
-
-    for(size_t i = 0; i < Data::explosable.size(); i++)
-    {
-        if(Data::explosable[i]->update())
-        {
-            delete Data::explosable[i];
-            Data::explosable.erase(Data::explosable.begin() + i);
-            i--;
-        }
-    }
-
-    for(size_t i = 0; i < Data::entities.size(); i++)
-    {
-        if(Data::entities[i]->update())
-        {
-            delete Data::entities[i];
-            Data::entities.erase(Data::entities.begin() + i);
-            i--;
-        }
-    }
-
-    for(size_t i = 0; i < Data::bonus.size(); i++)
-    {
-        if(!Data::bonus[i]->interact(player))
-        {
-            delete Data::bonus[i];
-            Data::bonus.erase(Data::bonus.begin() + i);
-            i--;
-        }
-    }
-    if(Data::nbChest == 0)
-        std::cout << "WIN" << '\n';
 }
 
 void Game::pollEvent()
@@ -179,36 +159,21 @@ void Game::pollEvent()
 void Game::draw()
 {
     window.clear(sf::Color(21, 96, 189));
+    window.setView(view);
+
     drawBackground();
+
     map->draw(window, view);
 
-    for(size_t i = 0; i < Data::effects.size(); i++)
-    {
-        window.draw(*Data::effects[i]->sprite);
-    }
-
-    for(size_t i = 0; i < Data::explosable.size(); i++)
-    {
-        window.draw(*Data::explosable[i]->sprite);
-    }
-
-    for(size_t i = 0; i < Data::entities.size(); i++)
-    {
-        window.draw(*Data::entities[i]->sprite);
-    }
-
-    for(size_t i = 0; i < Data::bonus.size(); i++)
-    {
-        if(Data::bonus[i]->draw)
-            window.draw(*Data::bonus[i]->sprite);
-    }
+    drawVector(Data::effects);
+    drawVector(Data::explosable);
+    drawVector(Data::entities);
+    drawVector(Data::bonus);
 
     window.draw(*(player->sprite));
     drawForeground();
 
-    window.setView(view);
     drawHub();
-    window.display();
 }
 
 void Game::updateView()
@@ -251,7 +216,7 @@ void Game::drawBackground()
 
 void Game::drawForeground()
 {
-    float x = - float(view.getCenter().x - WINDOW_HEIGHT / 2) / 2;
+    float x = - float(view.getCenter().x - WINDOW_HEIGHT / 2) / 5;
     foreground.setPosition(x, background.getPosition().y);
 
     while(foreground.getPosition().x + foreground.getTextureRect().width < view.getCenter().x - WINDOW_WIDTH / 2)
@@ -267,13 +232,53 @@ void Game::drawForeground()
 void Game::drawHub()
 {
     int x = view.getCenter().x - WINDOW_WIDTH / 2;
-    int y = view.getCenter().y + WINDOW_HEIGHT / 2 - hub.getTextureRect().height;
+    int y = view.getCenter().y - WINDOW_HEIGHT / 2;
     hub.setPosition(x, y);
     hub.setTextureRect(sf::IntRect(0, 0, 50, 50));
     window.draw(hub);
     hub.setTextureRect(sf::IntRect(player->life * 40 + 50, 0, 40, 50));
     hub.setPosition(x + 60, y);
     window.draw(hub);
+}
+
+void Game::printMessage()
+{
+    int tick = 0;
+    sf::RectangleShape rect(sf::Vector2f(WINDOW_WIDTH, WINDOW_HEIGHT));
+    rect.setFillColor(sf::Color(0, 0, 0));
+
+    if(state == win)
+        message.setTextureRect(sf::IntRect(0, 360, 720, 120));
+    else
+        message.setTextureRect(sf::IntRect(0, 0, 420, 120));
+
+    message.setPosition(view.getCenter().x - message.getTextureRect().width / 2, view.getCenter().y - message.getTextureRect().height / 2);
+
+    while(window.isOpen() && tick <= 510)
+    {
+        if(clock.getElapsedTime() >= sf::milliseconds(20))
+        {
+            clock.restart();
+            if(tick < 255)
+            {
+                tick += 3;
+                update();
+                draw();
+                rect.setPosition(view.getCenter().x - WINDOW_WIDTH / 2, view.getCenter().y - WINDOW_HEIGHT / 2);
+                rect.setFillColor(sf::Color(0, 0, 0, tick));
+                window.draw(rect);
+            }
+            else
+            {
+                tick++;
+                window.draw(rect);
+                message.setColor(sf::Color(255, 255, 255, tick - 255));
+                window.draw(message);
+            }
+            window.display();
+            pollEvent();
+        }
+    }
 }
 
 void Game::readEntity(std::string filename)
@@ -324,5 +329,27 @@ void Game::addEntity(int x, int y, int idEntity)
             break;
         default:
             break;
+    }
+}
+
+void Game::updateVector(std::vector<Bonus*> &vect)
+{
+    for(size_t i = 0; i < vect.size(); i++)
+    {
+        if(!vect[i]->interact(player))
+        {
+            delete vect[i];
+            vect.erase(vect.begin() + i);
+            i--;
+        }
+    }
+}
+
+void Game::drawVector(std::vector<Bonus*> &vect)
+{
+    for(size_t i = 0; i < vect.size(); i++)
+    {
+        if(vect[i]->draw)
+            window.draw(*vect[i]->sprite);
     }
 }

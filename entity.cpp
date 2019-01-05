@@ -50,7 +50,8 @@ void MovableEntity::changeSpeed(float x, float y)
         speedY = -maxSpeed;
 }
 
-TangibleEntity::TangibleEntity(int x, int y, sf::IntRect dimension):
+TangibleEntity::TangibleEntity(int x, int y, sf::IntRect dimension)
+:
     Entity(x, y, dimension),
     hitbox(new Hitbox(*Data::hitboxEntity, dimension))
 {

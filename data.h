@@ -31,7 +31,8 @@ public:
     static sf::Texture textureBG;
     static sf::Texture textureFG;
     static sf::Texture textureHub;
-
+    static sf::Texture textureMessage;
+    
     static Hitbox* hitboxEntity;
     static Hitbox* hitboxTile;
 

@@ -19,6 +19,9 @@ void Data::init()
 
     if(!Data::textureHub.loadFromFile("texture/textureHub.png"))
         exit(1);
+
+    if(!Data::textureMessage.loadFromFile("texture/textureMessage.png"))
+        exit(1);
 }
 
 void Data::initMap(Map* m)
@@ -37,6 +40,7 @@ sf::Texture Data::textureBG;
 sf::Texture Data::textureFG;
 sf::Texture Data::textureMenu;
 sf::Texture Data::textureHub;
+sf::Texture Data::textureMessage;
 
 Hitbox* Data::hitboxEntity = new Hitbox("hitbox/hitboxEntity.pbm");
 Hitbox* Data::hitboxTile = new Hitbox("hitbox/hitboxTile.pbm");
