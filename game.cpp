@@ -2,7 +2,7 @@
 
 Game::Game(std::string name)
 :
-    map(new Map("level.txt")),
+    map(new Map("level/level.txt")),
     player(new Player(128, 32))
 {
     srand(time(NULL));
@@ -20,7 +20,7 @@ Game::Game(std::string name)
     hub.setTexture(Data::textureHub);
     message.setTexture(Data::textureMessage);
 
-    readEntity("Entity.txt");
+    readEntity("level/entity.txt");
 }
 
 void Game::loop()
@@ -296,7 +296,7 @@ void Game::readEntity(std::string filename)
         ifs >> idEntity;
         ifs >> x;
         ifs >> y;
-        addEntity(x, y, idEntity);
+        addEntity(x * TILE_WIDTH, y * TILE_HEIGHT, idEntity);
     }
     ifs.close();
 }
