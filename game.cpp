@@ -51,7 +51,8 @@ void Game::loop()
             if(state != play)
             {
                 printMessage();
-                break;
+                menuLoop();
+                //break;
             }
         }
     }
@@ -59,7 +60,9 @@ void Game::loop()
 
 void Game::menuLoop()
 {
+    view.setCenter(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
     menu.setPosition(WINDOW_WIDTH / 2 - menu.getTextureRect().width / 2, WINDOW_HEIGHT / 2 - menu.getTextureRect().height / 2);
+    window.setView(view);
     int tick = 255;
     int choice = 0;
     while(window.isOpen())
@@ -104,7 +107,7 @@ void Game::menuLoop()
 
 void Game::drawMenu(int choice, int tick)
 {
-    window.clear(sf::Color(21, 96, 189));
+    window.clear(sf::Color(255, 0, 0));
     background.setPosition(0, 0);
     for(int i = 0; i < WINDOW_WIDTH / background.getTextureRect().width + 1; i++)
     {
