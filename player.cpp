@@ -15,9 +15,8 @@ Player::Player(const int x, const int y)
     life(MAXLIFE),
     shootCD(0)
 {
-    animations[int(AnimationIndex::moveRight)] = Animation(&Data::textureEntity, Player::animRight, Player::nbSprite, Player::animSpeed);
-    animations[int(AnimationIndex::moveLeft)] = Animation(&Data::textureEntity, Player::animLeft, Player::nbSprite, Player::animSpeed);
-    //std::cout << "constructor Player" << std::endl;
+    animations[int(AnimationIndex::moveRight)] = new Animation(&Data::textureEntity, Player::animRight, Player::nbSprite, Player::animSpeed);
+    animations[int(AnimationIndex::moveLeft)] = new Animation(&Data::textureEntity, Player::animLeft, Player::nbSprite, Player::animSpeed);
 }
 
 int Player::getLife() const
@@ -32,7 +31,7 @@ void Player::addLife(const int amout)
 
 Player::~Player()
 {
-    hitbox->~Hitbox();
+
 }
 
 bool Player::update()
@@ -47,8 +46,8 @@ bool Player::update()
         changeSpeed(DECCELERATION,0);
         currentAnimation = AnimationIndex::moveLeft;
     }
-    animations[int(currentAnimation)].update();
-    sprite = animations[int(currentAnimation)].currentSprite;
+    animations[int(currentAnimation)]->update();
+    sprite = animations[int(currentAnimation)]->currentSprite;
 
     if(speedY > 0)
         changeSpeed(0,-DECCELERATION);

@@ -1,11 +1,17 @@
 #include "animation.h"
 
+Animation::Animation()
+{
+
+}
+
 Animation::Animation(const sf::Texture *t, sf::IntRect dimension, const int nbSprite, const int spd)
 :
     tick(0),
     nb(0),
     speed(spd)
 {
+    // add all sprite to the animation
     for(int i = 0; i < nbSprite; i++)
     {
         sprites.push_back(new sf::Sprite(*t, dimension));
@@ -14,6 +20,7 @@ Animation::Animation(const sf::Texture *t, sf::IntRect dimension, const int nbSp
     currentSprite = sprites[0];
 }
 
+// return true if the animation end
 bool Animation::update()
 {
     tick++;
@@ -22,6 +29,7 @@ bool Animation::update()
 
     tick = 0;
     nb++;
+    // if it's the end of the animation
     if(nb == int(sprites.size()))
     {
         nb = 0;
@@ -30,4 +38,16 @@ bool Animation::update()
     }
     currentSprite = sprites[nb];
     return false;
+}
+
+Animation::~Animation()
+{
+    for(size_t i = 0; i < sprites.size(); i++)
+    {
+        if(sprites[i] != NULL)
+        {
+            delete sprites[i];
+            sprites[i] = NULL;
+        }
+    }
 }

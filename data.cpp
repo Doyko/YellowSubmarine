@@ -34,6 +34,12 @@ void Data::initPlayer(Player* p)
     player = p;
 }
 
+void Data::clearData()
+{
+    delete hitboxEntity;
+    delete hitboxTile;
+}
+
 sf::Texture Data::textureEntity;
 sf::Texture Data::textureTile;
 sf::Texture Data::textureBG;

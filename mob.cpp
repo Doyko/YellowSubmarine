@@ -1,5 +1,7 @@
 #include "mob.h"
 
+//-----Mob-----
+
 Mob::Mob(const int x, const int y, const sf::IntRect dimension)
 :
     Entity(x, y, dimension),
@@ -54,7 +56,7 @@ Octopus::Octopus(const int x, const int y)
     tick(100)
 {
     spriteUp = new sf::Sprite(Data::textureEntity, Octopus::dimSpriteUp);
-    spriteDown = sprite; //new sf::Sprite(Data::textureEntity, Octopus::dimSpriteDown);
+    spriteDown = sprite;
     speedY = 1;
 }
 
@@ -70,7 +72,7 @@ bool Octopus::update()
             speedY = -5;
             sprite = spriteUp;
             sprite->setPosition(posX, posY);
-            Data::explosable.push_back(new Ink(posX, posY + 32));
+            Data::effects.push_back(new Ink(posX, posY + 32));
         }
     }
     else
@@ -138,7 +140,6 @@ bool Mine::update()
         move(0, speedY);
     }
     return false;
-
 }
 
 //-----Shark-----
@@ -155,8 +156,8 @@ Shark::Shark(const int x, const int y)
     Mob(x, y, Shark::dimension)
 {
     maxSpeed = 8;
-    animations[int(AnimationIndex::moveRight)] = Animation(&Data::textureEntity, Shark::animRight, Shark::nbSprite, Shark::animSpeed);
-    animations[int(AnimationIndex::moveLeft)] = Animation(&Data::textureEntity, Shark::animLeft, Shark::nbSprite, Shark::animSpeed);
+    animations[int(AnimationIndex::moveRight)] = new Animation(&Data::textureEntity, Shark::animRight, Shark::nbSprite, Shark::animSpeed);
+    animations[int(AnimationIndex::moveLeft)] = new Animation(&Data::textureEntity, Shark::animLeft, Shark::nbSprite, Shark::animSpeed);
 }
 
 bool Shark::update()
@@ -191,8 +192,8 @@ bool Shark::update()
             speedY--;
     }
 
-    animations[int(currentAnimation)].update();
-    sprite = animations[int(currentAnimation)].currentSprite;
+    animations[int(currentAnimation)]->update();
+    sprite = animations[int(currentAnimation)]->currentSprite;
 
     move(speedX/4,speedY/4);
     return false;

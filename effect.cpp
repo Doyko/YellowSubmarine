@@ -16,10 +16,13 @@ bool Explosion::update()
 {
     if(!triggered)
         trigger();
+
     if(animation->update())
         return true;
+
     sprite = animation->currentSprite;
     sprite->setPosition(posX, posY);
+
     return false;
 }
 
@@ -50,12 +53,14 @@ void Explosion::trigger()
             i--;
         }
     }
+
     triggered = true;
 }
 
 Explosion::~Explosion()
 {
-
+    delete animation;
+    sprite = NULL;
 }
 
 sf::IntRect Debris::dimension = sf::IntRect(64, 160, 96, 64);
@@ -70,11 +75,15 @@ Debris::Debris(const int x, const int y)
 bool Debris::update()
 {
     tick--;
+
     if(tick == 0)
         return true;
+
     sprite->setColor(sf::Color(255, 255, 255, tick));
+
     if(tick % 25 == 0)
         move(0, 1);
+
     return false;
 }
 
@@ -106,14 +115,21 @@ Bubble::Bubble(int x, int y)
 bool Bubble::update()
 {
     tick--;
+
     if(tick == 0)
         return true;
+
     if(tick == 10)
+    {
+        delete sprite;
         sprite = spriteBoop;
+    }
+
     if(tick % 10 == 0)
         move(1, -1);
     else if(tick % 10 == 5)
         move(-1 , -1);
+
     return false;
 }
 
@@ -176,5 +192,5 @@ bool Chest::update()
 
 Chest::~Chest()
 {
-
+    delete spriteOpen;
 }

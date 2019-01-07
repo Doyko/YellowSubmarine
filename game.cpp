@@ -1,18 +1,12 @@
 #include "game.h"
 
 Game::Game(const std::string name)
-:
-    map(new Map("level/level.txt")),
-    player(new Player(128, 32))
 {
     srand(time(NULL));
-    Data::initMap(map);
-    Data::initPlayer(player);
 
     window.create(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Yellow Submarine");
     window.setVerticalSyncEnabled(true);
     view.reset(sf::FloatRect(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, WINDOW_WIDTH, WINDOW_HEIGHT));
-    //settings.antialiasingLevel = 8;
 
     background.setTexture(Data::textureBG);
     foreground.setTexture(Data::textureFG);
@@ -20,13 +14,23 @@ Game::Game(const std::string name)
     hub.setTexture(Data::textureHub);
     message.setTexture(Data::textureMessage);
 
-    readEntity("level/entity.txt");
+    player = new Player(128, 32);
+    Data::initPlayer(player);
 }
 
+Game::~Game()
+{
+    delete player;
+    delete map;
+}
 void Game::loop()
 {
-    menuLoop();
     state = play;
+    readEntity("level/entity.txt");
+
+    map = new Map("level/level.txt");
+    Data::initMap(map);
+
     while(window.isOpen())
     {
         if(clock.getElapsedTime() >= sf::milliseconds(20))
@@ -48,11 +52,11 @@ void Game::loop()
             update();
             draw();
             window.display();
+
             if(state != play)
             {
                 printMessage();
                 menuLoop();
-                //break;
             }
         }
     }
@@ -65,6 +69,7 @@ void Game::menuLoop()
     window.setView(view);
     int tick = 255;
     int choice = 0;
+
     while(window.isOpen())
     {
         if(clock.getElapsedTime() >= sf::milliseconds(20))
@@ -109,13 +114,16 @@ void Game::drawMenu(const int choice, const int tick)
 {
     window.clear(sf::Color(255, 0, 0));
     background.setPosition(0, 0);
+
     for(int i = 0; i < WINDOW_WIDTH / background.getTextureRect().width + 1; i++)
     {
         window.draw(background);
         background.move(background.getTextureRect().width, 0);
     }
+
     menu.setColor(sf::Color(255, 255, 255, 255 - tick));
     window.draw(menu);
+
     if(tick == 0)
     {
         player->sprite->setPosition(WINDOW_WIDTH / 2 - menu.getTextureRect().width / 2 + 40, WINDOW_HEIGHT / 2 + menu.getTextureRect().height / 2 - (2 - choice) * 70 + 15);
@@ -339,7 +347,7 @@ void Game::updateVector(std::vector<Bonus*> &vect)
 {
     for(size_t i = 0; i < vect.size(); i++)
     {
-        if(!vect[i]->interact(player))
+        if(!vect[i]->interact())
         {
             delete vect[i];
             vect.erase(vect.begin() + i);

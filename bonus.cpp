@@ -18,17 +18,18 @@ LifeBonus::LifeBonus(const int x, const int y)
     Bonus(x, y, dimension)
 {}
 
-bool LifeBonus::interact(Player* p)
+bool LifeBonus::interact()
 {
     switch (state)
     {
         case 0:
-            if(this->checkCollision(p) && p->getLife() < MAXLIFE)
+            if(this->checkCollision(Data::player) && Data::player->getLife() < MAXLIFE)
             {
                 state = 1;
-                p->addLife(1);
+                Data::player->addLife(1);
             }
             return true;
+
         default:
             return false;
     }
@@ -44,15 +45,15 @@ SpeedBonus::SpeedBonus(const int x, const int y)
     Bonus(x, y, dimension)
 {}
 
-bool SpeedBonus::interact(Player* p)
+bool SpeedBonus::interact()
 {
     switch (state)
     {
         case 0:
-            if(this->checkCollision(p))
+            if(this->checkCollision(Data::player))
             {
                 state = 1;
-                p->maxSpeed += 10;
+                Data::player->maxSpeed += 10;
                 timer = 500;
             }
             return true;
@@ -64,7 +65,7 @@ bool SpeedBonus::interact(Player* p)
             else
             {
                 state = 2;
-                p->maxSpeed -= 10;
+                Data::player->maxSpeed -= 10;
             }
             return true;
 

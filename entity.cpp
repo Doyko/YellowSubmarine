@@ -1,6 +1,8 @@
 #include "entity.h"
 #include <iostream>
 
+//-----Entity-----
+
 Entity::Entity(const int x, const int y, const sf::IntRect dimension)
 :
     posX(x),
@@ -15,6 +17,7 @@ Entity::~Entity()
     if(sprite != NULL)
     {
         delete sprite;
+        sprite = NULL;
     }
 }
 
@@ -22,6 +25,8 @@ bool Entity::update()
 {
     return false;
 }
+
+//-----MovableEntity-----
 
 MovableEntity::MovableEntity(const int x, const int y, const sf::IntRect dimension)
 :
@@ -47,6 +52,13 @@ void MovableEntity::changeSpeed(const float x, const float y)
         speedY = -maxSpeed;
 }
 
+MovableEntity::~MovableEntity()
+{
+
+}
+
+//-----TangibleEntity-----
+
 TangibleEntity::TangibleEntity(const int x, const int y, const sf::IntRect dimension)
 :
     Entity(x, y, dimension),
@@ -61,4 +73,9 @@ bool TangibleEntity::checkCollision(const TangibleEntity* te) const
 bool TangibleEntity::checkCollision() const
 {
     return hitbox->checkCollision(posX, posY);
+}
+
+TangibleEntity::~TangibleEntity()
+{
+    delete hitbox;
 }

@@ -61,7 +61,7 @@ public:
         moveLeft,
         count,
     };
-    Animation animations[int(AnimationIndex::count)];
+    Animation* animations[int(AnimationIndex::count)];
     AnimationIndex currentAnimation = AnimationIndex::moveRight;
 
     static sf::IntRect dimension;

@@ -28,6 +28,7 @@ class MovableEntity : virtual public Entity
 public:
 
     MovableEntity(const int x, const int y, const sf::IntRect dimension);
+    ~MovableEntity();
 
     void changeSpeed(const float x, const float y);
     virtual bool move(const int x, const int y) = 0;
@@ -46,6 +47,7 @@ class TangibleEntity : virtual public Entity
 public:
 
     TangibleEntity(const int x, const int y, const sf::IntRect dimension);
+    ~TangibleEntity();
 
     virtual bool checkCollision(const TangibleEntity* te) const;
     virtual bool checkCollision() const;

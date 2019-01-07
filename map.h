@@ -17,6 +17,8 @@ class Tile
 public:
 
     Tile(const int tang, const int x, const int y, const int w, const int h);
+    ~Tile();
+
     bool getTangibility() const;
 
     sf::Sprite* sprite;
@@ -33,6 +35,8 @@ class AnimatedTile : public Tile
 public:
 
     AnimatedTile(const int tang, const int x, const int y, const int w, const int h, const int nbSprite, const int speed);
+    ~AnimatedTile();
+
     void update();
 
     Animation* animation;
@@ -44,6 +48,8 @@ class Map
 public:
 
     Map(const std::string name);
+    ~Map();
+
     int** readMap(const std::string name);
     void draw(sf::RenderWindow &window, const sf::View &view) const;
     int getIdTileRock(int** m, const int i, const int j) const; // 16 tiles => 0 -> 15

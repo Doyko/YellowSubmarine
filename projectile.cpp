@@ -108,11 +108,9 @@ bool Torpedo::update()
 
 Torpedo::~Torpedo()
 {
-    if(speedX > 0)
-        Data::effects.push_back(new Explosion(posX - 41, posY - 48));
-    else
-        Data::effects.push_back(new Explosion(posX - 41, posY - 48));
-    return;
+    Data::effects.push_back(new Explosion(posX - 41, posY - 48));
+    delete animation;
+    sprite = NULL;
 }
 
 //-----Ink-----

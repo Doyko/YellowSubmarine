@@ -12,6 +12,16 @@ bool Tile::getTangibility() const
     return tangible;
 }
 
+Tile::~Tile()
+{/*
+    if(sprite != NULL)
+    {
+        delete sprite;
+        sprite = NULL;
+    }
+    delete hitbox;*/
+}
+
 AnimatedTile::AnimatedTile(const int tang, const int x, const int y, const int w, const int h, const int nbSprite, const int speed)
 :
     Tile(tang, x, y, w, h),
@@ -22,6 +32,12 @@ void AnimatedTile::update()
 {
     animation->update();
     sprite = animation->currentSprite;
+}
+
+AnimatedTile::~AnimatedTile()
+{
+    delete animation;
+    sprite = NULL;
 }
 
 Map::Map(const std::string name)
@@ -58,6 +74,19 @@ Map::Map(const std::string name)
     for(int i = 0; i < nbTileY; i++)
         delete[] m[i];
     delete[] m;
+}
+
+Map::~Map()
+{/*
+    for(int i = 0; i < nbTileY; i++)
+        delete[] tileMap[i];
+    delete[] tileMap;
+
+    for(size_t i = 0; i < tileList.size(); i++)
+        delete tileList[i];
+
+    for(size_t i = 0; i < animatedTiles.size(); i++)
+        delete animatedTiles[i];*/
 }
 
 int** Map::readMap(const std::string name)

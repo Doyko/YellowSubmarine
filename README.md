@@ -8,19 +8,19 @@
 
     First, clone the repository:
 
-    ```git clone https://github.com/Doyko/YellowSubmarine```
+    "git clone https://github.com/Doyko/YellowSubmarine"
 
     Then, you have to compile the programme:
 
-    ```cd YellowSubmarine```
-    ```make```
+    "cd YellowSubmarine"
+    "make"
 
-    And finally, execute the programme:
+    And finally, execute the program:
 
-    ```./Yellowsubmarine```
+    "./Yellowsubmarine"
 
 ## How to play
 
     In the menu, use *up* and *down* to select, and *return* to confirm.
 
-    In the game, use the arrows to move the submarine, and *space* to lauch a torpedo. The obctive is to reach the treasure chest whitout loosing all your life.
+    In the game, use the arrows to move the submarine, and *space* to lauch a torpedo. The objective is to reach the treasure chest whitout loosing all your life.

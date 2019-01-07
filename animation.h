@@ -9,10 +9,11 @@ class Animation
 
 public:
 
-    Animation() = default;
+    Animation();
     Animation(const sf::Texture *t, sf::IntRect dimension, const int nbSprite, const int spd);
+    ~Animation();
 
-    virtual bool update();
+    bool update();
 
     sf::Sprite* currentSprite;
 

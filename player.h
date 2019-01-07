@@ -33,7 +33,7 @@ private:
         moveLeft,
         count,
     };
-    Animation animations[int(AnimationIndex::count)];
+    Animation* animations[int(AnimationIndex::count)];
     AnimationIndex currentAnimation = AnimationIndex::moveRight;
 
     int life;

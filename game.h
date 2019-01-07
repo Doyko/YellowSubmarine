@@ -20,11 +20,12 @@ class Game
 public:
 
     Game(const std::string name);
+    void menuLoop();
     void loop();
+    ~Game();
 
 private:
 
-    void menuLoop();
     void drawMenu(const int choice, const int tick);
 
     void update();
@@ -49,7 +50,6 @@ private:
     enum stateEnum{play, win, death};
 
     sf::RenderWindow window;
-    //sf::ContextSettings settings;
     sf::Sprite menu;
     sf::Sprite background;
     sf::Sprite foreground;

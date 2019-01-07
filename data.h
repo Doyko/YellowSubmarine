@@ -21,9 +21,11 @@ class Data
 
 public:
 
+
     static void init();
     static void initMap(Map* m);
     static void initPlayer(Player* p);
+    static void clearData();
 
     static sf::Texture textureMenu;
     static sf::Texture textureEntity;
@@ -32,7 +34,7 @@ public:
     static sf::Texture textureFG;
     static sf::Texture textureHub;
     static sf::Texture textureMessage;
-    
+
     static Hitbox* hitboxEntity;
     static Hitbox* hitboxTile;
 

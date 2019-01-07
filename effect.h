@@ -10,9 +10,10 @@ class Explosion : public TangibleEntity
 public:
 
     Explosion(const int x, const int y);
+    ~Explosion();
+
     bool update();
     void trigger();
-    ~Explosion();
 
     Animation* animation;
 
@@ -32,9 +33,10 @@ class Debris : public MovableEntity
 public:
 
     Debris(const int x, const int y);
+    ~Debris();
+
     bool update();
     bool move(const int x, const int y);
-    ~Debris();
 
 private:
 
@@ -49,9 +51,10 @@ class Bubble : public MovableEntity
 public:
 
     Bubble(const int x, const int y);
+    ~Bubble();
+
     bool update();
     bool move(const int x, const int y);
-    ~Bubble();
 
 private:
 
@@ -81,8 +84,9 @@ class Chest : public TangibleEntity
 public:
 
     Chest(const int x, const int y);
-    bool update();
     ~Chest();
+
+    bool update();
 
 private:
 

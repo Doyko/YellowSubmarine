@@ -77,7 +77,8 @@ Hitbox::Hitbox(const Hitbox& hb, const sf::IntRect dimension)
 
 Hitbox::~Hitbox()
 {
-    for(int y = 0 ; y < height ; y++){
+    for(int y = 0; y < height; y++)
+    {
         delete[] tab[y];
     }
     delete[] tab;
