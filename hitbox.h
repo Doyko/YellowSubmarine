@@ -12,18 +12,18 @@ class Hitbox
 
 public:
     Hitbox();
-    Hitbox(int w, int h, char** t);
+    Hitbox(const int w, const int h, char** t);
     Hitbox(const char* fileName);
-    Hitbox(Hitbox& hb, int x, int y, int w, int h);
-    Hitbox(Hitbox& hb, sf::IntRect dimension);
+    Hitbox(const Hitbox& hb, const int x, const int y, const int w, const int h);
+    Hitbox(const Hitbox& hb, const sf::IntRect dimension);
     ~Hitbox();
 
-    int getWidth();
-    int getHeight();
-    char operator()(int x, int y);
-    virtual bool checkCollision(int x, int y, Hitbox* hb, int hbX, int hbY);
-    virtual bool checkCollision(int x, int y); //return true if there is collision
-    virtual bool checkCollision(int x, int y, Tile* t, int xTile, int yTile); //return true if there is collision
+    int getWidth() const;
+    int getHeight() const;
+    char operator()(const int x, const int y) const;
+    virtual bool checkCollision(const int x, const int y, const Hitbox* hb, const int hbX, const int hbY) const;
+    virtual bool checkCollision(const int x, const int y) const;
+    virtual bool checkCollision(const int x, const int y, const Tile* t, const int xTile, const int yTile) const;
 
 private :
     int width;

@@ -15,12 +15,17 @@ class Player : public MovableEntity, public TangibleEntity
 
 public:
 
-    Player(int x, int y);
+    Player(const int x, const int y);
     bool update();
-    bool move(int x, int y);
+    bool move(const int x, const int y);
     void shoot();
     void setRotation();
     ~Player();
+
+    int getLife() const;
+    void addLife(const int amout);
+
+private:
 
     enum class AnimationIndex
     {

@@ -9,16 +9,18 @@ class Explosion : public TangibleEntity
 
 public:
 
-    Explosion(int x, int y);
+    Explosion(const int x, const int y);
     bool update();
     void trigger();
     ~Explosion();
 
     Animation* animation;
+
+private:
+
     bool triggered;
 
     static sf::IntRect dimension;
-    static sf::Vector2f speed;
     static int nbSprite;
     static int animSpeed;
 };
@@ -29,10 +31,12 @@ class Debris : public MovableEntity
 
 public:
 
-    Debris(int x, int y);
+    Debris(const int x, const int y);
     bool update();
-    bool move(int x, int y);
+    bool move(const int x, const int y);
     ~Debris();
+
+private:
 
     int tick;
 
@@ -44,10 +48,12 @@ class Bubble : public MovableEntity
 
 public:
 
-    Bubble(int x, int y);
+    Bubble(const int x, const int y);
     bool update();
-    bool move(int x, int y);
+    bool move(const int x, const int y);
     ~Bubble();
+
+private:
 
     int tick;
     sf::Sprite* spriteBoop;
@@ -61,8 +67,10 @@ class Barricade : public TangibleEntity
 
 public:
 
-    Barricade(int x, int y);
+    Barricade(const int x, const int y);
     ~Barricade();
+
+private:
 
     static sf::IntRect dimension;
 };
@@ -72,9 +80,11 @@ class Chest : public TangibleEntity
 
 public:
 
-    Chest(int x, int y);
+    Chest(const int x, const int y);
     bool update();
     ~Chest();
+
+private:
 
     bool open;
     sf::Sprite* spriteOpen;

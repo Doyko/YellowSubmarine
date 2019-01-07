@@ -1,6 +1,6 @@
 #include "bonus.h"
 
-Bonus::Bonus(int x, int y, sf::IntRect dimension)
+Bonus::Bonus(const int x, const int y, const sf::IntRect dimension)
 :
     Entity(x, y, dimension),
     TangibleEntity(x, y, dimension),
@@ -9,8 +9,10 @@ Bonus::Bonus(int x, int y, sf::IntRect dimension)
 {}
 
 //-----LifeBonus-----
-sf::IntRect LifeBonus::dimension = sf::IntRect(0,64,32,32);
-LifeBonus::LifeBonus(int x, int y)
+
+sf::IntRect LifeBonus::dimension = sf::IntRect(0, 64, 32, 32);
+
+LifeBonus::LifeBonus(const int x, const int y)
 :
     Entity(x, y, dimension),
     Bonus(x, y, dimension)
@@ -21,10 +23,10 @@ bool LifeBonus::interact(Player* p)
     switch (state)
     {
         case 0:
-            if(this->checkCollision(p) && p->life < MAXLIFE)
+            if(this->checkCollision(p) && p->getLife() < MAXLIFE)
             {
                 state = 1;
-                p->life ++;
+                p->addLife(1);
             }
             return true;
         default:
@@ -33,8 +35,10 @@ bool LifeBonus::interact(Player* p)
 }
 
 //-----SpeedBonus-----
-sf::IntRect SpeedBonus::dimension = sf::IntRect(64,64,32,32);
-SpeedBonus::SpeedBonus(int x, int y)
+
+sf::IntRect SpeedBonus::dimension = sf::IntRect(64, 64, 32, 32);
+
+SpeedBonus::SpeedBonus(const int x, const int y)
 :
     Entity(x, y, dimension),
     Bonus(x, y, dimension)

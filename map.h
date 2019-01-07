@@ -16,11 +16,15 @@ class Tile
 
 public:
 
-    Tile(int tang, int x, int y, int w, int h);
+    Tile(const int tang, const int x, const int y, const int w, const int h);
+    bool getTangibility() const;
 
-    int tangible;
     sf::Sprite* sprite;
     Hitbox* hitbox;
+
+private:
+
+    int tangible;
 };
 
 class AnimatedTile : public Tile
@@ -28,7 +32,7 @@ class AnimatedTile : public Tile
 
 public:
 
-    AnimatedTile(int tang, int x, int y, int w, int h, int nbSprite, int speed);
+    AnimatedTile(const int tang, const int x, const int y, const int w, const int h, const int nbSprite, const int speed);
     void update();
 
     Animation* animation;
@@ -39,16 +43,20 @@ class Map
 
 public:
 
-    Map(std::string name);
-    int** readMap(std::string name);
-    void draw(sf::RenderWindow &window, sf::View &view) const;
-    int getIdTileRock(int** m, int i, int j) const; // 16 tiles => 0 -> 15
-    int getIdTileSand(int** m, int i, int j) const; // 54 tiles => 16 -> 69
+    Map(const std::string name);
+    int** readMap(const std::string name);
+    void draw(sf::RenderWindow &window, const sf::View &view) const;
+    int getIdTileRock(int** m, const int i, const int j) const; // 16 tiles => 0 -> 15
+    int getIdTileSand(int** m, const int i, const int j) const; // 54 tiles => 16 -> 69
+    int getNbTileX() const;
+    int getNbTileY() const;
 
-    int nbTileX;
-    int nbTileY;
     std::vector<Tile*> tileList;
     std::vector<AnimatedTile*> animatedTiles;
     Tile*** tileMap;
 
+private:
+
+    int nbTileX;
+    int nbTileY;
 };

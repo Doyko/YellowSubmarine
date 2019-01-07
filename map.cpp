@@ -1,13 +1,18 @@
 #include "map.h"
 
-Tile::Tile(int tang, int x, int y, int w, int h)
+Tile::Tile(const int tang, const int x, const int y, const int w, const int h)
 :
-    tangible(tang),
     sprite(new sf::Sprite(Data::textureTile, sf::IntRect(x, y, w, h))),
-    hitbox(new Hitbox(*Data::hitboxTile, x, y, w, h))
+    hitbox(new Hitbox(*Data::hitboxTile, x, y, w, h)),
+    tangible(tang)
 {}
 
-AnimatedTile::AnimatedTile(int tang, int x, int y, int w, int h, int nbSprite, int speed)
+bool Tile::getTangibility() const
+{
+    return tangible;
+}
+
+AnimatedTile::AnimatedTile(const int tang, const int x, const int y, const int w, const int h, const int nbSprite, const int speed)
 :
     Tile(tang, x, y, w, h),
     animation(new Animation(&Data::textureTile, sf::IntRect(x, y, w, h), nbSprite, speed))
@@ -19,7 +24,7 @@ void AnimatedTile::update()
     sprite = animation->currentSprite;
 }
 
-Map::Map(std::string name)
+Map::Map(const std::string name)
 {
     int** m = readMap(name);
     tileMap = new Tile**[nbTileY];
@@ -55,18 +60,13 @@ Map::Map(std::string name)
     delete[] m;
 }
 
-int** Map::readMap(std::string name)
+int** Map::readMap(const std::string name)
 {
     std::ifstream ifs(name);
     int nbTile;
     int tangible;
 
     ifs >> nbTile;
-    if(nbTile < 16)
-    {
-        std::cout << "Error for loading the file " << name << " !" << '\n';
-        exit(1);
-    }
     for(int i = 0; i < nbTile; i++)
     {
         ifs >> tangible;
@@ -102,7 +102,7 @@ int** Map::readMap(std::string name)
     return m;
 }
 
-void Map::draw(sf::RenderWindow &window, sf::View &view) const
+void Map::draw(sf::RenderWindow &window, const sf::View &view) const
 {
     sf::Vector2f center = view.getCenter();
     int minX = (center.x - WINDOW_WIDTH / 2) / TILE_WIDTH;
@@ -122,7 +122,7 @@ void Map::draw(sf::RenderWindow &window, sf::View &view) const
     }
 }
 
-int Map::getIdTileRock(int** m, int i, int j) const
+int Map::getIdTileRock(int** m, const int i, const int j) const
 {
     int somme = 0;
     if(i - 1 < 0 || m[i - 1][j] != 0)
@@ -136,7 +136,7 @@ int Map::getIdTileRock(int** m, int i, int j) const
     return somme;
 }
 
-int Map::getIdTileSand(int** m, int i, int j) const
+int Map::getIdTileSand(int** m, const int i, const int j) const
 {
     int somme = 16;
     if(i + 1 >= nbTileY || m[i + 1][j] == 2)//sand down
@@ -156,4 +156,14 @@ int Map::getIdTileSand(int** m, int i, int j) const
     else if(m[i - 1][j] == 1)// rock up
         somme += 18;
     return somme;
+}
+
+int Map::getNbTileX() const
+{
+    return nbTileX;
+}
+
+int Map::getNbTileY() const
+{
+    return nbTileY;
 }

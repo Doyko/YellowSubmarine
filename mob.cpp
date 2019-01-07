@@ -1,6 +1,6 @@
 #include "mob.h"
 
-Mob::Mob(int x, int y, sf::IntRect dimension)
+Mob::Mob(const int x, const int y, const sf::IntRect dimension)
 :
     Entity(x, y, dimension),
     MovableEntity(x, y, dimension),
@@ -14,7 +14,7 @@ bool Mob::update()
     return true;
 }
 
-bool Mob::move(int x, int y)
+bool Mob::move(const int x, const int y)
 {
     int moveX = x;
     int moveY = y;
@@ -46,7 +46,7 @@ sf::IntRect Octopus::dimension = sf::IntRect(96, 64, 32, 32);
 sf::IntRect Octopus::dimSpriteUp = sf::IntRect(96, 96, 32, 32);
 sf::IntRect Octopus::dimSpriteDown = sf::IntRect(96, 64, 32, 32);
 
-Octopus::Octopus(int x, int y)
+Octopus::Octopus(const int x, const int y)
 :
     Entity(x, y, Octopus::dimension),
     Mob(x, y, Octopus::dimension),
@@ -108,7 +108,7 @@ Octopus::~Octopus()
 
 sf::IntRect Mine::dimension = sf::IntRect(32,64,32,64);
 
-Mine::Mine(int x, int y)
+Mine::Mine(const int x, const int y)
 :
     Entity(x, y, Mine::dimension),
     Mob(x, y, Mine::dimension),
@@ -149,7 +149,7 @@ sf::IntRect Shark::animLeft = sf::IntRect(256, 224, 64, 32);
 int Shark::nbSprite = 4;
 int Shark::animSpeed = 12;
 
-Shark::Shark(int x, int y)
+Shark::Shark(const int x, const int y)
 :
     Entity(x, y, Shark::dimension),
     Mob(x, y, Shark::dimension)
@@ -163,8 +163,8 @@ bool Shark::update()
 {
     if(checkCollision(Data::player))
     {
-        if(Data::player->life != 0)
-            Data::player->life--;
+        if(Data::player->getLife() != 0)
+            Data::player->addLife(-1);
     }
 
     if(Data::player->posX > posX)

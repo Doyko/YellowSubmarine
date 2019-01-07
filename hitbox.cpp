@@ -7,7 +7,7 @@ Hitbox::Hitbox()
     tab(NULL)
 {}
 
-Hitbox::Hitbox(int w, int h, char** t):
+Hitbox::Hitbox(const int w, const int h, char** t):
     width(w),
     height(h),
     tab(t)
@@ -30,45 +30,47 @@ Hitbox::Hitbox(const char* fileName)
 
     tab = new char*[height];
 
-    for(int y = 0 ; y < height ; y++){
+    for(int y = 0; y < height; y++)
+    {
         tab[y] = new char[width];
-        for(int x = 0 ; x < width ; x++){
+        for(int x = 0; x < width; x++)
+        {
             ifs >> tab[y][x];
-            //std::cout << (char)(tab[y][x] -'0' +' ');
         }
-        //std::cout << std::endl;
     }
     ifs.close();
 }
 
-Hitbox::Hitbox(Hitbox& hb, int x, int y, int w, int h)
+Hitbox::Hitbox(const Hitbox& hb, const int x, const int y, const int w, const int h)
 :
     width(w),
     height(h)
 {
     tab = new char*[height];
 
-    for(int i = 0 ; i < height; i++){
+    for(int i = 0; i < height; i++)
+    {
         tab[i] = new char[width];
-        for(int j = 0 ; j < width ; j++){
+        for(int j = 0; j < width; j++)
+        {
             tab[i][j] = hb(j + x, i + y);
-            //std::cout << (char)(tab[y][x] -'0' +' ');
         }
     }
 }
 
-Hitbox::Hitbox(Hitbox& hb, sf::IntRect dimension)
+Hitbox::Hitbox(const Hitbox& hb, const sf::IntRect dimension)
 :
     width(dimension.width),
     height(dimension.height)
 {
     tab = new char*[height];
 
-    for(int i = 0 ; i < height ; i++){
+    for(int i = 0; i < height; i++)
+    {
         tab[i] = new char[width];
-        for(int j = 0 ; j < width ; j++){
+        for(int j = 0; j < width; j++)
+        {
             tab[i][j] = hb(j + dimension.left, i + dimension.top);
-            //std::cout << (char)(tab[y][x] -'0' +' ');
         }
     }
 }
@@ -81,17 +83,17 @@ Hitbox::~Hitbox()
     delete[] tab;
 }
 
-int Hitbox::getWidth()
+int Hitbox::getWidth() const
 {
     return width;
 }
 
-int Hitbox::getHeight()
+int Hitbox::getHeight() const
 {
     return height;
 }
 
-char Hitbox::operator()(int x, int y)
+char Hitbox::operator()(const int x, const int y) const
 {
     if(x >= 0 && x < width && y >= 0 && y < height)
         return tab[y][x];
@@ -99,7 +101,7 @@ char Hitbox::operator()(int x, int y)
         return '\0';
 }
 
-bool Hitbox::checkCollision(int x, int y, Hitbox* hb, int hbX, int hbY)
+bool Hitbox::checkCollision(const int x, const int y, const Hitbox* hb, const int hbX, const int hbY) const
 {
     int xmin = x > hbX ? x : hbX;
     int xmax = x + width < hbX + hb->getWidth() ? x + width : hbX + hb->getWidth();
@@ -114,9 +116,9 @@ bool Hitbox::checkCollision(int x, int y, Hitbox* hb, int hbX, int hbY)
     int OffsetHBX = xmin - hbX;
     int OffsetHBY = ymin - hbY;
 
-    for(int i = 0 ; i < InterWidth ; i++)
+    for(int i = 0; i < InterWidth; i++)
     {
-        for(int j = 0 ; j < InterHeight ; j++)
+        for(int j = 0; j < InterHeight; j++)
         {
             if((*this)(i + OffsetX, j + OffsetY) == '1' && (*hb)(i + OffsetHBX, j + OffsetHBY) == '1')
                 return true;
@@ -125,27 +127,19 @@ bool Hitbox::checkCollision(int x, int y, Hitbox* hb, int hbX, int hbY)
     return false;
 }
 
-bool Hitbox::checkCollision(int x, int y)
+bool Hitbox::checkCollision(const int x, const int y) const
 {
-    //std::cout << "check collision" << std::endl;
     int xmin = x;
     int xmax = x + width - 1;
     int ymin = y;
     int ymax = y + height - 1;
 
-    /*std::cout << "xmin = " << xmin/TILE_WIDTH
-    << "\txmax = " << xmax/TILE_WIDTH
-    << "\tymin = " << ymin/TILE_HEIGHT
-    << "\tymax = " << ymax/TILE_HEIGHT << std::endl;*/
-
-
-    for(int i = xmin/TILE_WIDTH ; i <= xmax/TILE_WIDTH ; i++)
+    for(int i = xmin/TILE_WIDTH; i <= xmax/TILE_WIDTH; i++)
     {
-        for(int j = ymin/TILE_HEIGHT ; j <= ymax/TILE_HEIGHT ; j++)
+        for(int j = ymin/TILE_HEIGHT; j <= ymax/TILE_HEIGHT; j++)
         {
-            if(Data::map->tileMap[j][i] != NULL && Data::map->tileMap[j][i]->tangible)
+            if(Data::map->tileMap[j][i] != NULL && Data::map->tileMap[j][i]->getTangibility())
             {
-                //std::cout << "collision map" << i << j << std::endl;
                 if(checkCollision(x, y, Data::map->tileMap[j][i]->hitbox, i*32, j*32))
                 {
                     return true;
@@ -156,31 +150,22 @@ bool Hitbox::checkCollision(int x, int y)
     return false;
 }
 
-bool Hitbox::checkCollision(int x, int y, Tile* t, int xTile, int yTile)
+bool Hitbox::checkCollision(const int x, const int y, const Tile* t, const int xTile, const int yTile) const
 {
     int xTileRelatif = xTile * TILE_WIDTH - x;
     int yTileRelatif = yTile * TILE_HEIGHT - y;
-
-    //std::cout << "xTileRelatif = " << xTileRelatif
-    //<< "\tyTileRelatif = " << yTileRelatif << std::endl;
 
     int xmin = 0 > xTileRelatif ? 0 : xTileRelatif;
     int ymin = 0 > yTileRelatif ? 0 : yTileRelatif;
     int xmax = width < xTileRelatif + TILE_WIDTH ? width : xTileRelatif + TILE_WIDTH;
     int ymax = height < yTileRelatif + TILE_HEIGHT ? height : yTileRelatif + TILE_HEIGHT;
 
-    /*std::cout << "xmin = " << xmin
-    << "\txmax = " << xmax
-    << "\tymin = " << ymin
-    << "\tymax = " << ymax << std::endl;*/
-
-    for (int i = xmin ; i < xmax ; i++)
+    for (int i = xmin; i < xmax; i++)
     {
-        for (int j = ymin ; j < ymax ; j++)
+        for (int j = ymin; j < ymax; j++)
         {
             if ((*this)(i, j) == '1')
             {
-                //std::cout << "collision tile" << std::endl;
                 return true;
             }
         }

@@ -1,6 +1,6 @@
 #include "game.h"
 
-Game::Game(std::string name)
+Game::Game(const std::string name)
 :
     map(new Map("level/level.txt")),
     player(new Player(128, 32))
@@ -105,7 +105,7 @@ void Game::menuLoop()
     }
 }
 
-void Game::drawMenu(int choice, int tick)
+void Game::drawMenu(const int choice, const int tick)
 {
     window.clear(sf::Color(255, 0, 0));
     background.setPosition(0, 0);
@@ -138,7 +138,7 @@ void Game::update()
     updateVector(Data::bonus);
     if(state == play)
     {
-        if(player->life == 0)
+        if(player->getLife() == 0)
             state = death;
         if(Data::nbChest == 0)
             state = win;
@@ -186,15 +186,15 @@ void Game::updateView()
 
     if(player->posX < WINDOW_WIDTH / 2)
         x = WINDOW_WIDTH / 2;
-    else if(player->posX > map->nbTileX * TILE_WIDTH - WINDOW_WIDTH / 2)
-        x = map->nbTileX * TILE_WIDTH - WINDOW_WIDTH / 2;
+    else if(player->posX > map->getNbTileX() * TILE_WIDTH - WINDOW_WIDTH / 2)
+        x = map->getNbTileX() * TILE_WIDTH - WINDOW_WIDTH / 2;
     else
         x = player->posX;
 
     if(player->posY < WINDOW_HEIGHT / 2)
         y = WINDOW_HEIGHT / 2;
-    else if(player->posY > map->nbTileY * TILE_HEIGHT - WINDOW_HEIGHT / 2)
-        y = map->nbTileY * TILE_HEIGHT - WINDOW_HEIGHT / 2;
+    else if(player->posY > map->getNbTileY() * TILE_HEIGHT - WINDOW_HEIGHT / 2)
+        y = map->getNbTileY() * TILE_HEIGHT - WINDOW_HEIGHT / 2;
     else
         y = player->posY;
 
@@ -203,9 +203,9 @@ void Game::updateView()
 
 void Game::drawBackground()
 {
-    float y = float(view.getCenter().y - WINDOW_HEIGHT / 2) / (map->nbTileY * TILE_HEIGHT - WINDOW_HEIGHT);
-    float x = - float(view.getCenter().x - WINDOW_HEIGHT / 2) / (map->nbTileY * TILE_HEIGHT - WINDOW_HEIGHT);
-    background.setPosition(x * (map->nbTileY * TILE_HEIGHT - background.getTextureRect().height) - background.getTextureRect().width, y * (map->nbTileY * TILE_HEIGHT - background.getTextureRect().height));
+    float y = float(view.getCenter().y - WINDOW_HEIGHT / 2) / (map->getNbTileY() * TILE_HEIGHT - WINDOW_HEIGHT);
+    float x = - float(view.getCenter().x - WINDOW_HEIGHT / 2) / (map->getNbTileY() * TILE_HEIGHT - WINDOW_HEIGHT);
+    background.setPosition(x * (map->getNbTileY() * TILE_HEIGHT - background.getTextureRect().height) - background.getTextureRect().width, y * (map->getNbTileY() * TILE_HEIGHT - background.getTextureRect().height));
 
     while(background.getPosition().x + background.getTextureRect().width < view.getCenter().x - WINDOW_WIDTH / 2)
         background.move(background.getTextureRect().width, 0);
@@ -239,7 +239,7 @@ void Game::drawHub()
     hub.setPosition(x, y);
     hub.setTextureRect(sf::IntRect(0, 0, 50, 50));
     window.draw(hub);
-    hub.setTextureRect(sf::IntRect(player->life * 40 + 50, 0, 40, 50));
+    hub.setTextureRect(sf::IntRect(player->getLife() * 40 + 50, 0, 40, 50));
     hub.setPosition(x + 60, y);
     window.draw(hub);
 }
@@ -284,7 +284,7 @@ void Game::printMessage()
     }
 }
 
-void Game::readEntity(std::string filename)
+void Game::readEntity(const std::string filename) const
 {
     std::ifstream ifs(filename);
     int nbEntities;
@@ -304,7 +304,7 @@ void Game::readEntity(std::string filename)
     ifs.close();
 }
 
-void Game::addEntity(int x, int y, int idEntity)
+void Game::addEntity(const int x, const int y, const int idEntity) const
 {
     switch (idEntity)
     {
@@ -348,7 +348,7 @@ void Game::updateVector(std::vector<Bonus*> &vect)
     }
 }
 
-void Game::drawVector(std::vector<Bonus*> &vect)
+void Game::drawVector(const std::vector<Bonus*> &vect)
 {
     for(size_t i = 0; i < vect.size(); i++)
     {

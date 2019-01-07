@@ -10,13 +10,13 @@ class Animation
 public:
 
     Animation() = default;
-    Animation(sf::Texture *t, sf::IntRect dimension, int nbSprite, int spd);
+    Animation(const sf::Texture *t, sf::IntRect dimension, const int nbSprite, const int spd);
 
     virtual bool update();
 
     sf::Sprite* currentSprite;
 
-protected:
+private:
 
     std::vector<sf::Sprite*> sprites;
     int tick;

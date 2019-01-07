@@ -1,11 +1,10 @@
 #include "effect.h"
 
 sf::IntRect Explosion::dimension = sf::IntRect(128, 64, 96, 96);
-sf::Vector2f Explosion::speed = sf::Vector2f(0,0);
 int Explosion::nbSprite = 5;
 int Explosion::animSpeed = 5;
 
-Explosion::Explosion(int x, int y)
+Explosion::Explosion(const int x, const int y)
 :
     Entity(x, y, Explosion::dimension),
     TangibleEntity(x, y, Explosion::dimension),
@@ -28,8 +27,8 @@ void Explosion::trigger()
 {
     if(checkCollision(Data::player))
     {
-        if(Data::player->life != 0)
-            Data::player->life--;
+        if(Data::player->getLife() != 0)
+            Data::player->addLife(-1);
     }
 
     for(size_t i = 0; i < Data::explosable.size(); i++)
@@ -61,7 +60,7 @@ Explosion::~Explosion()
 
 sf::IntRect Debris::dimension = sf::IntRect(64, 160, 96, 64);
 
-Debris::Debris(int x, int y)
+Debris::Debris(const int x, const int y)
 :
     Entity(x, y, Debris::dimension),
     MovableEntity(x, y, Debris::dimension),
@@ -79,7 +78,7 @@ bool Debris::update()
     return false;
 }
 
-bool Debris::move(int x, int y)
+bool Debris::move(const int x, const int y)
 {
     posX = posX + x;
     posY = posY + y;
@@ -118,7 +117,7 @@ bool Bubble::update()
     return false;
 }
 
-bool Bubble::move(int x, int y)
+bool Bubble::move(const int x, const int y)
 {
     posX = posX + x;
     posY = posY + y;
@@ -135,7 +134,7 @@ Bubble::~Bubble()
 
 sf::IntRect Barricade::dimension = sf::IntRect(32, 160, 32, 64);
 
-Barricade::Barricade(int x, int y)
+Barricade::Barricade(const int x, const int y)
 :
     Entity(x, y, Barricade::dimension),
     TangibleEntity(x, y, Barricade::dimension)
@@ -151,7 +150,7 @@ Barricade::~Barricade()
 sf::IntRect Chest::dimension = sf::IntRect(64, 128, 32, 32);
 sf::IntRect Chest::dimSpriteOpen = sf::IntRect(96, 128, 32, 32);
 
-Chest::Chest(int x, int y)
+Chest::Chest(const int x, const int y)
 :
     Entity(x, y, Chest::dimension),
     TangibleEntity(x, y, Chest::dimension),

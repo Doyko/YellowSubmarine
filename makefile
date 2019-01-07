@@ -9,7 +9,6 @@ G_FLAGS = -Wall -g -lsfml-graphics -lsfml-window -lsfml-system -std=c++11
 $(TARGET): $(OBJ)
 	$(CC) $(OBJ) -o $(TARGET) $(G_FLAGS)
 
-
 %.o: %.cpp
 	$(CC) $(G_FLAGS) -c $< -o $@
 

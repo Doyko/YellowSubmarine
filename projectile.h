@@ -11,9 +11,9 @@ class Projectile : public MovableEntity, public TangibleEntity
 
 public:
 
-    Projectile(int x, int y, sf::IntRect dimension, sf::Vector2f speed);
+    Projectile(const int x, const int y, const sf::IntRect dimension, const sf::Vector2f speed);
     bool update();
-    bool move(int x, int y);
+    bool move(const int x, const int y);
     virtual ~Projectile() = 0;
 };
 
@@ -22,7 +22,7 @@ class Torpedo : public Projectile
 
 public:
 
-    Torpedo(int x, int y, sf::IntRect dimension, sf::Vector2f speed);
+    Torpedo(const int x, const int y, const sf::IntRect dimension, const sf::Vector2f speed);
     bool update();
     ~Torpedo();
 
@@ -42,7 +42,7 @@ class Ink : public Projectile
 
 public :
 
-    Ink(int x, int y);
+    Ink(const int x, const int y);
     ~Ink();
     bool update();
 

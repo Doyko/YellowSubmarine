@@ -7,7 +7,7 @@ sf::IntRect Player::animLeft = sf::IntRect(256, 0, 64, 37);
 int Player::nbSprite = 4;
 int Player::animSpeed = 10;
 
-Player::Player(int x, int y)
+Player::Player(const int x, const int y)
 :
     Entity(x, y, Player::dimension),
     MovableEntity(x, y, Player::dimension),
@@ -18,6 +18,16 @@ Player::Player(int x, int y)
     animations[int(AnimationIndex::moveRight)] = Animation(&Data::textureEntity, Player::animRight, Player::nbSprite, Player::animSpeed);
     animations[int(AnimationIndex::moveLeft)] = Animation(&Data::textureEntity, Player::animLeft, Player::nbSprite, Player::animSpeed);
     //std::cout << "constructor Player" << std::endl;
+}
+
+int Player::getLife() const
+{
+    return life;
+}
+
+void Player::addLife(const int amout)
+{
+    life += amout;
 }
 
 Player::~Player()
@@ -56,7 +66,7 @@ bool Player::update()
     return true;
 }
 
-bool Player::move(int x, int y)
+bool Player::move(const int x, const int y)
 {
     int moveX = x;
     int moveY = y;

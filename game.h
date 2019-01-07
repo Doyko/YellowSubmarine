@@ -19,12 +19,13 @@ class Game
 
 public:
 
-    enum stateEnum{play, win, death};
-
-    Game(std::string name);
+    Game(const std::string name);
     void loop();
+
+private:
+
     void menuLoop();
-    void drawMenu(int choice, int tick);
+    void drawMenu(const int choice, const int tick);
 
     void update();
     void pollEvent();
@@ -35,15 +36,17 @@ public:
 
     void draw();
     template<typename T>
-    void drawVector(std::vector<T> &vect);
-    void drawVector(std::vector<Bonus*> &vect);
+    void drawVector(const std::vector<T> &vect);
+    void drawVector(const std::vector<Bonus*> &vect);
     void drawBackground();
     void drawForeground();
     void drawHub();
 
     void printMessage();
-    void readEntity(std::string filename);
-    void addEntity(int x, int y, int idEntity);
+    void readEntity(const std::string filename) const;
+    void addEntity(const int x, const int y, const int idEntity) const;
+
+    enum stateEnum{play, win, death};
 
     sf::RenderWindow window;
     //sf::ContextSettings settings;
@@ -77,7 +80,7 @@ void Game::updateVector(std::vector<T> &vect)
 }
 
 template<typename T>
-void Game::drawVector(std::vector<T> &vect)
+void Game::drawVector(const std::vector<T> &vect)
 {
     for(size_t i = 0; i < vect.size(); i++)
     {

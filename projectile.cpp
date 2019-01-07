@@ -1,6 +1,6 @@
 #include "projectile.h"
 
-Projectile::Projectile(int x, int y, sf::IntRect dimension, sf::Vector2f speed)
+Projectile::Projectile(const int x, const int y, const sf::IntRect dimension, const sf::Vector2f speed)
 :
     Entity(x, y, dimension),
     MovableEntity(x, y, dimension),
@@ -15,7 +15,7 @@ bool Projectile::update()
     return move(speedX, speedY);
 }
 
-bool Projectile::move(int x, int y)
+bool Projectile::move(const int x, const int y)
 {
     int moveX = x;
     int moveY = y;
@@ -53,7 +53,7 @@ sf::Vector2f Torpedo::speedLeft = sf::Vector2f(-1, 0);
 int Torpedo::nbSprite = 4;
 int Torpedo::animSpeed = 4;
 
-Torpedo::Torpedo(int x, int y, sf::IntRect dimension, sf::Vector2f speed)
+Torpedo::Torpedo(const int x, const int y, const sf::IntRect dimension, const sf::Vector2f speed)
 :
     Entity(x, y, dimension),
     Projectile(x, y, dimension, speed),
@@ -120,7 +120,7 @@ Torpedo::~Torpedo()
 sf::IntRect Ink::dimension = sf::IntRect(64, 96, 32, 32);
 sf::Vector2f Ink::speed = sf::Vector2f(0, 2);
 
-Ink::Ink(int x, int y)
+Ink::Ink(const int x, const int y)
 :
     Entity(x, y, Ink::dimension),
     Projectile(x, y, Ink::dimension, Ink::speed)
@@ -135,8 +135,8 @@ bool Ink::update()
 {
     if(checkCollision(Data::player))
     {
-        if(Data::player->life != 0)
-            Data::player->life--;
+        if(Data::player->getLife() != 0)
+            Data::player->addLife(-1);
         return true;
     }
 

@@ -13,7 +13,7 @@ class Entity
 
 public:
 
-    Entity(int x, int y, sf::IntRect dimension);
+    Entity(const int x, const int y, const sf::IntRect dimension);
     virtual ~Entity();
     virtual bool update();
 
@@ -27,14 +27,17 @@ class MovableEntity : virtual public Entity
 
 public:
 
-    MovableEntity(int x, int y, sf::IntRect dimension);
+    MovableEntity(const int x, const int y, const sf::IntRect dimension);
 
-    void changeSpeed(float x, float y);
-    virtual bool move(int x, int y) = 0;
+    void changeSpeed(const float x, const float y);
+    virtual bool move(const int x, const int y) = 0;
+    
+    int maxSpeed;
+
+protected:
 
     int speedX;
     int speedY;
-    int maxSpeed;
 };
 
 class TangibleEntity : virtual public Entity
@@ -42,10 +45,10 @@ class TangibleEntity : virtual public Entity
 
 public:
 
-    TangibleEntity(int x, int y, sf::IntRect dimension);
+    TangibleEntity(const int x, const int y, const sf::IntRect dimension);
 
-    virtual bool checkCollision(TangibleEntity* te);
-    virtual bool checkCollision();
+    virtual bool checkCollision(const TangibleEntity* te) const;
+    virtual bool checkCollision() const;
 
     Hitbox* hitbox;
 };

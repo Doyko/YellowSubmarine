@@ -1,6 +1,6 @@
 #include "animation.h"
 
-Animation::Animation(sf::Texture *t, sf::IntRect dimension, int nbSprite, int spd)
+Animation::Animation(const sf::Texture *t, sf::IntRect dimension, const int nbSprite, const int spd)
 :
     tick(0),
     nb(0),

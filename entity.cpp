@@ -1,14 +1,13 @@
 #include "entity.h"
 #include <iostream>
 
-Entity::Entity(int x, int y, sf::IntRect dimension)
+Entity::Entity(const int x, const int y, const sf::IntRect dimension)
 :
     posX(x),
     posY(y)
 {
     sprite = new sf::Sprite(Data::textureEntity, dimension);
     sprite->setPosition(posX, posY);
-    //std::cout << "constructor Entity" << std::endl;
 }
 
 Entity::~Entity()
@@ -24,17 +23,15 @@ bool Entity::update()
     return false;
 }
 
-MovableEntity::MovableEntity(int x, int y, sf::IntRect dimension)
+MovableEntity::MovableEntity(const int x, const int y, const sf::IntRect dimension)
 :
     Entity(x, y, dimension),
+    maxSpeed(20),
     speedX(0),
-    speedY(0),
-    maxSpeed(20)
-{
-    //std::cout << "constructor MovableEntity" << std::endl;
-}
+    speedY(0)
+{}
 
-void MovableEntity::changeSpeed(float x, float y)
+void MovableEntity::changeSpeed(const float x, const float y)
 {
     speedX += x;
     speedY += y;
@@ -50,20 +47,18 @@ void MovableEntity::changeSpeed(float x, float y)
         speedY = -maxSpeed;
 }
 
-TangibleEntity::TangibleEntity(int x, int y, sf::IntRect dimension)
+TangibleEntity::TangibleEntity(const int x, const int y, const sf::IntRect dimension)
 :
     Entity(x, y, dimension),
     hitbox(new Hitbox(*Data::hitboxEntity, dimension))
-{
-    //std::cout << "constructor TangibleEntity" << std::endl;
-}
+{}
 
-bool TangibleEntity::checkCollision(TangibleEntity* te)
+bool TangibleEntity::checkCollision(const TangibleEntity* te) const
 {
     return hitbox->checkCollision(posX, posY, te->hitbox, te->posX, te->posY);
 }
 
-bool TangibleEntity::checkCollision()
+bool TangibleEntity::checkCollision() const
 {
     return hitbox->checkCollision(posX, posY);
 }
