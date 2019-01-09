@@ -13,13 +13,13 @@ bool Tile::getTangibility() const
 }
 
 Tile::~Tile()
-{/*
+{
     if(sprite != NULL)
     {
         delete sprite;
         sprite = NULL;
     }
-    delete hitbox;*/
+    delete hitbox;
 }
 
 AnimatedTile::AnimatedTile(const int tang, const int x, const int y, const int w, const int h, const int nbSprite, const int speed)

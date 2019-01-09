@@ -6,9 +6,9 @@
 Entity::Entity(const int x, const int y, const sf::IntRect dimension)
 :
     posX(x),
-    posY(y)
+    posY(y),
+    sprite(new sf::Sprite(Data::textureEntity, dimension))
 {
-    sprite = new sf::Sprite(Data::textureEntity, dimension);
     sprite->setPosition(posX, posY);
 }
 

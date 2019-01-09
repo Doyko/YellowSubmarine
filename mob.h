@@ -53,6 +53,8 @@ class Shark : public Mob
 public:
 
     Shark(const int x, const int y);
+    ~Shark();
+    
     bool update();
 
     enum class AnimationIndex

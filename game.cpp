@@ -16,20 +16,31 @@ Game::Game(const std::string name)
 
     player = new Player(128, 32);
     Data::initPlayer(player);
+    map = NULL;
 }
 
 Game::~Game()
 {
     delete player;
-    delete map;
+    if(map != NULL)
+        delete map;
 }
+
 void Game::loop()
 {
+    if(!window.isOpen())
+        return;
+
     state = play;
+    
+    clearVectors();
     readEntity("level/entity.txt");
 
-    map = new Map("level/level.txt");
-    Data::initMap(map);
+    if(map == NULL)
+    {
+        map = new Map("level/level.txt");
+        Data::initMap(map);
+    }
 
     while(window.isOpen())
     {
@@ -252,6 +263,14 @@ void Game::drawHub()
     window.draw(hub);
 }
 
+void Game::clearVectors() const
+{
+    clearVector(Data::effects);
+    clearVector(Data::explosable);
+    clearVector(Data::entities);
+    clearVector(Data::bonus);
+}
+
 void Game::printMessage()
 {
     int tick = 0;
@@ -343,7 +362,7 @@ void Game::addEntity(const int x, const int y, const int idEntity) const
     }
 }
 
-void Game::updateVector(std::vector<Bonus*> &vect)
+void Game::updateVector(std::vector<Bonus*> &vect) const
 {
     for(size_t i = 0; i < vect.size(); i++)
     {

@@ -3,9 +3,10 @@
 int main()
 {
     Data::init();
-    Game game("Yellow Submarine");
-    game.menuLoop();
-    game.loop();
+    Game* game = new Game("Yellow Submarine");
+    game->menuLoop();
+    game->loop();
+    delete game;
     Data::clearData();
     return 0;
 }

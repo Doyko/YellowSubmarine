@@ -44,10 +44,7 @@ Animation::~Animation()
 {
     for(size_t i = 0; i < sprites.size(); i++)
     {
-        if(sprites[i] != NULL)
-        {
-            delete sprites[i];
-            sprites[i] = NULL;
-        }
+        delete sprites[i];
+        sprites[i] = NULL;
     }
 }

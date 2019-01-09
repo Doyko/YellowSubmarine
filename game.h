@@ -32,8 +32,8 @@ private:
     void pollEvent();
     void updateView();
     template<typename T>
-    void updateVector(std::vector<T> &vect);
-    void updateVector(std::vector<Bonus*> &vect);
+    void updateVector(std::vector<T> &vect) const;
+    void updateVector(std::vector<Bonus*> &vect) const;
 
     void draw();
     template<typename T>
@@ -42,6 +42,10 @@ private:
     void drawBackground();
     void drawForeground();
     void drawHub();
+
+    void clearVectors() const;
+    template<typename T>
+    void clearVector(std::vector<T> &vect) const;
 
     void printMessage();
     void readEntity(const std::string filename) const;
@@ -66,7 +70,7 @@ private:
 
 
 template<typename T>
-void Game::updateVector(std::vector<T> &vect)
+void Game::updateVector(std::vector<T> &vect) const
 {
     for(size_t i = 0; i < vect.size(); i++)
     {
@@ -85,5 +89,14 @@ void Game::drawVector(const std::vector<T> &vect)
     for(size_t i = 0; i < vect.size(); i++)
     {
         window.draw(*vect[i]->sprite);
+    }
+}
+
+template<typename T>
+void Game::clearVector(std::vector<T> &vect) const
+{
+    for(size_t i = 0; i < vect.size(); i++)
+    {
+        delete vect[i];
     }
 }

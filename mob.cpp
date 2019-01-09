@@ -155,9 +155,19 @@ Shark::Shark(const int x, const int y)
     Entity(x, y, Shark::dimension),
     Mob(x, y, Shark::dimension)
 {
+    sprite = NULL;
     maxSpeed = 8;
     animations[int(AnimationIndex::moveRight)] = new Animation(&Data::textureEntity, Shark::animRight, Shark::nbSprite, Shark::animSpeed);
     animations[int(AnimationIndex::moveLeft)] = new Animation(&Data::textureEntity, Shark::animLeft, Shark::nbSprite, Shark::animSpeed);
+}
+
+Shark::~Shark()
+{
+    for(int i = 0; i < int(AnimationIndex::count); i++)
+    {
+        delete animations[i];
+    }
+    sprite = NULL;
 }
 
 bool Shark::update()

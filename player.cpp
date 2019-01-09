@@ -15,6 +15,7 @@ Player::Player(const int x, const int y)
     life(MAXLIFE),
     shootCD(0)
 {
+    delete sprite;
     animations[int(AnimationIndex::moveRight)] = new Animation(&Data::textureEntity, Player::animRight, Player::nbSprite, Player::animSpeed);
     animations[int(AnimationIndex::moveLeft)] = new Animation(&Data::textureEntity, Player::animLeft, Player::nbSprite, Player::animSpeed);
 }
@@ -31,7 +32,11 @@ void Player::addLife(const int amout)
 
 Player::~Player()
 {
-
+    for(int i = 0; i < int(AnimationIndex::count); i++)
+    {
+        delete animations[i];
+    }
+    sprite = NULL;
 }
 
 bool Player::update()
