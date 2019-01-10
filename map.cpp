@@ -195,3 +195,18 @@ int Map::getNbTileY() const
 {
     return nbTileY;
 }
+Tile* Map::operator()(const int x, const int y) const
+{
+    if(x >= 0 && x < nbTileX && y >= 0 && y < nbTileY)
+        return tileMap[x][y];
+    else
+        return NULL;
+}
+
+void Map::updateAnimatedTiles()
+{
+    for(size_t i = 0; i < animatedTiles.size(); i++)
+    {
+        animatedTiles[i]->update();
+    }
+}

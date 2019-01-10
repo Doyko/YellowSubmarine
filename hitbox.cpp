@@ -139,9 +139,9 @@ bool Hitbox::checkCollision(const int x, const int y) const
     {
         for(int j = ymin/TILE_HEIGHT; j <= ymax/TILE_HEIGHT; j++)
         {
-            if(Data::map->tileMap[j][i] != NULL && Data::map->tileMap[j][i]->getTangibility())
+            if((*Data::map)(j, i) != NULL && (*Data::map)(j, i)->getTangibility())
             {
-                if(checkCollision(x, y, Data::map->tileMap[j][i]->hitbox, i*32, j*32))
+                if(checkCollision(x, y, (*Data::map)(j, i)->hitbox, i*32, j*32))
                 {
                     return true;
                 }

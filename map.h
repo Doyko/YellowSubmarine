@@ -56,13 +56,14 @@ public:
     int getIdTileSand(int** m, const int i, const int j) const; // 54 tiles => 16 -> 69
     int getNbTileX() const;
     int getNbTileY() const;
+    Tile* operator()(const int x, const int y) const;
+    void updateAnimatedTiles();
+
+private:
 
     std::vector<Tile*> tileList;
     std::vector<AnimatedTile*> animatedTiles;
     Tile*** tileMap;
-
-private:
-
     int nbTileX;
     int nbTileY;
 };
