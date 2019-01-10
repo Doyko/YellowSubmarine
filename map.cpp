@@ -26,7 +26,9 @@ AnimatedTile::AnimatedTile(const int tang, const int x, const int y, const int w
 :
     Tile(tang, x, y, w, h),
     animation(new Animation(&Data::textureTile, sf::IntRect(x, y, w, h), nbSprite, speed))
-{}
+{
+    delete sprite;
+}
 
 void AnimatedTile::update()
 {
@@ -77,16 +79,13 @@ Map::Map(const std::string name)
 }
 
 Map::~Map()
-{/*
+{
     for(int i = 0; i < nbTileY; i++)
         delete[] tileMap[i];
     delete[] tileMap;
 
     for(size_t i = 0; i < tileList.size(); i++)
         delete tileList[i];
-
-    for(size_t i = 0; i < animatedTiles.size(); i++)
-        delete animatedTiles[i];*/
 }
 
 int** Map::readMap(const std::string name)
