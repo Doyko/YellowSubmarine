@@ -359,10 +359,10 @@ void Game::addEntity(const int x, const int y, const int idEntity) const
             Data::effects.push_back(new Chest(x, y));
             break;
         case 2:
-            Data::bonus.push_back(new LifeBonus(x, y));
+            Data::bonus.push_back(new Bonus(x, y, BuffType::life, Bonus::lifeDimension));
             break;
         case 3:
-            Data::bonus.push_back(new SpeedBonus(x, y));
+            Data::bonus.push_back(new Bonus(x, y, BuffType::speed, Bonus::speedDimension));
             break;
         case 4:
             Data::entities.push_back(new Shark(x, y));
@@ -398,7 +398,6 @@ void Game::drawVector(const std::vector<Bonus*> &vect)
 {
     for(size_t i = 0; i < vect.size(); i++)
     {
-        if(vect[i]->draw)
-            window.draw(*vect[i]->sprite);
+        window.draw(*vect[i]->sprite);
     }
 }

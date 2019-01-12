@@ -135,6 +135,7 @@ bool Ink::update()
     {
         if(Data::player->getLife() != 0)
             Data::player->addLife(-1);
+            Data::player->addBuff(BuffType::slow, 250);
         return true;
     }
 

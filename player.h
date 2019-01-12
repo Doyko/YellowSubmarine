@@ -6,6 +6,7 @@
 #include "entity.h"
 #include "animation.h"
 #include "projectile.h"
+#include "buff.h"
 
 #define MAXLIFE 3
 #define COOLDOWN 100
@@ -16,14 +17,15 @@ class Player : public MovableEntity, public TangibleEntity
 public:
 
     Player(const int x, const int y);
+    ~Player();
+
     bool update();
     bool move(const int x, const int y);
     void shoot();
     void setRotation();
-    ~Player();
-
     int getLife() const;
     void addLife(const int amout);
+    void addBuff(BuffType b, unsigned int t);
 
 private:
 
@@ -38,6 +40,7 @@ private:
 
     int life;
     int shootCD;
+    Buff<Player> buffs;
 
     static sf::IntRect dimension;
     static sf::IntRect animRight;
