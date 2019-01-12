@@ -30,9 +30,11 @@ public:
     MovableEntity(const int x, const int y, const sf::IntRect dimension);
     ~MovableEntity();
 
+    int getSpeedX() const;
+    int getSpeedY() const;
     void changeSpeed(const float x, const float y);
     virtual bool move(const int x, const int y) = 0;
-    
+
     int maxSpeed;
 
 protected:

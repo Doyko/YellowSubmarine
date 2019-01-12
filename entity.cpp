@@ -36,6 +36,16 @@ MovableEntity::MovableEntity(const int x, const int y, const sf::IntRect dimensi
     speedY(0)
 {}
 
+int MovableEntity::getSpeedX() const
+{
+    return speedX;
+}
+
+int MovableEntity::getSpeedY() const
+{
+    return speedY;
+}
+
 void MovableEntity::changeSpeed(const float x, const float y)
 {
     speedX += x;

@@ -13,7 +13,8 @@ Player::Player(const int x, const int y)
     MovableEntity(x, y, Player::dimension),
     TangibleEntity(x, y, Player::dimension),
     life(MAXLIFE),
-    shootCD(0)
+    shootCD(0),
+    buffs(this)
 {
     delete sprite;
     animations[int(AnimationIndex::moveRight)] = new Animation(&Data::textureEntity, Player::animRight, Player::nbSprite, Player::animSpeed);
@@ -27,7 +28,12 @@ int Player::getLife() const
 
 void Player::addLife(const int amout)
 {
-    life += amout;
+    if(buffs.is(BuffType::invincibility) == 0)
+    {
+        life += amout;
+        if(amout < 0)
+            addBuff(BuffType::invincibility, 50);
+    }
 }
 
 Player::~Player()
@@ -59,13 +65,14 @@ bool Player::update()
     else if(speedY < 0)
         changeSpeed(0,DECCELERATION);
 
-
     move(speedX/4, speedY/4);
 
     setRotation();
 
     if(shootCD)
         shootCD--;
+
+    buffs.update();
 
     return true;
 }
@@ -131,4 +138,9 @@ void Player::setRotation()
     }
     else
         sprite->setRotation(0);
+}
+
+void Player::addBuff(BuffType b, unsigned int t)
+{
+    buffs.addBuff(b, t);
 }
