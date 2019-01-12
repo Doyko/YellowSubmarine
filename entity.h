@@ -8,6 +8,38 @@
 
 class Hitbox;
 
+enum EntityType
+{
+    chest,
+    lifebonus,
+    speedbonus,
+    shark,
+    octopus,
+    mine,
+    barricade,
+};
+
+inline std::istream& operator>>(std::istream& is, EntityType& obj)
+{
+    std::string s;
+    is >> s;
+    if(s.compare("chest") == 0)
+        obj = EntityType::chest;
+    if(s.compare("lifebonus") == 0)
+        obj = EntityType::lifebonus;
+    if(s.compare("speedbonus") == 0)
+        obj = EntityType::speedbonus;
+    if(s.compare("shark") == 0)
+        obj = EntityType::shark;
+    if(s.compare("octopus") == 0)
+        obj = EntityType::octopus;
+    if(s.compare("mine") == 0)
+        obj = EntityType::mine;
+    if(s.compare("barricade") == 0)
+        obj = EntityType::barricade;
+    return is;
+}
+
 class Entity
 {
 

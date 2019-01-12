@@ -336,47 +336,49 @@ void Game::readEntity(const std::string fileName) const
     int nbEntities;
     int x;
     int y;
-    int idEntity;
+    EntityType entity;
 
-    ifs >> nbEntities;
-
-    for(int i = 0 ; i < nbEntities; i++)
+    while(ifs >> entity)
     {
-        ifs >> idEntity;
-        ifs >> x;
-        ifs >> y;
-        addEntity(x * TILE_WIDTH, y * TILE_HEIGHT, idEntity);
+        ifs >> nbEntities;
+        for(int i = 0 ; i < nbEntities; i++)
+        {
+            ifs >> x;
+            ifs >> y;
+            addEntity(x * TILE_WIDTH, y * TILE_HEIGHT, entity);
+        }
     }
     ifs.close();
 }
 
-void Game::addEntity(const int x, const int y, const int idEntity) const
+void Game::addEntity(const int x, const int y, const EntityType e) const
 {
-    switch (idEntity)
+    switch (e)
     {
-        case 1:
+        case EntityType::chest:
             Data::nbChest++;
             Data::effects.push_back(new Chest(x, y));
             break;
-        case 2:
+        case EntityType::lifebonus:
             Data::bonus.push_back(new Bonus(x, y, BuffType::life, Bonus::lifeDimension));
             break;
-        case 3:
+        case EntityType::speedbonus:
             Data::bonus.push_back(new Bonus(x, y, BuffType::speed, Bonus::speedDimension));
             break;
-        case 4:
+        case EntityType::shark:
             Data::entities.push_back(new Shark(x, y));
             break;
-        case 5:
+        case EntityType::octopus:
             Data::entities.push_back(new Octopus(x, y));
             break;
-        case 6:
+        case EntityType::mine:
             Data::entities.push_back(new Mine(x, y));
             break;
-        case 7:
+        case EntityType::barricade:
             Data::explosable.push_back(new Barricade(x, y));
             break;
         default:
+            std::cout << "miss" << '\n';
             break;
     }
 }

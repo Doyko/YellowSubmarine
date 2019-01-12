@@ -52,7 +52,7 @@ private:
 
     void printMessage();
     void readEntity(const std::string fileName) const;
-    void addEntity(const int x, const int y, const int idEntity) const;
+    void addEntity(const int x, const int y, const EntityType e) const;
 
     enum stateEnum{play, win, death};
 
