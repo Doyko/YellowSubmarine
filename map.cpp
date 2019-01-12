@@ -42,9 +42,36 @@ AnimatedTile::~AnimatedTile()
     sprite = NULL;
 }
 
-Map::Map(const std::string name)
+Map::Map()
+:
+    nbTileX(-1),
+    nbTileY(-1)
 {
-    int** m = readMap(name);
+    initParam();
+}
+
+Map::Map(const std::string name)
+:
+    nbTileX(-1),
+    nbTileY(-1)
+{
+    initParam();
+    readMap(name);
+}
+
+Map::~Map()
+{
+    freeMap();
+
+    for(size_t i = 0; i < tileList.size(); i++)
+        delete tileList[i];
+}
+
+void Map::readMap(const std::string name)
+{
+    freeMap();
+
+    int** m = readPGM(name);
     tileMap = new Tile**[nbTileY];
     for(int i = 0; i < nbTileY; i++)
     {
@@ -78,22 +105,55 @@ Map::Map(const std::string name)
     delete[] m;
 }
 
-Map::~Map()
+void Map::draw(sf::RenderWindow &window, const sf::View &view) const
 {
-    for(int i = 0; i < nbTileY; i++)
-        delete[] tileMap[i];
-    delete[] tileMap;
-
-    for(size_t i = 0; i < tileList.size(); i++)
-        delete tileList[i];
+    sf::Vector2f center = view.getCenter();
+    int minX = (center.x - WINDOW_WIDTH / 2) / TILE_WIDTH;
+    int minY = (center.y - WINDOW_HEIGHT / 2) / TILE_HEIGHT;
+    int maxX = ((center.x - 1 - WINDOW_WIDTH / 2) + WINDOW_WIDTH) / TILE_WIDTH;
+    int maxY = ((center.y - 1 - WINDOW_HEIGHT / 2) + WINDOW_HEIGHT) / TILE_HEIGHT;
+    for(int i = minY; i <= maxY; i++)
+    {
+        for(int j = minX; j <= maxX; j++)
+        {
+            if((*this)(i, j) != NULL)
+            {
+                (*this)(i, j)->sprite->setPosition(sf::Vector2f(j * TILE_WIDTH, i * TILE_HEIGHT));
+                window.draw(*(*this)(i, j)->sprite);
+            }
+        }
+    }
 }
 
-int** Map::readMap(const std::string name)
+int Map::getNbTileX() const
 {
-    std::ifstream ifs(name);
+    return nbTileX;
+}
+
+int Map::getNbTileY() const
+{
+    return nbTileY;
+}
+Tile* Map::operator()(const int x, const int y) const
+{
+    return tileMap[x][y];
+}
+
+void Map::updateAnimatedTiles()
+{
+    for(size_t i = 0; i < animatedTiles.size(); i++)
+    {
+        animatedTiles[i]->update();
+    }
+}
+
+void Map::initParam()
+{
+    std::ifstream ifs("level/tileParam.txt");
     int nbTile;
     int tangible;
 
+    ifs >> differentTiles;
     ifs >> nbTile;
     for(int i = 0; i < nbTile; i++)
     {
@@ -115,38 +175,15 @@ int** Map::readMap(const std::string name)
         animatedTiles.push_back(at);
         nbTile += nbSprite;
     }
-    ifs >> nbTileX;
-    ifs >> nbTileY;
-    int** m = new int*[nbTileY];
-    for(int i = 0; i < nbTileY; i++)
-    {
-        m[i] = new int[nbTileX];
-        for(int j = 0; j < nbTileX; j++)
-        {
-            ifs >> m[i][j];
-        }
-    }
-    ifs.close();
-    return m;
 }
 
-void Map::draw(sf::RenderWindow &window, const sf::View &view) const
+void Map::freeMap()
 {
-    sf::Vector2f center = view.getCenter();
-    int minX = (center.x - WINDOW_WIDTH / 2) / TILE_WIDTH;
-    int minY = (center.y - WINDOW_HEIGHT / 2) / TILE_HEIGHT;
-    int maxX = ((center.x - 1 - WINDOW_WIDTH / 2) + WINDOW_WIDTH) / TILE_WIDTH;
-    int maxY = ((center.y - 1 - WINDOW_HEIGHT / 2) + WINDOW_HEIGHT) / TILE_HEIGHT;
-    for(int i = minY; i <= maxY; i++)
+    if(nbTileY != -1)
     {
-        for(int j = minX; j <= maxX; j++)
-        {
-            if((*this)(i, j) != NULL)
-            {
-                (*this)(i, j)->sprite->setPosition(sf::Vector2f(j * TILE_WIDTH, i * TILE_HEIGHT));
-                window.draw(*(*this)(i, j)->sprite);
-            }
-        }
+        for(int i = 0; i < nbTileY; i++)
+            delete[] tileMap[i];
+        delete[] tileMap;
     }
 }
 
@@ -186,24 +223,36 @@ int Map::getIdTileSand(int** m, const int i, const int j) const
     return somme;
 }
 
-int Map::getNbTileX() const
+int** Map::readPGM(const std::string name)
 {
-    return nbTileX;
-}
+    std::ifstream ifs(name);
+    std::string buffer;
+    int greyLevel;
+    int val;
 
-int Map::getNbTileY() const
-{
-    return nbTileY;
-}
-Tile* Map::operator()(const int x, const int y) const
-{
-    return tileMap[x][y];
-}
+    ifs >> buffer;
 
-void Map::updateAnimatedTiles()
-{
-    for(size_t i = 0; i < animatedTiles.size(); i++)
+    if (buffer != "P2")
     {
-        animatedTiles[i]->update();
+        std::cout << "Error reading map in \"" << name << "\" : wrong file format !" << std::endl;
+        exit(1);
     }
+
+    ifs >> nbTileX;
+    ifs >> nbTileY;
+    ifs >> greyLevel;
+    
+    int** m = new int*[nbTileY];
+    for(int i = 0; i < nbTileY; i++)
+    {
+        m[i] = new int[nbTileX];
+        for(int j = 0; j < nbTileX; j++)
+        {
+            ifs >> val;
+            val = val / ( greyLevel / differentTiles);
+            m[i][j] = val;
+        }
+    }
+    ifs.close();
+    return m;
 }

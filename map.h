@@ -47,13 +47,12 @@ class Map
 
 public:
 
+    Map();
     Map(const std::string name);
     ~Map();
 
-    int** readMap(const std::string name);
+    void readMap(const std::string name);
     void draw(sf::RenderWindow &window, const sf::View &view) const;
-    int getIdTileRock(int** m, const int i, const int j) const; // 16 tiles => 0 -> 15
-    int getIdTileSand(int** m, const int i, const int j) const; // 54 tiles => 16 -> 69
     int getNbTileX() const;
     int getNbTileY() const;
     Tile* operator()(const int x, const int y) const;
@@ -61,6 +60,13 @@ public:
 
 private:
 
+    void initParam();
+    void freeMap();
+    int** readPGM(const std::string name);
+    int getIdTileRock(int** m, const int i, const int j) const; // 16 tiles => 0 -> 15
+    int getIdTileSand(int** m, const int i, const int j) const; // 54 tiles => 16 -> 69
+
+    int differentTiles;
     std::vector<Tile*> tileList;
     std::vector<AnimatedTile*> animatedTiles;
     Tile*** tileMap;

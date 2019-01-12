@@ -21,7 +21,7 @@ Hitbox::Hitbox(const char* fileName)
 
     if (buffer != "P1")
     {
-        std::cout << "Error reading hitbox in \"" << fileName << "\" : wrong file format" << std::endl;
+        std::cout << "Error reading hitbox in \"" << fileName << "\" : wrong file format !" << std::endl;
         exit(1);
     }
 

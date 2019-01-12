@@ -16,14 +16,15 @@ Game::Game(const std::string name)
 
     player = new Player(128, 32);
     Data::initPlayer(player);
-    map = NULL;
+
+    map = new Map("level/level1.pgm");
+    Data::initMap(map);
 }
 
 Game::~Game()
 {
     delete player;
-    if(map != NULL)
-        delete map;
+    delete map;
 }
 
 void Game::loop()
@@ -39,7 +40,7 @@ void Game::loop()
     if(map == NULL)
     {
         map = new Map("level/level.txt");
-        Data::initMap(map);
+
     }
 
     while(window.isOpen())
@@ -280,7 +281,6 @@ void Game::printMessage()
     else
         message.setTextureRect(sf::IntRect(0, 0, 420, 120));
 
-    message.setPosition(view.getCenter().x - message.getTextureRect().width / 2, view.getCenter().y - message.getTextureRect().height / 2);
 
     while(window.isOpen() && tick <= 510)
     {
@@ -300,6 +300,7 @@ void Game::printMessage()
             {
                 tick++;
                 window.draw(rect);
+                message.setPosition(view.getCenter().x - message.getTextureRect().width / 2, view.getCenter().y - message.getTextureRect().height / 2);
                 message.setColor(sf::Color(255, 255, 255, tick - 255));
                 window.draw(message);
             }
