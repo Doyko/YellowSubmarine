@@ -29,51 +29,6 @@ Game::~Game()
     delete map;
 }
 
-void Game::loop()
-{
-    if(!window.isOpen())
-        return;
-
-    state = play;
-
-    clearVectors();
-    readEntity("level/entity" + std::to_string(level) + ".txt");
-    map->readMap("level/level" + std::to_string(level) + ".pgm");
-
-    while(window.isOpen())
-    {
-        if(clock.getElapsedTime() >= sf::milliseconds(20))
-        {
-            clock.restart();
-
-            keyEvent();
-            pollEvent();
-            update();
-            draw();
-
-            window.display();
-
-            if(state == win)
-            {
-                printMessage();
-                if(level == NBLEVEL)
-                {
-                    level = 1;
-                    menuLoop();
-                }
-                else
-                    level++;
-            }
-            if(state == death)
-            {
-                printMessage();
-                level = 1;
-                menuLoop();
-            }
-        }
-    }
-}
-
 void Game::menuLoop()
 {
     view.setCenter(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
@@ -122,44 +77,51 @@ void Game::menuLoop()
     }
 }
 
-void Game::drawMenu(const int choice, const int tick)
+void Game::loop()
 {
-    window.clear(sf::Color(255, 0, 0));
-    background.setPosition(0, 0);
+    if(!window.isOpen())
+        return;
 
-    for(int i = 0; i < WINDOW_WIDTH / background.getTextureRect().width + 1; i++)
+    state = play;
+
+    clearVectors();
+    readEntity("level/entity" + std::to_string(level) + ".txt");
+    map->readMap("level/level" + std::to_string(level) + ".pgm");
+
+    while(window.isOpen())
     {
-        window.draw(background);
-        background.move(background.getTextureRect().width, 0);
-    }
+        if(clock.getElapsedTime() >= sf::milliseconds(20))
+        {
+            clock.restart();
 
-    menu.setColor(sf::Color(255, 255, 255, 255 - tick));
-    window.draw(menu);
+            keyEvent();
+            pollEvent();
+            update();
+            draw();
 
-    if(tick == 0)
-    {
-        player->sprite->setPosition(WINDOW_WIDTH / 2 - menu.getTextureRect().width / 2 + 40, WINDOW_HEIGHT / 2 + menu.getTextureRect().height / 2 - (2 - choice) * 70 + 15);
-        window.draw(*player->sprite);
-    }
-}
+            window.display();
 
-void Game::update()
-{
-    player->update();
-
-    updateView();
-
-    map->updateAnimatedTiles();
-    updateVector(Data::effects);
-    updateVector(Data::explosable);
-    updateVector(Data::entities);
-    updateVector(Data::bonus);
-    if(state == play)
-    {
-        if(player->getLife() == 0)
-            state = death;
-        if(Data::nbChest == 0)
-            state = win;
+            if(state == win)
+            {
+                if(level == NBLEVEL)
+                {
+                    level = 1;
+                    printMessage();
+                    menuLoop();
+                }
+                else
+                {
+                    level++;
+                    nextLevel();
+                }
+            }
+            if(state == death)
+            {
+                level = 1;
+                printMessage();
+                menuLoop();
+            }
+        }
     }
 }
 
@@ -191,24 +153,25 @@ void Game::pollEvent()
         }
     }
 }
-void Game::draw()
+
+void Game::update()
 {
-    window.clear(sf::Color(21, 96, 189));
-    window.setView(view);
+    player->update();
 
-    drawBackground();
+    updateView();
 
-    map->draw(window, view);
-
-    drawVector(Data::effects);
-    drawVector(Data::explosable);
-    drawVector(Data::entities);
-    drawVector(Data::bonus);
-
-    window.draw(*(player->sprite));
-    drawForeground();
-
-    drawHub();
+    map->updateAnimatedTiles();
+    updateVector(Data::effects);
+    updateVector(Data::explosable);
+    updateVector(Data::entities);
+    updateVector(Data::bonus);
+    if(state == play)
+    {
+        if(player->getLife() == 0)
+            state = death;
+        if(Data::nbChest == 2)
+            state = win;
+    }
 }
 
 void Game::updateView()
@@ -231,6 +194,69 @@ void Game::updateView()
         y = player->posY;
 
     view.setCenter(x, y);
+}
+
+
+void Game::updateVector(std::vector<Bonus*> &vect) const
+{
+    for(size_t i = 0; i < vect.size(); i++)
+    {
+        if(!vect[i]->interact())
+        {
+            delete vect[i];
+            vect.erase(vect.begin() + i);
+            i--;
+        }
+    }
+}
+
+void Game::drawMenu(const int choice, const int tick)
+{
+    window.clear(sf::Color(255, 0, 0));
+    background.setPosition(0, 0);
+
+    for(int i = 0; i < WINDOW_WIDTH / background.getTextureRect().width + 1; i++)
+    {
+        window.draw(background);
+        background.move(background.getTextureRect().width, 0);
+    }
+
+    menu.setColor(sf::Color(255, 255, 255, 255 - tick));
+    window.draw(menu);
+
+    if(tick == 0)
+    {
+        player->sprite->setPosition(WINDOW_WIDTH / 2 - menu.getTextureRect().width / 2 + 40, WINDOW_HEIGHT / 2 + menu.getTextureRect().height / 2 - (2 - choice) * 70 + 15);
+        window.draw(*player->sprite);
+    }
+}
+
+void Game::draw()
+{
+    window.clear(sf::Color(21, 96, 189));
+    window.setView(view);
+
+    drawBackground();
+
+    map->draw(window, view);
+
+    drawVector(Data::effects);
+    drawVector(Data::explosable);
+    drawVector(Data::entities);
+    drawVector(Data::bonus);
+
+    window.draw(*(player->sprite));
+    drawForeground();
+
+    drawHub();
+}
+
+void Game::drawVector(const std::vector<Bonus*> &vect)
+{
+    for(size_t i = 0; i < vect.size(); i++)
+    {
+        window.draw(*vect[i]->sprite);
+    }
 }
 
 void Game::drawBackground()
@@ -295,7 +321,6 @@ void Game::printMessage()
     else
         message.setTextureRect(sf::IntRect(0, 0, 420, 120));
 
-
     while(window.isOpen() && tick <= 510)
     {
         if(clock.getElapsedTime() >= sf::milliseconds(20))
@@ -322,6 +347,53 @@ void Game::printMessage()
             pollEvent();
         }
     }
+}
+
+void Game::nextLevel()
+{
+    std::cout << level << '\n';
+    int tick = 0;
+    sf::RectangleShape rect(sf::Vector2f(WINDOW_WIDTH, WINDOW_HEIGHT));
+    rect.setFillColor(sf::Color(0, 0, 0));
+
+    while(window.isOpen() && tick <= 510)
+    {
+        if(clock.getElapsedTime() >= sf::milliseconds(20))
+        {
+            clock.restart();
+            if(tick < 255)
+            {
+                tick += 3;
+                update();
+                draw();
+                rect.setPosition(view.getCenter().x - WINDOW_WIDTH / 2, view.getCenter().y - WINDOW_HEIGHT / 2);
+                rect.setFillColor(sf::Color(0, 0, 0, tick));
+                window.draw(rect);
+            }
+            else
+            {
+                tick++;
+                window.draw(rect);
+                message.setColor(sf::Color(255, 255, 255, tick - 255));
+                printLevel();
+            }
+            window.display();
+            pollEvent();
+        }
+    }
+}
+
+void Game::printLevel()
+{
+    message.setTextureRect(sf::IntRect(0, 120, 240, 120));
+    message.setPosition(view.getCenter().x - message.getTextureRect().width, view.getCenter().y - message.getTextureRect().height / 2);
+    window.draw(message);
+    message.setTextureRect(sf::IntRect(60 * (level / 10), 240, 60, 120));
+    message.move(280, 0);
+    window.draw(message);
+    message.setTextureRect(sf::IntRect(60 * (level % 10), 240, 60, 120));
+    message.move(60, 0);
+    window.draw(message);
 }
 
 void Game::readEntity(const std::string fileName) const
@@ -353,7 +425,7 @@ void Game::readEntity(const std::string fileName) const
 
 void Game::addEntity(const int x, const int y, const EntityType e) const
 {
-    switch (e)
+    switch(e)
     {
         case EntityType::chest:
             Data::nbChest++;
@@ -380,26 +452,5 @@ void Game::addEntity(const int x, const int y, const EntityType e) const
         default:
             std::cout << "miss" << '\n';
             break;
-    }
-}
-
-void Game::updateVector(std::vector<Bonus*> &vect) const
-{
-    for(size_t i = 0; i < vect.size(); i++)
-    {
-        if(!vect[i]->interact())
-        {
-            delete vect[i];
-            vect.erase(vect.begin() + i);
-            i--;
-        }
-    }
-}
-
-void Game::drawVector(const std::vector<Bonus*> &vect)
-{
-    for(size_t i = 0; i < vect.size(); i++)
-    {
-        window.draw(*vect[i]->sprite);
     }
 }

@@ -22,22 +22,23 @@ class Game
 public:
 
     Game(const std::string name);
+    ~Game();
+
     void menuLoop();
     void loop();
-    ~Game();
 
 private:
 
-    void drawMenu(const int choice, const int tick);
-
-    void update();
     void keyEvent();
     void pollEvent();
+
+    void update();
     void updateView();
     template<typename T>
     void updateVector(std::vector<T> &vect) const;
     void updateVector(std::vector<Bonus*> &vect) const;
 
+    void drawMenu(const int choice, const int tick);
     void draw();
     template<typename T>
     void drawVector(const std::vector<T> &vect);
@@ -51,6 +52,8 @@ private:
     void clearVector(std::vector<T> &vect) const;
 
     void printMessage();
+    void nextLevel();
+    void printLevel();
     void readEntity(const std::string fileName) const;
     void addEntity(const int x, const int y, const EntityType e) const;
 
