@@ -22,7 +22,9 @@ bool Mob::move(const int x, const int y)
     int moveY = y;
     bool flag = false;
 
-    while(moveX != 0 && hitbox->checkCollision(posX + moveX, posY))
+    while(moveX != 0
+        && (hitbox->checkCollision(posX + moveX, posY)
+        || hitbox->checkCollision(posX + moveX, posY, Data::explosable)))
     {
         moveX > 0 ? moveX-- : moveX++;
         speedX = 0;
@@ -30,7 +32,9 @@ bool Mob::move(const int x, const int y)
     }
     posX = posX + moveX;
 
-    while(moveY != 0 && hitbox->checkCollision(posX, posY + moveY))
+    while(moveY != 0
+        && (hitbox->checkCollision(posX, posY + moveY)
+        || hitbox->checkCollision(posX, posY + moveY, Data::explosable)))
     {
         moveY > 0 ? moveY-- : moveY++;
         speedY = 0;

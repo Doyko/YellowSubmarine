@@ -128,6 +128,16 @@ bool Hitbox::checkCollision(const int x, const int y, const Hitbox* hb, const in
     return false;
 }
 
+bool Hitbox::checkCollision(const int x, const int y, const std::vector<TangibleEntity*> v)
+{
+    for(auto & it : v)
+    {
+        if(checkCollision(x,y, it->hitbox, it->posX, it->posY))
+            return true;
+    }
+    return false;
+}
+
 bool Hitbox::checkCollision(const int x, const int y) const
 {
     int xmin = x;

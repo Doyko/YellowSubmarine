@@ -6,6 +6,7 @@
 
 class Map;
 class Tile;
+class TangibleEntity;
 
 class Hitbox
 {
@@ -24,6 +25,7 @@ public:
     bool checkCollision(const int x, const int y, const Hitbox* hb, const int hbX, const int hbY) const;
     bool checkCollision(const int x, const int y) const;
     bool checkCollision(const int x, const int y, const Tile* t, const int xTile, const int yTile) const;
+    bool checkCollision(const int x, const int y, const std::vector<TangibleEntity*> v);
 
 private :
     int width;
