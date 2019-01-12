@@ -141,10 +141,10 @@ void Map::draw(sf::RenderWindow &window, const sf::View &view) const
     {
         for(int j = minX; j <= maxX; j++)
         {
-            if(tileMap[i][j] != NULL)
+            if((*this)(i, j) != NULL)
             {
-                tileMap[i][j]->sprite->setPosition(sf::Vector2f(j * TILE_WIDTH, i * TILE_HEIGHT));
-                window.draw(*(tileMap[i][j]->sprite));
+                (*this)(i, j)->sprite->setPosition(sf::Vector2f(j * TILE_WIDTH, i * TILE_HEIGHT));
+                window.draw(*(*this)(i, j)->sprite);
             }
         }
     }
@@ -197,10 +197,7 @@ int Map::getNbTileY() const
 }
 Tile* Map::operator()(const int x, const int y) const
 {
-    if(x >= 0 && x < nbTileX && y >= 0 && y < nbTileY)
-        return tileMap[x][y];
-    else
-        return NULL;
+    return tileMap[x][y];
 }
 
 void Map::updateAnimatedTiles()
