@@ -169,7 +169,7 @@ void Game::update()
     {
         if(player->getLife() == 0)
             state = death;
-        if(Data::nbChest == 2)
+        if(Data::nbChest == 0)
             state = win;
     }
 }
@@ -212,6 +212,7 @@ void Game::updateVector(std::vector<Bonus*> &vect) const
 
 void Game::drawMenu(const int choice, const int tick)
 {
+    player->setDirection(0);
     window.clear(sf::Color(255, 0, 0));
     background.setPosition(0, 0);
 

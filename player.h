@@ -22,12 +22,14 @@ public:
     bool update();
     bool move(const int x, const int y);
     void shoot();
-    void setRotation();
+    void setDirection(const int dir);
     int getLife() const;
     void addLife(const int amout);
     void addBuff(BuffType b, unsigned int t);
 
 private:
+
+    void setRotation();
 
     enum class AnimationIndex
     {

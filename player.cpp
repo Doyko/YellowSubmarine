@@ -22,21 +22,6 @@ Player::Player(const int x, const int y)
     sprite = animations[int(currentAnimation)]->currentSprite;
 }
 
-int Player::getLife() const
-{
-    return life;
-}
-
-void Player::addLife(const int amout)
-{
-    if(buffs.is(BuffType::invincibility) == 0)
-    {
-        life += amout;
-        if(amout < 0)
-            addBuff(BuffType::invincibility, 50);
-    }
-}
-
 Player::~Player()
 {
     for(int i = 0; i < int(AnimationIndex::count); i++)
@@ -121,6 +106,31 @@ void Player::shoot()
         Data::effects.push_back(new Torpedo(posX - 25, posY + sprite->getTextureRect().height / 2 + 3, Torpedo::dimLeft, Torpedo::speedLeft));
 }
 
+void Player::setDirection(const int dir)
+{
+    sprite = animations[dir]->currentSprite;;
+}
+
+int Player::getLife() const
+{
+    return life;
+}
+
+void Player::addLife(const int amout)
+{
+    if(buffs.is(BuffType::invincibility) == 0)
+    {
+        life += amout;
+        if(amout < 0)
+            addBuff(BuffType::invincibility, 50);
+    }
+}
+
+void Player::addBuff(BuffType b, unsigned int t)
+{
+    buffs.addBuff(b, t);
+}
+
 void Player::setRotation()
 {
     if(speedY > 0)
@@ -139,9 +149,4 @@ void Player::setRotation()
     }
     else
         sprite->setRotation(0);
-}
-
-void Player::addBuff(BuffType b, unsigned int t)
-{
-    buffs.addBuff(b, t);
 }

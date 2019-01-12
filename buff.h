@@ -15,7 +15,9 @@ enum BuffType
 template<typename T>
 class Buff
 {
+
 public:
+
     Buff(T* t);
 
     void update();
@@ -23,6 +25,7 @@ public:
     int is(BuffType b);
 
 private:
+
     T* objet;
     std::map<BuffType, unsigned int> buffMap;
 
@@ -34,7 +37,10 @@ private:
 };
 
 template<typename T>
-Buff<T>::Buff(T* t): objet(t){}
+Buff<T>::Buff(T* t)
+:
+    objet(t)
+{}
 
 template<typename T>
 void Buff<T>::update()
@@ -116,5 +122,5 @@ void Buff<T>::slow(int i)
 template<typename T>
 void Buff<T>::quickfire(int i)
 {
-    
+
 }

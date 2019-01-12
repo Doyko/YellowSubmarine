@@ -63,7 +63,7 @@ Map::Map(const std::string fileName)
 Map::~Map()
 {
     freeMap();
-    
+
     for(size_t i = 0; i < tileList.size(); i++)
         delete tileList[i];
 }
@@ -198,13 +198,13 @@ void Map::freeMap()
 int Map::getIdTileRock(int** m, const int i, const int j) const
 {
     int somme = 0;
-    if(i - 1 < 0 || m[i - 1][j] != 0)
+    if(i - 1 < 0 || m[i - 1][j] == 1 || m[i - 1][j] == 2)
         somme += 1;
-    if(i + 1 >= nbTileY || m[i + 1][j] != 0)
+    if(i + 1 >= nbTileY || m[i + 1][j] == 1 || m[i + 1][j] == 2)
         somme += 4;
-    if(j - 1 < 0 || m[i][j - 1] != 0)
+    if(j - 1 < 0 || m[i][j - 1] == 1 || m[i][j - 1] == 2)
         somme += 8;
-    if(j + 1 >= nbTileX || m[i][j + 1] != 0)
+    if(j + 1 >= nbTileX || m[i][j + 1] == 1 || m[i][j + 1] == 2)
         somme += 2;
     return somme;
 }
