@@ -18,6 +18,7 @@ Player::Player(const int x, const int y)
     delete sprite;
     animations[int(AnimationIndex::moveRight)] = new Animation(&Data::textureEntity, Player::animRight, Player::nbSprite, Player::animSpeed);
     animations[int(AnimationIndex::moveLeft)] = new Animation(&Data::textureEntity, Player::animLeft, Player::nbSprite, Player::animSpeed);
+    sprite = animations[int(currentAnimation)]->currentSprite;
 }
 
 int Player::getLife() const

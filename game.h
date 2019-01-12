@@ -11,6 +11,8 @@
 #include "projectile.h"
 #include "bonus.h"
 
+#define NBLEVEL 1
+
 class Player;
 class Bonus;
 
@@ -29,6 +31,7 @@ private:
     void drawMenu(const int choice, const int tick);
 
     void update();
+    void keyEvent();
     void pollEvent();
     void updateView();
     template<typename T>
@@ -48,7 +51,7 @@ private:
     void clearVector(std::vector<T> &vect) const;
 
     void printMessage();
-    void readEntity(const std::string filename) const;
+    void readEntity(const std::string fileName) const;
     void addEntity(const int x, const int y, const int idEntity) const;
 
     enum stateEnum{play, win, death};
@@ -65,6 +68,7 @@ private:
     Map* map;
     Player* player;
 
+    int level;
     stateEnum state;
 };
 

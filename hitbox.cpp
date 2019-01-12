@@ -16,12 +16,18 @@ Hitbox::Hitbox(const int w, const int h, char** t):
 Hitbox::Hitbox(const char* fileName)
 {
     std::ifstream ifs(fileName);
+    if(!ifs)
+    {
+        std::cout << "Can't open \"" << fileName << "\"." << std::endl;
+        exit(0);
+    }
+
     std::string buffer;
     ifs >> buffer;
 
     if (buffer != "P1")
     {
-        std::cout << "Error reading hitbox in \"" << fileName << "\" : wrong file format !" << std::endl;
+        std::cout << "Error reading hitbox in \"" << fileName << "\" : wrong file format" << std::endl;
         exit(1);
     }
 

@@ -17,8 +17,10 @@ Game::Game(const std::string name)
     player = new Player(128, 32);
     Data::initPlayer(player);
 
-    map = new Map("level/level1.pgm");
+    map = new Map();
     Data::initMap(map);
+
+    level = 1;
 }
 
 Game::~Game()
@@ -35,13 +37,8 @@ void Game::loop()
     state = play;
 
     clearVectors();
-    readEntity("level/entity.txt");
-
-    if(map == NULL)
-    {
-        map = new Map("level/level.txt");
-
-    }
+    readEntity("level/entity" + std::to_string(level) + ".txt");
+    map->readMap("level/level" + std::to_string(level) + ".pgm");
 
     while(window.isOpen())
     {
@@ -49,25 +46,28 @@ void Game::loop()
         {
             clock.restart();
 
-            if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-                player->changeSpeed(0, -ACCELERATION);
-            if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-                player->changeSpeed(0, ACCELERATION);
-            if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-                player->changeSpeed(ACCELERATION, 0);
-            if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-                player->changeSpeed(-ACCELERATION, 0);
-            if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
-                player->shoot();
-
+            keyEvent();
             pollEvent();
             update();
             draw();
+
             window.display();
 
-            if(state != play)
+            if(state == win)
             {
                 printMessage();
+                if(level == NBLEVEL)
+                {
+                    level = 1;
+                    menuLoop();
+                }
+                else
+                    level++;
+            }
+            if(state == death)
+            {
+                printMessage();
+                level = 1;
                 menuLoop();
             }
         }
@@ -161,6 +161,20 @@ void Game::update()
         if(Data::nbChest == 0)
             state = win;
     }
+}
+
+void Game::keyEvent()
+{
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+        player->changeSpeed(0, -ACCELERATION);
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+        player->changeSpeed(0, ACCELERATION);
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+        player->changeSpeed(ACCELERATION, 0);
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+        player->changeSpeed(-ACCELERATION, 0);
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+        player->shoot();
 }
 
 void Game::pollEvent()
@@ -310,9 +324,15 @@ void Game::printMessage()
     }
 }
 
-void Game::readEntity(const std::string filename) const
+void Game::readEntity(const std::string fileName) const
 {
-    std::ifstream ifs(filename);
+    std::ifstream ifs(fileName);
+    if(!ifs)
+    {
+        std::cout << "Can't open \"" << fileName << "\"." << std::endl;
+        exit(0);
+    }
+
     int nbEntities;
     int x;
     int y;

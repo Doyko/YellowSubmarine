@@ -48,10 +48,10 @@ class Map
 public:
 
     Map();
-    Map(const std::string name);
+    Map(const std::string fileName);
     ~Map();
 
-    void readMap(const std::string name);
+    void readMap(const std::string fileName);
     void draw(sf::RenderWindow &window, const sf::View &view) const;
     int getNbTileX() const;
     int getNbTileY() const;
@@ -62,7 +62,7 @@ private:
 
     void initParam();
     void freeMap();
-    int** readPGM(const std::string name);
+    int** readPGM(const std::string fileName);
     int getIdTileRock(int** m, const int i, const int j) const; // 16 tiles => 0 -> 15
     int getIdTileSand(int** m, const int i, const int j) const; // 54 tiles => 16 -> 69
 

@@ -28,6 +28,7 @@ AnimatedTile::AnimatedTile(const int tang, const int x, const int y, const int w
     animation(new Animation(&Data::textureTile, sf::IntRect(x, y, w, h), nbSprite, speed))
 {
     delete sprite;
+    sprite = animation->currentSprite;
 }
 
 void AnimatedTile::update()
@@ -50,19 +51,19 @@ Map::Map()
     initParam();
 }
 
-Map::Map(const std::string name)
+Map::Map(const std::string fileName)
 :
     nbTileX(-1),
     nbTileY(-1)
 {
     initParam();
-    readMap(name);
+    readMap(fileName);
 }
 
 Map::~Map()
 {
     freeMap();
-
+    
     for(size_t i = 0; i < tileList.size(); i++)
         delete tileList[i];
 }
@@ -149,7 +150,14 @@ void Map::updateAnimatedTiles()
 
 void Map::initParam()
 {
-    std::ifstream ifs("level/tileParam.txt");
+    const std::string fileName = "level/tileParam.txt";
+    std::ifstream ifs(fileName);
+    if(!ifs)
+    {
+        std::cout << "Can't open \"" << fileName << "\"." << std::endl;
+        exit(0);
+    }
+
     int nbTile;
     int tangible;
 
@@ -223,9 +231,15 @@ int Map::getIdTileSand(int** m, const int i, const int j) const
     return somme;
 }
 
-int** Map::readPGM(const std::string name)
+int** Map::readPGM(const std::string fileName)
 {
-    std::ifstream ifs(name);
+    std::ifstream ifs(fileName);
+    if(!ifs)
+    {
+        std::cout << "Can't open \"" << fileName << "\"." << std::endl;
+        exit(0);
+    }
+
     std::string buffer;
     int greyLevel;
     int val;
@@ -234,14 +248,14 @@ int** Map::readPGM(const std::string name)
 
     if (buffer != "P2")
     {
-        std::cout << "Error reading map in \"" << name << "\" : wrong file format !" << std::endl;
+        std::cout << "Error reading map in \"" << fileName << "\" : wrong file format !" << std::endl;
         exit(1);
     }
 
     ifs >> nbTileX;
     ifs >> nbTileY;
     ifs >> greyLevel;
-    
+
     int** m = new int*[nbTileY];
     for(int i = 0; i < nbTileY; i++)
     {
