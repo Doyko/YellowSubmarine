@@ -151,13 +151,19 @@ bool Hitbox::checkCollision(const int x, const int y) const
     int ymin = y;
     int ymax = y + height - 1;
 
-    for(int i = xmin/TILE_WIDTH; i <= xmax/TILE_WIDTH; i++)
+    if(xmin < 0 || xmax >= Data::map->getNbTileX() * TILE_WIDTH)
+        return true;
+
+    if(ymin < 0 || ymax >= Data::map->getNbTileY() * TILE_HEIGHT)
+        return true;
+
+    for(int i = xmin/TILE_WIDTH; i <= xmax / TILE_WIDTH; i++)
     {
-        for(int j = ymin/TILE_HEIGHT; j <= ymax/TILE_HEIGHT; j++)
+        for(int j = ymin / TILE_HEIGHT; j <= ymax / TILE_HEIGHT; j++)
         {
             if((*Data::map)(j, i) != NULL && (*Data::map)(j, i)->getTangibility())
             {
-                if(checkCollision(x, y, (*Data::map)(j, i)->hitbox, i*32, j*32))
+                if(checkCollision(x, y, (*Data::map)(j, i)->hitbox, i * 32, j * 32))
                 {
                     return true;
                 }

@@ -54,7 +54,7 @@ public:
 
     Shark(const int x, const int y);
     ~Shark();
-    
+
     bool update();
 
     enum class AnimationIndex

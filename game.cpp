@@ -86,43 +86,46 @@ void Game::loop()
 
     state = play;
 
-    clearVectors();
-    readEntity("level/entity" + std::to_string(level) + ".txt");
-    map->readMap("level/level" + std::to_string(level) + ".pgm");
-    player->setMaxLife();
-    player->setMaxSpeed();
-
-    while(window.isOpen() && state == play)
+    while(state == play)
     {
-        if(clock.getElapsedTime() >= sf::milliseconds(20))
+        clearVectors();
+        readEntity("level/entity" + std::to_string(level) + ".txt");
+        map->readMap("level/level" + std::to_string(level) + ".pgm");
+        player->setMaxLife();
+
+        while(window.isOpen() && state == play)
         {
-            clock.restart();
-
-            keyEvent();
-            pollEvent();
-            update();
-            draw();
-
-            window.display();
-
-            if(state == win)
+            if(clock.getElapsedTime() >= sf::milliseconds(20))
             {
-                if(level == NBLEVEL)
-                {
-                    level = 1;
-                    printMessage();
-                }
-                else
-                {
-                    level++;
-                    nextLevel();
-                }
+                clock.restart();
+
+                keyEvent();
+                pollEvent();
+                update();
+                draw();
+
+                window.display();
             }
-            if(state == death)
+        }
+
+        if(state == win)
+        {
+            if(level == NBLEVEL)
             {
                 level = 1;
                 printMessage();
             }
+            else
+            {
+                level++;
+                nextLevel();
+                state = play;
+            }
+        }
+        if(state == death)
+        {
+            level = 1;
+            printMessage();
         }
     }
 }
@@ -314,10 +317,10 @@ void Game::drawHub()
 
 void Game::clearVectors() const
 {
-    clearVector(Data::effects);
     clearVector(Data::explosable);
     clearVector(Data::entities);
     clearVector(Data::bonus);
+    clearVector(Data::effects);
 }
 
 void Game::printMessage()
