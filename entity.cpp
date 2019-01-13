@@ -21,6 +21,11 @@ Entity::~Entity()
     }
 }
 
+void Entity::destroy()
+{
+    delete this;
+}
+
 bool Entity::update()
 {
     return false;

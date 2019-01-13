@@ -10,6 +10,7 @@ class Mob : public MovableEntity, public TangibleEntity
 
 public :
     Mob(const int x, const int y, const sf::IntRect dimension);
+
     bool update();
     bool move(const int x, const int y);
 };
@@ -22,8 +23,11 @@ public:
     enum stateEnum{up, down};
 
     Octopus(const int x, const int y);
-    bool update();
     ~Octopus();
+
+    bool update();
+
+private:
 
     stateEnum state;
     int tick;
@@ -41,7 +45,11 @@ class Mine : public Mob
 public:
     Mine(const int x, const int y);
     ~Mine();
+
+    void destroy();
     bool update();
+
+private:
 
     static sf::IntRect dimension;
     int center;
@@ -56,6 +64,8 @@ public:
     ~Shark();
 
     bool update();
+
+private:
 
     enum class AnimationIndex
     {

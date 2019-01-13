@@ -11,7 +11,7 @@
 #include "projectile.h"
 #include "bonus.h"
 
-#define NBLEVEL 1
+#define NBLEVEL 2
 
 class Player;
 class Bonus;
@@ -84,7 +84,7 @@ void Game::updateVector(std::vector<T> &vect) const
     {
         if(vect[i]->update())
         {
-            delete vect[i];
+            vect[i]->destroy();
             vect.erase(vect.begin() + i);
             i--;
         }

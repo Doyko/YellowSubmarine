@@ -364,7 +364,6 @@ void Game::printMessage()
 
 void Game::nextLevel()
 {
-    std::cout << level << '\n';
     int tick = 0;
     sf::RectangleShape rect(sf::Vector2f(WINDOW_WIDTH, WINDOW_HEIGHT));
     rect.setFillColor(sf::Color(0, 0, 0));

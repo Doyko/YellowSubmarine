@@ -64,12 +64,25 @@ Octopus::Octopus(const int x, const int y)
     speedY = 1;
 }
 
+Octopus::~Octopus()
+{
+    delete spriteUp;
+    delete spriteDown;
+    sprite = NULL;
+}
+
 bool Octopus::update()
 {
+    if(checkCollision(Data::player))
+    {
+        if(Data::player->getLife() != 0)
+            Data::player->addLife(-1);
+    }
+
     if(state == down)
     {
         tick--;
-        if(tick == 0 || move(speedX, speedY))
+        if(move(speedX, speedY) || tick == 0)
         {
             state = up;
             tick = 30;
@@ -82,7 +95,7 @@ bool Octopus::update()
     else
     {
         tick--;
-        if(tick == 0 || move(speedX, speedY))
+        if(move(speedX, speedY) || tick == 0)
         {
             state = down;
             tick = 110;
@@ -103,13 +116,6 @@ bool Octopus::update()
     return false;
 }
 
-Octopus::~Octopus()
-{
-    delete spriteUp;
-    delete spriteDown;
-    sprite = NULL;
-}
-
 //-----Mine-----
 
 sf::IntRect Mine::dimension = sf::IntRect(32,64,32,64);
@@ -126,7 +132,13 @@ Mine::Mine(const int x, const int y)
 
 Mine::~Mine()
 {
+
+}
+
+void Mine::destroy()
+{
     Data::effects.push_back(new Explosion(posX - 32, posY - 32));
+    delete this;
 }
 
 bool Mine::update()

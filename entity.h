@@ -51,6 +51,8 @@ public:
 
     Entity(const int x, const int y, const sf::IntRect dimension);
     virtual ~Entity();
+    virtual void destroy();
+
     virtual bool update();
 
     int posX;

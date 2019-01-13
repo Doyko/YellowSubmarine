@@ -143,7 +143,7 @@ bool Ink::update()
     {
         if(checkCollision(Data::entities[i]))
         {
-            delete Data::entities[i];
+            Data::entities[i]->destroy();
             Data::entities.erase(Data::entities.begin() + i);
             return true;
         }

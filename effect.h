@@ -73,6 +73,8 @@ public:
     Barricade(const int x, const int y);
     ~Barricade();
 
+    void destroy();
+    
 private:
 
     static sf::IntRect dimension;

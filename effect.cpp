@@ -38,7 +38,7 @@ void Explosion::trigger()
     {
         if(checkCollision(Data::explosable[i]))
         {
-            delete Data::explosable[i];
+            Data::explosable[i]->destroy();
             Data::explosable.erase(Data::explosable.begin() + i);
             i--;
         }
@@ -48,7 +48,7 @@ void Explosion::trigger()
     {
         if(checkCollision(Data::entities[i]))
         {
-            delete Data::entities[i];
+            Data::entities[i]->destroy();
             Data::entities.erase(Data::entities.begin() + i);
             i--;
         }
@@ -158,7 +158,13 @@ Barricade::Barricade(const int x, const int y)
 
 Barricade::~Barricade()
 {
+
+}
+
+void Barricade::destroy()
+{
     Data::effects.push_back(new Debris(posX - 32, posY));
+    delete this;
 }
 
 //-----Chest-----
@@ -184,6 +190,7 @@ bool Chest::update()
         {
             Data::nbChest--;
             open = true;
+            delete sprite;
             sprite = spriteOpen;
         }
     }
@@ -192,5 +199,5 @@ bool Chest::update()
 
 Chest::~Chest()
 {
-    //delete spriteOpen;
+
 }
