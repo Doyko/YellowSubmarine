@@ -22,18 +22,17 @@ public:
 
     void update();
     void addBuff(BuffType b, unsigned int t);
-    int is(BuffType b);
+    int duration(BuffType b);
 
 private:
 
     T* objet;
     std::map<BuffType, unsigned int> buffMap;
 
-    void invincibility(int i);
-    void life(int i);
-    void speed(int i);
-    void slow(int i);
-    void quickfire(int i);
+    void life();
+    void speed();
+    void slow();
+    void quickfire();
 };
 
 template<typename T>
@@ -53,16 +52,16 @@ void Buff<T>::update()
         switch (it.first)
         {
         case BuffType::life :
-            life(it.second);
+            life();
             break;
         case BuffType::speed :
-            speed(it.second);
+            speed();
             break;
         case BuffType::slow :
-            slow(it.second);
+            slow();
             break;
         case BuffType::quickfire :
-            quickfire(it.second);
+            quickfire();
             break;
         default:
             break;
@@ -77,50 +76,47 @@ void Buff<T>::addBuff(BuffType b, unsigned int t)
 }
 
 template<typename T>
-int Buff<T>::is(BuffType b)
+int Buff<T>::duration(BuffType b)
 {
     return buffMap[b];
 }
 
 template<typename T>
-void Buff<T>::life(int i)
+void Buff<T>::life()
 {
-    static int last;
-
-    if(i != 0 && last == 0)
+    if(buffMap[BuffType::life] != 0)
         objet->addLife(1);
-
-    last = i;
 }
 
 template<typename T>
-void Buff<T>::speed(int i)
+void Buff<T>::speed()
 {
     static int last;
 
-    if(i != 0 && last == 0)
+    if(buffMap[BuffType::speed] > 0 && last == 0)
         objet->maxSpeed += 10;
-    else if(i == 0 && last != 0)
+    else if(buffMap[BuffType::speed] == 0 && last > 0)
         objet->maxSpeed -= 10;
 
-    last = i;
+    last = buffMap[BuffType::speed];
 }
 
 template<typename T>
-void Buff<T>::slow(int i)
+void Buff<T>::slow()
 {
     static int last;
 
-    if(i != 0 && last == 0)
+    if(buffMap[BuffType::slow] > 0 && last == 0)
         objet->maxSpeed -= 10;
-    else if(i == 0 && last != 0)
+    else if(buffMap[BuffType::slow] == 0 && last > 0)
         objet->maxSpeed += 10;
 
-    last = i;
+    last = buffMap[BuffType::slow];
 }
 
 template<typename T>
-void Buff<T>::quickfire(int i)
+void Buff<T>::quickfire()
 {
-
+    if(buffMap[BuffType::quickfire] > 0 && objet->getCD() > 50)
+        objet->addCD(-50);
 }

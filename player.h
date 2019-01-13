@@ -10,6 +10,7 @@
 
 #define MAXLIFE 3
 #define COOLDOWN 100
+#define MAXSPEED 20
 
 class Player : public MovableEntity, public TangibleEntity
 {
@@ -25,9 +26,12 @@ public:
     void setDirection(const int dir);
     void setPosition(const int x, const int y);
     int getLife() const;
-    void addLife(const int amout);
+    void addLife(const int amount);
     void setMaxLife();
+    void setMaxSpeed();
     void addBuff(BuffType b, unsigned int t);
+    int getCD();
+    void addCD(int i);
 
 private:
 

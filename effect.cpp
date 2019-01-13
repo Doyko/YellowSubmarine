@@ -192,5 +192,5 @@ bool Chest::update()
 
 Chest::~Chest()
 {
-    delete spriteOpen;
+    //delete spriteOpen;
 }

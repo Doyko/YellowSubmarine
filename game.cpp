@@ -90,6 +90,7 @@ void Game::loop()
     readEntity("level/entity" + std::to_string(level) + ".txt");
     map->readMap("level/level" + std::to_string(level) + ".pgm");
     player->setMaxLife();
+    player->setMaxSpeed();
 
     while(window.isOpen() && state == play)
     {
@@ -449,6 +450,9 @@ void Game::addEntity(const int x, const int y, const EntityType e) const
             break;
         case EntityType::speedbonus:
             Data::bonus.push_back(new Bonus(x, y, BuffType::speed, Bonus::speedDimension));
+            break;
+        case EntityType::qfBonus:
+            Data::bonus.push_back(new Bonus(x, y, BuffType::quickfire, Bonus::qfDimension));
             break;
         case EntityType::shark:
             Data::entities.push_back(new Shark(x, y));

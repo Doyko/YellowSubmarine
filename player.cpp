@@ -136,21 +136,38 @@ int Player::getLife() const
     return life;
 }
 
-void Player::addLife(const int amout)
+void Player::addLife(const int amount)
 {
-    if(buffs.is(BuffType::invincibility) == 0)
-    {
-        life += amout;
+    if(amount >= 0)
+    {   life += amount;
         if(life > MAXLIFE)
             life = MAXLIFE;
-        if(amout < 0)
-            addBuff(BuffType::invincibility, 50);
+    }
+    else if(buffs.duration(BuffType::invincibility) == 0)
+    {
+        life += amount;
+        addBuff(BuffType::invincibility, 50);
     }
 }
 
 void Player::setMaxLife()
 {
     life = MAXLIFE;
+}
+
+void Player::setMaxSpeed()
+{
+    maxSpeed = MAXSPEED;
+}
+
+int Player::getCD()
+{
+    return shootCD;
+}
+
+void Player::addCD(int i)
+{
+    shootCD += i;
 }
 
 void Player::addBuff(BuffType b, unsigned int t)

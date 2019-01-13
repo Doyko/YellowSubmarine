@@ -10,6 +10,8 @@ lifebonus 5
 41 24
 19 48
 2 29
+qfBonus 1
+77 10
 barricade 3
 50 10
 64 52

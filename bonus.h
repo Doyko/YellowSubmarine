@@ -14,6 +14,7 @@ public:
 
     static sf::IntRect lifeDimension;
     static sf::IntRect speedDimension;
+    static sf::IntRect qfDimension;
 
 private:
 

@@ -46,6 +46,12 @@ int MovableEntity::getSpeedY() const
     return speedY;
 }
 
+void MovableEntity::setSpeed(int x, int y)
+{
+    speedX = x;
+    speedY = y;
+}
+
 void MovableEntity::changeSpeed(const float x, const float y)
 {
     speedX += x;

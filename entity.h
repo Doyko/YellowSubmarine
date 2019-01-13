@@ -5,6 +5,7 @@
 
 #define ACCELERATION 2
 #define DECCELERATION 1
+#define MAXSPEED 20
 
 class Hitbox;
 
@@ -13,6 +14,7 @@ enum EntityType
     chest,
     lifebonus,
     speedbonus,
+    qfBonus,
     shark,
     octopus,
     mine,
@@ -25,17 +27,19 @@ inline std::istream& operator>>(std::istream& is, EntityType& obj)
     is >> s;
     if(s.compare("chest") == 0)
         obj = EntityType::chest;
-    if(s.compare("lifebonus") == 0)
+    else if(s.compare("lifebonus") == 0)
         obj = EntityType::lifebonus;
-    if(s.compare("speedbonus") == 0)
+    else if(s.compare("speedbonus") == 0)
         obj = EntityType::speedbonus;
-    if(s.compare("shark") == 0)
+    else if(s.compare("qfBonus") == 0)
+        obj = EntityType::qfBonus;
+    else if(s.compare("shark") == 0)
         obj = EntityType::shark;
-    if(s.compare("octopus") == 0)
+    else if(s.compare("octopus") == 0)
         obj = EntityType::octopus;
-    if(s.compare("mine") == 0)
+    else if(s.compare("mine") == 0)
         obj = EntityType::mine;
-    if(s.compare("barricade") == 0)
+    else if(s.compare("barricade") == 0)
         obj = EntityType::barricade;
     return is;
 }
@@ -64,6 +68,7 @@ public:
 
     int getSpeedX() const;
     int getSpeedY() const;
+    void setSpeed(int x, int y);
     void changeSpeed(const float x, const float y);
     virtual bool move(const int x, const int y) = 0;
 
