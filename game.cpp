@@ -25,15 +25,14 @@ Game::Game(const std::string name)
 
 Game::~Game()
 {
+    clearVectors();
     delete player;
     delete map;
 }
 
 void Game::menuLoop()
 {
-    view.setCenter(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
-    menu.setPosition(WINDOW_WIDTH / 2 - menu.getTextureRect().width / 2, WINDOW_HEIGHT / 2 - menu.getTextureRect().height / 2);
-    window.setView(view);
+    menuView();
     int tick = 255;
     int choice = 0;
 
@@ -48,7 +47,10 @@ void Game::menuLoop()
                 if(sf::Keyboard::isKeyPressed(sf::Keyboard::Return))
                 {
                     if(choice == 0)
-                        break;
+                    {
+                        loop();
+                        menuView();
+                    }
                     else if(choice == 1)
                     {
                         window.close();
@@ -87,8 +89,9 @@ void Game::loop()
     clearVectors();
     readEntity("level/entity" + std::to_string(level) + ".txt");
     map->readMap("level/level" + std::to_string(level) + ".pgm");
+    player->setMaxLife();
 
-    while(window.isOpen())
+    while(window.isOpen() && state == play)
     {
         if(clock.getElapsedTime() >= sf::milliseconds(20))
         {
@@ -107,7 +110,6 @@ void Game::loop()
                 {
                     level = 1;
                     printMessage();
-                    menuLoop();
                 }
                 else
                 {
@@ -119,7 +121,6 @@ void Game::loop()
             {
                 level = 1;
                 printMessage();
-                menuLoop();
             }
         }
     }
@@ -167,7 +168,7 @@ void Game::update()
     updateVector(Data::bonus);
     if(state == play)
     {
-        if(player->getLife() == 0)
+        if(player->getLife() <= 0)
             state = death;
         if(Data::nbChest == 0)
             state = win;
@@ -210,6 +211,13 @@ void Game::updateVector(std::vector<Bonus*> &vect) const
     }
 }
 
+void Game::menuView()
+{
+    view.setCenter(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
+    menu.setPosition(WINDOW_WIDTH / 2 - menu.getTextureRect().width / 2, WINDOW_HEIGHT / 2 - menu.getTextureRect().height / 2);
+    window.setView(view);
+}
+
 void Game::drawMenu(const int choice, const int tick)
 {
     player->setDirection(0);
@@ -227,7 +235,7 @@ void Game::drawMenu(const int choice, const int tick)
 
     if(tick == 0)
     {
-        player->sprite->setPosition(WINDOW_WIDTH / 2 - menu.getTextureRect().width / 2 + 40, WINDOW_HEIGHT / 2 + menu.getTextureRect().height / 2 - (2 - choice) * 70 + 15);
+        player->setPosition(WINDOW_WIDTH / 2 - menu.getTextureRect().width / 2 + 40, WINDOW_HEIGHT / 2 + menu.getTextureRect().height / 2 - (2 - choice) * 70 + 15);
         window.draw(*player->sprite);
     }
 }
@@ -410,6 +418,10 @@ void Game::readEntity(const std::string fileName) const
     int x;
     int y;
     EntityType entity;
+
+    ifs >> x;
+    ifs >> y;
+    player->setPosition(x * TILE_WIDTH, y * TILE_HEIGHT);
 
     while(ifs >> entity)
     {

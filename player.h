@@ -23,8 +23,10 @@ public:
     bool move(const int x, const int y);
     void shoot();
     void setDirection(const int dir);
+    void setPosition(const int x, const int y);
     int getLife() const;
     void addLife(const int amout);
+    void setMaxLife();
     void addBuff(BuffType b, unsigned int t);
 
 private:

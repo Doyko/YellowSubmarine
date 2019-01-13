@@ -38,6 +38,7 @@ private:
     void updateVector(std::vector<T> &vect) const;
     void updateVector(std::vector<Bonus*> &vect) const;
 
+    void menuView();
     void drawMenu(const int choice, const int tick);
     void draw();
     template<typename T>
@@ -106,4 +107,5 @@ void Game::clearVector(std::vector<T> &vect) const
     {
         delete vect[i];
     }
+    vect.clear();
 }

@@ -108,7 +108,27 @@ void Player::shoot()
 
 void Player::setDirection(const int dir)
 {
-    sprite = animations[dir]->currentSprite;;
+    switch(dir)
+    {
+        case 0:
+            currentAnimation = AnimationIndex::moveRight;
+            break;
+        case 1:
+            currentAnimation = AnimationIndex::moveLeft;
+            break;
+        default:
+            currentAnimation = AnimationIndex::moveRight;
+            break;
+    }
+    sprite = animations[int(currentAnimation)]->currentSprite;
+}
+
+void Player::setPosition(const int x, const int y)
+{
+    posX = x;
+    posY = y;
+    sprite->setPosition(posX, posY);
+    sprite->setRotation(0);
 }
 
 int Player::getLife() const
@@ -121,9 +141,16 @@ void Player::addLife(const int amout)
     if(buffs.is(BuffType::invincibility) == 0)
     {
         life += amout;
+        if(life > MAXLIFE)
+            life = MAXLIFE;
         if(amout < 0)
             addBuff(BuffType::invincibility, 50);
     }
+}
+
+void Player::setMaxLife()
+{
+    life = MAXLIFE;
 }
 
 void Player::addBuff(BuffType b, unsigned int t)
