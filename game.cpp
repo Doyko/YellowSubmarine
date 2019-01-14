@@ -53,6 +53,7 @@ void Game::menuLoop()
                     }
                     else if(choice == 1)
                     {
+                        state = end;
                         window.close();
                         break;
                     }
@@ -151,6 +152,7 @@ void Game::pollEvent()
         switch(event.type)
         {
             case sf::Event::Closed:
+                state = end;
                 window.close();
                 break;
             default :
@@ -275,7 +277,7 @@ void Game::drawVector(const std::vector<Bonus*> &vect)
 void Game::drawBackground()
 {
     float y = float(view.getCenter().y - WINDOW_HEIGHT / 2) / (map->getNbTileY() * TILE_HEIGHT - WINDOW_HEIGHT);
-    float x = - float(view.getCenter().x - WINDOW_HEIGHT / 2) / (map->getNbTileY() * TILE_HEIGHT - WINDOW_HEIGHT);
+    float x = float(view.getCenter().x - WINDOW_HEIGHT / 2) / (map->getNbTileY() * TILE_HEIGHT - WINDOW_HEIGHT);
     background.setPosition(x * (map->getNbTileY() * TILE_HEIGHT - background.getTextureRect().height) - background.getTextureRect().width, y * (map->getNbTileY() * TILE_HEIGHT - background.getTextureRect().height));
 
     while(background.getPosition().x + background.getTextureRect().width < view.getCenter().x - WINDOW_WIDTH / 2)
@@ -290,7 +292,7 @@ void Game::drawBackground()
 
 void Game::drawForeground()
 {
-    float x = - float(view.getCenter().x - WINDOW_HEIGHT / 2) / 5;
+    float x = - float(view.getCenter().x - WINDOW_HEIGHT / 2) / 4;
     foreground.setPosition(x, background.getPosition().y);
 
     while(foreground.getPosition().x + foreground.getTextureRect().width < view.getCenter().x - WINDOW_WIDTH / 2)
