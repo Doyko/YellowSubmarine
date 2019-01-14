@@ -187,6 +187,12 @@ Shark::~Shark()
     sprite = NULL;
 }
 
+void Shark::destroy()
+{
+    Data::effects.push_back(new Corpse(posX, posY, Corpse::shark));
+    delete this;
+}
+
 bool Shark::update()
 {
     if(checkCollision(Data::player))

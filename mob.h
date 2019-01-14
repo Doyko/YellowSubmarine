@@ -63,6 +63,7 @@ public:
     Shark(const int x, const int y);
     ~Shark();
 
+    void destroy();
     bool update();
 
 private:

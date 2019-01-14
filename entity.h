@@ -70,9 +70,9 @@ public:
 
     int getSpeedX() const;
     int getSpeedY() const;
-    void setSpeed(int x, int y);
+    void setSpeed(const int x, const int y);
+    virtual bool move(const int x, const int y);
     void changeSpeed(const float x, const float y);
-    virtual bool move(const int x, const int y) = 0;
 
     int maxSpeed;
 

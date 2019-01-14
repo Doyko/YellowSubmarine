@@ -26,6 +26,20 @@ private:
     static int animSpeed;
 };
 
+class Barricade : public TangibleEntity
+{
+
+public:
+
+    Barricade(const int x, const int y);
+    ~Barricade();
+
+    void destroy();
+
+private:
+
+    static sf::IntRect dimension;
+};
 
 class Debris : public MovableEntity
 {
@@ -36,7 +50,6 @@ public:
     ~Debris();
 
     bool update();
-    bool move(const int x, const int y);
 
 private:
 
@@ -54,7 +67,6 @@ public:
     ~Bubble();
 
     bool update();
-    bool move(const int x, const int y);
 
 private:
 
@@ -65,19 +77,24 @@ private:
     static sf::IntRect dimSpriteBoop;
 };
 
-class Barricade : public TangibleEntity
+class Corpse : public MovableEntity, public TangibleEntity
 {
 
 public:
 
-    Barricade(const int x, const int y);
-    ~Barricade();
+    Corpse(const int x, const int y, sf::IntRect dimension);
+    ~Corpse();
 
-    void destroy();
-    
+    bool update();
+
+    static sf::IntRect shark;
+
 private:
 
-    static sf::IntRect dimension;
+    bool move(const int x, const int y);
+
+    int tick;
+    bool snare;
 };
 
 class Chest : public TangibleEntity

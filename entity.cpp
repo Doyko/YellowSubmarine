@@ -41,6 +41,11 @@ MovableEntity::MovableEntity(const int x, const int y, const sf::IntRect dimensi
     speedY(0)
 {}
 
+MovableEntity::~MovableEntity()
+{
+
+}
+
 int MovableEntity::getSpeedX() const
 {
     return speedX;
@@ -51,7 +56,7 @@ int MovableEntity::getSpeedY() const
     return speedY;
 }
 
-void MovableEntity::setSpeed(int x, int y)
+void MovableEntity::setSpeed(const int x, const int y)
 {
     speedX = x;
     speedY = y;
@@ -73,9 +78,12 @@ void MovableEntity::changeSpeed(const float x, const float y)
         speedY = -maxSpeed;
 }
 
-MovableEntity::~MovableEntity()
+bool MovableEntity::move(const int x, const int y)
 {
-
+    posX = posX + x;
+    posY = posY + y;
+    sprite->setPosition(posX, posY);
+    return true;
 }
 
 //-----TangibleEntity-----

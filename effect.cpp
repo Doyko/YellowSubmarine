@@ -63,6 +63,29 @@ Explosion::~Explosion()
     sprite = NULL;
 }
 
+//-----Barricade-----
+
+sf::IntRect Barricade::dimension = sf::IntRect(32, 160, 32, 64);
+
+Barricade::Barricade(const int x, const int y)
+:
+    Entity(x, y, Barricade::dimension),
+    TangibleEntity(x, y, Barricade::dimension)
+{}
+
+Barricade::~Barricade()
+{
+
+}
+
+void Barricade::destroy()
+{
+    Data::effects.push_back(new Debris(posX - 32, posY));
+    delete this;
+}
+
+//-----Debris-----
+
 sf::IntRect Debris::dimension = sf::IntRect(64, 160, 96, 64);
 
 Debris::Debris(const int x, const int y)
@@ -87,18 +110,12 @@ bool Debris::update()
     return false;
 }
 
-bool Debris::move(const int x, const int y)
-{
-    posX = posX + x;
-    posY = posY + y;
-    sprite->setPosition(posX, posY);
-    return true;
-}
-
 Debris::~Debris()
 {
 
 }
+
+//-----Bubble-----
 
 sf::IntRect Bubble::dimension = sf::IntRect(0, 96, 6, 6);
 sf::IntRect Bubble::dimSpriteBoop = sf::IntRect(6, 96, 6, 6);
@@ -133,40 +150,72 @@ bool Bubble::update()
     return false;
 }
 
-bool Bubble::move(const int x, const int y)
-{
-    posX = posX + x;
-    posY = posY + y;
-    sprite->setPosition(posX, posY);
-    return true;
-}
-
 Bubble::~Bubble()
 {
 
 }
 
-//-----Barricade-----
+//-----Corpse-----
 
-sf::IntRect Barricade::dimension = sf::IntRect(32, 160, 32, 64);
+sf::IntRect Corpse::shark = sf::IntRect(0, 256, 64, 32);
 
-Barricade::Barricade(const int x, const int y)
+Corpse::Corpse(const int x, const int y, sf::IntRect dimension)
 :
-    Entity(x, y, Barricade::dimension),
-    TangibleEntity(x, y, Barricade::dimension)
+    Entity(x, y, dimension),
+    MovableEntity(x, y, dimension),
+    TangibleEntity(x, y, dimension),
+    tick(255),
+    snare(false)
 {}
 
-Barricade::~Barricade()
+bool Corpse::update()
+{
+    tick--;
+
+    if(tick == 0)
+        return true;
+
+    sprite->setColor(sf::Color(255, 255, 255, tick));
+
+    if(tick % 5 == 0)
+    {
+        if(snare == false)
+        {
+            snare = move(0, -1);
+        }
+    }
+
+    return false;
+}
+
+bool Corpse::move(const int x, const int y)
+{
+    int moveX = x;
+    int moveY = y;
+    bool flag = false;
+
+    while(moveX != 0 && hitbox->checkCollision(posX + moveX, posY))
+    {
+        moveX > 0 ? moveX-- : moveX++;
+        flag = true;
+    }
+    posX = posX + moveX;
+
+    while(moveY != 0 && hitbox->checkCollision(posX, posY + moveY))
+    {
+        moveY > 0 ? moveY-- : moveY++;
+        flag = true;
+    }
+
+    posY = posY + moveY;
+    sprite->setPosition(posX, posY);
+    return flag;
+}
+
+Corpse::~Corpse()
 {
 
 }
-
-void Barricade::destroy()
-{
-    Data::effects.push_back(new Debris(posX - 32, posY));
-    delete this;
-}
-
 //-----Chest-----
 
 sf::IntRect Chest::dimension = sf::IntRect(64, 128, 32, 32);
