@@ -1,5 +1,4 @@
 #include "player.h"
-#include <iostream>
 
 sf::IntRect Player::dimension = sf::IntRect(0, 0, 64, 37);
 sf::IntRect Player::animRight = sf::IntRect(0, 0, 64, 37);

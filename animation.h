@@ -1,8 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <vector>
-#include <iostream>
-#include "hitbox.h"
 
 class Animation
 {

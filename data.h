@@ -8,6 +8,9 @@
 #define TILE_HEIGHT 32
 #define WINDOW_WIDTH 1280
 #define WINDOW_HEIGHT 720
+#define MAXLIFE 3
+#define COOLDOWN 100
+#define MAXSPEED 20
 
 class Hitbox;
 class Entity;

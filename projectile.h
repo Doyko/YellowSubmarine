@@ -1,7 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include "entity.h"
-#include "map.h"
 #include "animation.h"
 #include "mob.h"
 #include "effect.h"

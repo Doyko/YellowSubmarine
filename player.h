@@ -1,8 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <vector>
-#include "hitbox.h"
-#include "map.h"
 #include "entity.h"
 #include "animation.h"
 #include "projectile.h"

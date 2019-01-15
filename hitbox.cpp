@@ -13,7 +13,7 @@ Hitbox::Hitbox(const int w, const int h, char** t):
     tab(t)
 {}
 
-Hitbox::Hitbox(const char* fileName)
+Hitbox::Hitbox(const std::string fileName)
 {
     std::ifstream ifs(fileName);
     if(!ifs)

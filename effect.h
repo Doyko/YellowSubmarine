@@ -1,6 +1,5 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-#include "entity.h"
 #include "data.h"
 #include "projectile.h"
 

@@ -3,12 +3,9 @@
 #include <cstdlib>
 #include <string>
 #include <iostream>
-#include "data.h"
 #include "player.h"
 #include "map.h"
-#include "entity.h"
 #include "mob.h"
-#include "projectile.h"
 #include "bonus.h"
 
 #define NBLEVEL 2

@@ -1,7 +1,5 @@
 #pragma once
 #include <map>
-#include <iostream>
-#include "data.h"
 
 enum buffType
 {

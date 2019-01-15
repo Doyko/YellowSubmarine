@@ -14,7 +14,7 @@ class Hitbox
 public:
     Hitbox();
     Hitbox(const int w, const int h, char** t);
-    Hitbox(const char* fileName);
+    Hitbox(const std::string fileName);
     Hitbox(const Hitbox& hb, const int x, const int y, const int w, const int h);
     Hitbox(const Hitbox& hb, const sf::IntRect dimension);
     ~Hitbox();
