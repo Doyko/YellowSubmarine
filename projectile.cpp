@@ -134,8 +134,10 @@ bool Ink::update()
     if(checkCollision(Data::player))
     {
         if(Data::player->getLife() != 0)
+        {
             Data::player->addLife(-1);
-            Data::player->addBuff(BuffType::slow, 250);
+            Data::player->addBuff(buffType::slow, 250);
+        }
         return true;
     }
 

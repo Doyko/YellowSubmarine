@@ -4,42 +4,44 @@ sf::IntRect Bonus::speedDimension = sf::IntRect(64, 64, 32, 32);
 sf::IntRect Bonus::lifeDimension = sf::IntRect(0, 64, 32, 32);
 sf::IntRect Bonus::qfDimension = sf::IntRect(160, 160, 32, 32);
 
-Bonus::Bonus(const int x, const int y, BuffType t, const sf::IntRect dimension)
+Bonus::Bonus(const int x, const int y, buffType t, const sf::IntRect dimension)
 :
     Entity(x, y, dimension),
     TangibleEntity(x, y, dimension),
     type(t)
 {}
 
-bool Bonus::interact()
+bool Bonus::update()
 {
+    unsigned int t;
     if(this->checkCollision(Data::player))
     {
         switch(type)
         {
-        case BuffType::invincibility:
-            Data::player->addBuff(type, 50);
+        case buffType::invincibility:
+            t = 50;
             break;
-        case BuffType::life:
+        case buffType::life:
             if(Data::player->getLife() < MAXLIFE)
-                Data::player->addBuff(type, 2);
+                t = 1;
             else
-                return true;
+                return false;
             break;
-        case BuffType::speed:
-            Data::player->addBuff(type, 500);
+        case buffType::speed:
+            t = 500;
             break;
-        case BuffType::slow:
-            Data::player->addBuff(type, 500);
+        case buffType::slow:
+            t = 500;
             break;
-        case BuffType::quickfire:
-            Data::player->addBuff(type, 500);
+        case buffType::quickfire:
+            t = 500;
             break;
         default:
             break;
         }
-        return false;
+        Data::player->addBuff(type, t);
+        return true;
     }
-    return true;
+    return false;
 
 }

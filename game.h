@@ -36,14 +36,12 @@ private:
     void updateView();
     template<typename T>
     void updateVector(std::vector<T> &vect) const;
-    void updateVector(std::vector<Bonus*> &vect) const;
 
     void menuView();
     void drawMenu(const int choice, const int tick);
     void draw();
     template<typename T>
     void drawVector(const std::vector<T> &vect);
-    void drawVector(const std::vector<Bonus*> &vect);
     void drawBackground();
     void drawForeground();
     void drawHub();

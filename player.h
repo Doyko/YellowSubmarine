@@ -29,13 +29,15 @@ public:
     void addLife(const int amount);
     void setMaxLife();
     void setMaxSpeed();
-    void addBuff(BuffType b, unsigned int t);
-    int getCD();
-    void addCD(int i);
+    int getCD() const;
+    void addCD(const int i);
+    void addBuff(const buffType b, const unsigned int t);
+    void clearBuff();
 
 private:
 
     void setRotation();
+    void setColorSprite();
 
     enum class AnimationIndex
     {

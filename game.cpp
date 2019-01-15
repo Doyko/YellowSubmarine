@@ -90,6 +90,7 @@ void Game::loop()
     while(state == play)
     {
         clearVectors();
+        player->clearBuff();
         readEntity("level/entity" + std::to_string(level) + ".txt");
         map->readMap("level/level" + std::to_string(level) + ".pgm");
         player->setMaxLife();
@@ -203,20 +204,6 @@ void Game::updateView()
     view.setCenter(x, y);
 }
 
-
-void Game::updateVector(std::vector<Bonus*> &vect) const
-{
-    for(size_t i = 0; i < vect.size(); i++)
-    {
-        if(!vect[i]->interact())
-        {
-            delete vect[i];
-            vect.erase(vect.begin() + i);
-            i--;
-        }
-    }
-}
-
 void Game::menuView()
 {
     view.setCenter(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
@@ -264,14 +251,6 @@ void Game::draw()
     drawForeground();
 
     drawHub();
-}
-
-void Game::drawVector(const std::vector<Bonus*> &vect)
-{
-    for(size_t i = 0; i < vect.size(); i++)
-    {
-        window.draw(*vect[i]->sprite);
-    }
 }
 
 void Game::drawBackground()
@@ -450,13 +429,13 @@ void Game::addEntity(const int x, const int y, const EntityType e) const
             Data::effects.push_back(new Chest(x, y));
             break;
         case EntityType::lifebonus:
-            Data::bonus.push_back(new Bonus(x, y, BuffType::life, Bonus::lifeDimension));
+            Data::bonus.push_back(new Bonus(x, y, buffType::life, Bonus::lifeDimension));
             break;
         case EntityType::speedbonus:
-            Data::bonus.push_back(new Bonus(x, y, BuffType::speed, Bonus::speedDimension));
+            Data::bonus.push_back(new Bonus(x, y, buffType::speed, Bonus::speedDimension));
             break;
         case EntityType::qfBonus:
-            Data::bonus.push_back(new Bonus(x, y, BuffType::quickfire, Bonus::qfDimension));
+            Data::bonus.push_back(new Bonus(x, y, buffType::quickfire, Bonus::qfDimension));
             break;
         case EntityType::shark:
             Data::entities.push_back(new Shark(x, y));

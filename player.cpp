@@ -46,6 +46,8 @@ bool Player::update()
     animations[int(currentAnimation)]->update();
     sprite = animations[int(currentAnimation)]->currentSprite;
 
+    setColorSprite();
+
     if(speedY > 0)
         changeSpeed(0,-DECCELERATION);
     else if(speedY < 0)
@@ -139,14 +141,15 @@ int Player::getLife() const
 void Player::addLife(const int amount)
 {
     if(amount >= 0)
-    {   life += amount;
+    {
+        life += amount;
         if(life > MAXLIFE)
             life = MAXLIFE;
     }
-    else if(buffs.duration(BuffType::invincibility) == 0)
+    else if(buffs.getDuration(buffType::invincibility) == 0)
     {
         life += amount;
-        addBuff(BuffType::invincibility, 50);
+        addBuff(buffType::invincibility, 50);
     }
 }
 
@@ -160,19 +163,24 @@ void Player::setMaxSpeed()
     maxSpeed = MAXSPEED;
 }
 
-int Player::getCD()
+int Player::getCD() const
 {
     return shootCD;
 }
 
-void Player::addCD(int i)
+void Player::addCD(const int i)
 {
     shootCD += i;
 }
 
-void Player::addBuff(BuffType b, unsigned int t)
+void Player::addBuff(const buffType type, const unsigned int t)
 {
-    buffs.addBuff(b, t);
+    buffs.addBuff(type, t);
+}
+
+void Player::clearBuff()
+{
+    buffs.clear();
 }
 
 void Player::setRotation()
@@ -193,4 +201,16 @@ void Player::setRotation()
     }
     else
         sprite->setRotation(0);
+}
+
+void Player::setColorSprite()
+{
+    sprite->setColor(sf::Color(255, 255, 255));
+    for(int i = 0; i < buffType::count; i++)
+    {
+        if(buffs.colorEnable[i] == true && buffs.colorEffect[i] != NULL)
+        {
+            sprite->setColor(*buffs.colorEffect[i]);
+        }
+    }
 }

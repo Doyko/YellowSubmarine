@@ -9,8 +9,8 @@ class Bonus : public TangibleEntity
 
 public:
 
-    Bonus(const int x, const int y, BuffType t, const sf::IntRect dimension);
-    bool interact(); //return true if the bonus is still usable. return false if the bonus is useless and should be destroy
+    Bonus(const int x, const int y, buffType t, const sf::IntRect dimension);
+    bool update();
 
     static sf::IntRect lifeDimension;
     static sf::IntRect speedDimension;
@@ -18,5 +18,5 @@ public:
 
 private:
 
-    BuffType type;
+    buffType type;
 };
