@@ -252,3 +252,69 @@ bool Chest::update()
 Chest::~Chest()
 {
 }
+
+//-----Current-----
+sf::IntRect Current::dimension = sf::IntRect(0, 288, 32, 32);
+int Current::nbSprite = 4;
+int Current::animSpeed = 5;
+
+Current::Current(const int x, const int y, const int dir)
+:
+    Entity(x, y, Current::dimension),
+    TangibleEntity(x, y, Current::dimension),
+    animation(NULL),
+    direction(dir)
+{
+    if(direction < 0 || direction > 3)
+        direction = 0;
+
+    dimension.left = 128 * direction;
+    delete sprite;
+    animation = new Animation(&Data::textureEntity, Current::dimension, Current::nbSprite, Current::animSpeed);
+    animation->setPosition(x, y);
+    sprite = animation->currentSprite;
+}
+
+Current::~Current()
+{
+    delete animation;
+    sprite = NULL;
+}
+
+bool Current::update()
+{
+    animation->update();
+    sprite = animation->currentSprite;
+
+    if(checkCollision(Data::player))
+        moveEntity(Data::player);
+
+    for(size_t i = 0; i < Data::entities.size(); i++)
+    {
+        if(checkCollision(Data::entities[i]))
+            moveEntity(Data::entities[i]);
+    }
+
+    return false;
+}
+
+void Current::moveEntity(MovableEntity* me)
+{
+    switch (direction)
+    {
+        case 0:
+            me->move(0,-1);
+            break;
+        case 1:
+            me->move(0,1);
+            break;
+        case 2:
+            me->move(-1,0);
+            break;
+        case 3:
+            me->move(1,0);
+            break;
+        default:
+            break;
+    }
+}

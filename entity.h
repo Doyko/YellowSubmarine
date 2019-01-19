@@ -19,6 +19,7 @@ enum EntityType
     octopus,
     mine,
     barricade,
+    current,
 };
 
 inline std::istream& operator>>(std::istream& is, EntityType& obj)
@@ -41,6 +42,8 @@ inline std::istream& operator>>(std::istream& is, EntityType& obj)
         obj = EntityType::mine;
     else if(s.compare("barricade") == 0)
         obj = EntityType::barricade;
+    else if(s.compare("current") == 0)
+        obj = EntityType::current;
     return is;
 }
 
@@ -72,7 +75,7 @@ public:
     int getSpeedY() const;
     void setSpeed(const int x, const int y);
     virtual bool move(const int x, const int y);
-    void changeSpeed(const float x, const float y);
+    void changeSpeed(const int x, const int y);
 
     int maxSpeed;
 

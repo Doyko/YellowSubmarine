@@ -113,3 +113,26 @@ private:
     static sf::IntRect dimension;
     static sf::IntRect dimSpriteOpen;
 };
+
+class Current : public TangibleEntity
+{
+
+public:
+
+    Current(const int x, const int y, const int dir);
+    ~Current();
+
+    bool update();
+
+    Animation* animation;
+
+private:
+
+    void moveEntity(MovableEntity* me);
+
+    int direction; //0 = up, 1 = down, 2 = left, 3 = right
+
+    static sf::IntRect dimension;
+    static int nbSprite;
+    static int animSpeed;
+};

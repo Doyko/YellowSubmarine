@@ -74,7 +74,6 @@ bool Player::move(const int x, const int y)
         || hitbox->checkCollision(posX + moveX, posY, Data::explosable)))
     {
         moveX > 0 ? moveX-- : moveX++;
-        speedX = 0;
     }
 
     posX = posX + moveX;
@@ -84,7 +83,6 @@ bool Player::move(const int x, const int y)
         || hitbox->checkCollision(posX, posY + moveY, Data::explosable)))
     {
         moveY > 0 ? moveY-- : moveY++;
-        speedY = 0;
     }
 
     posY = posY + moveY;

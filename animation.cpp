@@ -48,3 +48,11 @@ Animation::~Animation()
         sprites[i] = NULL;
     }
 }
+
+void Animation::setPosition(const int x, const int y)
+{
+    for(size_t i = 0; i < sprites.size(); i++)
+    {
+        sprites[i]->setPosition(x,y);
+    }
+}

@@ -53,7 +53,7 @@ Hitbox* Data::hitboxTile = new Hitbox("hitbox/hitboxTile.pbm");
 
 std::vector<Entity*> Data::effects;
 std::vector<TangibleEntity*> Data::explosable;
-std::vector<TangibleEntity*> Data::entities;
+std::vector<Mob*> Data::entities;
 std::vector<Bonus*> Data::bonus;
 
 Player* Data::player;

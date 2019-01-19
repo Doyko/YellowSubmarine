@@ -51,7 +51,7 @@ private:
     void nextLevel();
     void printLevel();
     void readEntity(const std::string fileName) const;
-    void addEntity(const int x, const int y, const EntityType e) const;
+    void addEntity(const EntityType e, const int x, const int y, const int p) const;
 
     enum stateEnum{play, win, death, end};
 

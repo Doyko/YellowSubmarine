@@ -18,6 +18,7 @@ class TangibleEntity;
 class Map;
 class Player;
 class Bonus;
+class Mob;
 
 class Data
 {
@@ -43,7 +44,7 @@ public:
 
     static std::vector<Entity*> effects;
     static std::vector<TangibleEntity*> explosable;
-    static std::vector<TangibleEntity*> entities;
+    static std::vector<Mob*> entities;
     static std::vector<Bonus*> bonus;
 
     static Player* player;

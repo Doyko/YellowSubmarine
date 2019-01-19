@@ -402,6 +402,7 @@ void Game::readEntity(const std::string fileName) const
     int x;
     int y;
     EntityType entity;
+    int param;
 
     ifs >> x;
     ifs >> y;
@@ -414,13 +415,14 @@ void Game::readEntity(const std::string fileName) const
         {
             ifs >> x;
             ifs >> y;
-            addEntity(x * TILE_WIDTH, y * TILE_HEIGHT, entity);
+            ifs >> param;
+            addEntity(entity, x * TILE_WIDTH, y * TILE_HEIGHT, param);
         }
     }
     ifs.close();
 }
 
-void Game::addEntity(const int x, const int y, const EntityType e) const
+void Game::addEntity(const EntityType e, const int x, const int y, const int p) const
 {
     switch(e)
     {
@@ -448,6 +450,9 @@ void Game::addEntity(const int x, const int y, const EntityType e) const
             break;
         case EntityType::barricade:
             Data::explosable.push_back(new Barricade(x, y));
+            break;
+        case EntityType::current:
+            Data::effects.push_back(new Current(x, y, p));
             break;
         default:
             std::cout << "miss" << '\n';

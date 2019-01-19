@@ -35,7 +35,7 @@ bool Entity::update()
 MovableEntity::MovableEntity(const int x, const int y, const sf::IntRect dimension)
 :
     Entity(x, y, dimension),
-    maxSpeed(20),
+    maxSpeed(MAXSPEED),
     speedX(0),
     speedY(0)
 {}
@@ -61,7 +61,7 @@ void MovableEntity::setSpeed(const int x, const int y)
     speedY = y;
 }
 
-void MovableEntity::changeSpeed(const float x, const float y)
+void MovableEntity::changeSpeed(const int x, const int y)
 {
     speedX += x;
     speedY += y;

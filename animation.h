@@ -11,6 +11,8 @@ public:
     Animation(const sf::Texture *t, sf::IntRect dimension, const int nbSprite, const int spd);
     ~Animation();
 
+    void setPosition(const int x, const int y);
+
     bool update();
 
     sf::Sprite* currentSprite;
