@@ -59,11 +59,14 @@ Torpedo::Torpedo(const int x, const int y, const sf::IntRect dimension, const sf
     Projectile(x, y, dimension, speed),
     tick(4)
 {
+    delete sprite;
     maxSpeed = 20;
     if(speedX > 0)
         animation = new Animation(&Data::textureEntity, Torpedo::dimRight, Torpedo::nbSprite, Torpedo::animSpeed);
     else
         animation = new Animation(&Data::textureEntity, Torpedo::dimLeft, Torpedo::nbSprite, Torpedo::animSpeed);
+
+    sprite = animation->currentSprite;
 }
 
 bool Torpedo::update()
@@ -74,9 +77,7 @@ bool Torpedo::update()
         changeSpeed(-ACCELERATION, 0);
 
     if(animation->update())
-
-
-    sprite = animation->currentSprite;
+        sprite = animation->currentSprite;
 
     tick--;
     if(tick == 0)

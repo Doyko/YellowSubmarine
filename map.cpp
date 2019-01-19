@@ -64,8 +64,15 @@ Map::~Map()
 {
     freeMap();
 
-    for(size_t i = 0; i < tileList.size(); i++)
+    for(size_t i = 0; i < animatedTiles.size(); i++)
+    {
+        delete animatedTiles[i];
+    }
+
+    for(size_t i = 0; i < tileList.size() - animatedTiles.size(); i++)
+    {
         delete tileList[i];
+    }
 }
 
 void Map::readMap(const std::string name)

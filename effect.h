@@ -109,7 +109,6 @@ public:
 private:
 
     bool open;
-    sf::Sprite* spriteOpen;
 
     static sf::IntRect dimension;
     static sf::IntRect dimSpriteOpen;

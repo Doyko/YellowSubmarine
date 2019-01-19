@@ -10,7 +10,10 @@ Explosion::Explosion(const int x, const int y)
     TangibleEntity(x, y, Explosion::dimension),
     animation(new Animation(&Data::textureEntity, Explosion::dimension, Explosion::nbSprite, Explosion::animSpeed)),
     triggered(false)
-{}
+{
+    delete sprite;
+    sprite = animation->currentSprite;
+}
 
 bool Explosion::update()
 {
@@ -227,8 +230,7 @@ Chest::Chest(const int x, const int y)
     TangibleEntity(x, y, Chest::dimension),
     open(false)
 {
-    spriteOpen = new sf::Sprite(Data::textureEntity, Chest::dimSpriteOpen);
-    spriteOpen->setPosition(x, y);
+
 }
 
 bool Chest::update()
@@ -240,7 +242,8 @@ bool Chest::update()
             Data::nbChest--;
             open = true;
             delete sprite;
-            sprite = spriteOpen;
+            sprite = new sf::Sprite(Data::textureEntity, Chest::dimSpriteOpen);
+            sprite->setPosition(posX, posY);
         }
     }
     return false;
@@ -248,5 +251,4 @@ bool Chest::update()
 
 Chest::~Chest()
 {
-
 }
