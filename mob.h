@@ -83,3 +83,20 @@ private:
     static int nbSprite;
     static int animSpeed;
 };
+
+class Jellyfish : public Mob
+{
+public:
+    Jellyfish(const int x, const int y);
+    ~Jellyfish();
+
+    bool update();
+
+private:
+    int tick;
+    Animation* animation;
+
+    static sf::IntRect dimension;
+    static int nbSprite;
+    static int animSpeed;
+};

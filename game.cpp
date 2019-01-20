@@ -454,6 +454,9 @@ void Game::addEntity(const EntityType e, const int x, const int y, const int p) 
         case EntityType::current:
             Data::effects.push_back(new Current(x, y, p));
             break;
+        case EntityType::jellyfish:
+            Data::entities.push_back(new Jellyfish(x, y));
+            break;
         default:
             std::cout << "miss" << '\n';
             break;

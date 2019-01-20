@@ -8,7 +8,7 @@
 #include "mob.h"
 #include "bonus.h"
 
-#define NBLEVEL 2
+#define NBLEVEL 3
 
 class Player;
 class Bonus;

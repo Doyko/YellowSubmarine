@@ -20,6 +20,7 @@ enum EntityType
     mine,
     barricade,
     current,
+    jellyfish,
 };
 
 inline std::istream& operator>>(std::istream& is, EntityType& obj)
@@ -44,6 +45,8 @@ inline std::istream& operator>>(std::istream& is, EntityType& obj)
         obj = EntityType::barricade;
     else if(s.compare("current") == 0)
         obj = EntityType::current;
+    else if(s.compare("jellyfish") == 0)
+        obj = EntityType::jellyfish;
     return is;
 }
 

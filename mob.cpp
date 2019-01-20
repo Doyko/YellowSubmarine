@@ -231,3 +231,54 @@ bool Shark::update()
     move(speedX/4,speedY/4);
     return false;
 }
+
+//-----Jellyfish-----
+sf::IntRect Jellyfish::dimension = sf::IntRect(192, 160, 32, 64);
+int Jellyfish::nbSprite = 4;
+int Jellyfish::animSpeed = 10;
+
+Jellyfish::Jellyfish(const int x, const int y)
+:
+    Entity(x, y, Jellyfish::dimension),
+    Mob(x, y, Jellyfish::dimension),
+    tick(100)
+{
+    delete sprite;
+    animation = new Animation(&Data::textureEntity, Jellyfish::dimension, Jellyfish::nbSprite, Jellyfish::animSpeed);
+    animation->setPosition(x, y);
+    sprite = animation->currentSprite;
+}
+
+Jellyfish::~Jellyfish()
+{
+    delete animation;
+    sprite = NULL;
+}
+
+bool Jellyfish::update()
+{
+    tick--;
+    if(tick < 0)
+    {
+        if(animation->update())
+        {
+            tick = 100;
+        }
+        sprite = animation->currentSprite;
+        sprite->setPosition(posX, posY);
+    }
+
+    if(tick <= -30)
+    {
+        move(0,-1);
+    }
+    else if(tick % 14 == 0)
+    {
+        move(0,1);
+    }
+
+    if(checkCollision(Data::player))
+        Data::player->addLife(-1);
+
+    return false;
+}
