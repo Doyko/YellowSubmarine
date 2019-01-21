@@ -20,6 +20,8 @@ class Player;
 class Bonus;
 class Mob;
 
+enum gameState{play, win, death, end};
+
 class Data
 {
 
@@ -52,4 +54,5 @@ public:
     static Map* map;
 
     static int nbChest;
+    static gameState state;
 };

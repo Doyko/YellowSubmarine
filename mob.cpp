@@ -294,3 +294,59 @@ void Jellyfish::destroy()
     Data::effects.push_back(new Corpse(posX, posY, Corpse::jellyfish));
     delete this;
 }
+
+//-----Drone-----
+
+sf::IntRect Drone::dimension = sf::IntRect(352, 160, 32, 32);
+
+Drone::Drone(const int x, const int y)
+:
+    Entity(x, y, dimension),
+    Mob(x, y, dimension),
+    tick(0),
+    angle(0)
+{
+    sprite->setOrigin(16,16);
+    sprite->setPosition(posX + 16, posY + 16);
+}
+
+Drone::~Drone(){}
+
+bool Drone::update()
+{
+    setRotation();
+
+    return false;
+}
+
+void Drone::setRotation()
+{
+    int dx = Data::player->posX - posX + 32;
+    int dy = Data::player->posY - posY + 19;
+    int a;
+
+
+
+
+    if(dx > dy && dx > -dy)
+    {
+        a =  (45*dy) / dx;
+    }
+    else if(dy > dx && dy > -dx)
+    {
+        a = (-45*dx) / dy + 90;
+    }
+    else if(dx < dy && dx < -dy)
+    {
+        a =  (45*dy) / dx + 180;
+    }
+    else if(dy < dx && dy < -dx)
+    {
+        a = (-45*dx) / dy + 270;
+    }
+    else
+        return;
+
+    sprite->setRotation(a);
+    angle = a;
+}

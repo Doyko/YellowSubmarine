@@ -53,7 +53,7 @@ void Game::menuLoop()
                     }
                     else if(choice == 1)
                     {
-                        state = end;
+                        Data::state = gameState::end;
                         window.close();
                         break;
                     }
@@ -85,9 +85,9 @@ void Game::loop()
     if(!window.isOpen())
         return;
 
-    state = play;
+    Data::state = gameState::play;
 
-    while(state == play)
+    while(Data::state == gameState::play)
     {
         clearVectors();
         player->clearBuff();
@@ -95,7 +95,7 @@ void Game::loop()
         map->readMap("level/level" + std::to_string(level) + ".pgm");
         player->setMaxLife();
 
-        while(window.isOpen() && state == play)
+        while(window.isOpen() && Data::state == gameState::play)
         {
             if(clock.getElapsedTime() >= sf::milliseconds(20))
             {
@@ -110,7 +110,7 @@ void Game::loop()
             }
         }
 
-        if(state == win)
+        if(Data::state == gameState::win)
         {
             if(level == NBLEVEL)
             {
@@ -121,10 +121,10 @@ void Game::loop()
             {
                 level++;
                 nextLevel();
-                state = play;
+                Data::state = gameState::play;
             }
         }
-        if(state == death)
+        if(Data::state == gameState::death)
         {
             level = 1;
             printMessage();
@@ -153,7 +153,7 @@ void Game::pollEvent()
         switch(event.type)
         {
             case sf::Event::Closed:
-                state = end;
+                Data::state = gameState::end;
                 window.close();
                 break;
             default :
@@ -173,13 +173,6 @@ void Game::update()
     updateVector(Data::explosable);
     updateVector(Data::entities);
     updateVector(Data::bonus);
-    if(state == play)
-    {
-        if(player->getLife() <= 0)
-            state = death;
-        if(Data::nbChest == 0)
-            state = win;
-    }
 }
 
 void Game::updateView()
@@ -310,7 +303,7 @@ void Game::printMessage()
     sf::RectangleShape rect(sf::Vector2f(WINDOW_WIDTH, WINDOW_HEIGHT));
     rect.setFillColor(sf::Color(0, 0, 0));
 
-    if(state == win)
+    if(Data::state == gameState::win)
         message.setTextureRect(sf::IntRect(0, 360, 720, 120));
     else
         message.setTextureRect(sf::IntRect(0, 0, 420, 120));
@@ -456,6 +449,9 @@ void Game::addEntity(const EntityType e, const int x, const int y, const int p) 
             break;
         case EntityType::jellyfish:
             Data::entities.push_back(new Jellyfish(x, y));
+            break;
+        case EntityType::drone:
+            Data::explosable.push_back(new Drone(x, y));
             break;
         default:
             std::cout << "miss" << '\n';

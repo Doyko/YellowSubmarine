@@ -102,3 +102,20 @@ private:
     static int nbSprite;
     static int animSpeed;
 };
+
+class Drone : public Mob
+{
+public:
+    Drone(const int x, const int y);
+    ~Drone();
+
+    bool update();
+
+private:
+    int tick;
+    int angle;
+
+    void setRotation();
+
+    static sf::IntRect dimension;
+};

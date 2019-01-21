@@ -146,6 +146,8 @@ void Player::addLife(const int amount)
     else if(buffs.getDuration(buffType::invincibility) == 0)
     {
         life += amount;
+        if(life <= 0)
+            Data::state = gameState::death;
         addBuff(buffType::invincibility, 50);
     }
 }

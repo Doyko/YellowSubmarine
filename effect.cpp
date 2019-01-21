@@ -242,6 +242,11 @@ bool Chest::update()
         if(checkCollision(Data::player))
         {
             Data::nbChest--;
+            std::cout << "nbChest = " << Data::nbChest << '\n';
+            
+            if(Data::nbChest <= 0)
+                Data::state = gameState::win;
+
             open = true;
             delete sprite;
             sprite = new sf::Sprite(Data::textureEntity, Chest::dimSpriteOpen);

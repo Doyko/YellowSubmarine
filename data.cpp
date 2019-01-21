@@ -61,3 +61,4 @@ Player* Data::player;
 Map* Data::map;
 
 int Data::nbChest = 0;
+gameState Data::state = gameState::play;

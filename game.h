@@ -53,8 +53,6 @@ private:
     void readEntity(const std::string fileName) const;
     void addEntity(const EntityType e, const int x, const int y, const int p) const;
 
-    enum stateEnum{play, win, death, end};
-
     sf::RenderWindow window;
     sf::Sprite menu;
     sf::Sprite background;
@@ -68,7 +66,6 @@ private:
     Player* player;
 
     int level;
-    stateEnum state;
 };
 
 
