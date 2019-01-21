@@ -26,6 +26,7 @@ public:
     ~Octopus();
 
     bool update();
+    void destroy();
 
 private:
 
@@ -91,6 +92,7 @@ public:
     ~Jellyfish();
 
     bool update();
+    void destroy();
 
 private:
     int tick;

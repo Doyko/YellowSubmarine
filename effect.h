@@ -86,7 +86,9 @@ public:
 
     bool update();
 
+    static sf::IntRect octopus;
     static sf::IntRect shark;
+    static sf::IntRect jellyfish;
 
 private:
 

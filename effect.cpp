@@ -160,7 +160,9 @@ Bubble::~Bubble()
 
 //-----Corpse-----
 
+sf::IntRect Corpse::octopus = sf::IntRect(64, 256, 32, 32);
 sf::IntRect Corpse::shark = sf::IntRect(0, 256, 64, 32);
+sf::IntRect Corpse::jellyfish = sf::IntRect(320, 160, 32, 64);
 
 Corpse::Corpse(const int x, const int y, sf::IntRect dimension)
 :

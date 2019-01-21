@@ -116,6 +116,12 @@ bool Octopus::update()
     return false;
 }
 
+void Octopus::destroy()
+{
+    Data::effects.push_back(new Corpse(posX, posY, Corpse::octopus));
+    delete this;
+}
+
 //-----Mine-----
 
 sf::IntRect Mine::dimension = sf::IntRect(32,64,32,64);
@@ -281,4 +287,10 @@ bool Jellyfish::update()
         Data::player->addLife(-1);
 
     return false;
+}
+
+void Jellyfish::destroy()
+{
+    Data::effects.push_back(new Corpse(posX, posY, Corpse::jellyfish));
+    delete this;
 }
