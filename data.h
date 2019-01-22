@@ -1,5 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <stdlib.h>
+#include <time.h>
 #include "map.h"
 #include "hitbox.h"
 #include "entity.h"

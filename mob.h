@@ -113,9 +113,11 @@ public:
 
 private:
     int tick;
+    int Smax;
 
     void setRotation(int x, int y);
     void shoot(int x, int y);
+    void preShoot(int &x, int &y);
 
     static sf::IntRect dimension;
 };

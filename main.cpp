@@ -2,6 +2,7 @@
 
 int main()
 {
+    srand (time(NULL));
     Data::init();
     Game* game = new Game("Yellow Submarine");
     game->menuLoop();

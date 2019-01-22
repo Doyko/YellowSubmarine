@@ -6,7 +6,6 @@
 #include "projectile.h"
 #include "buff.h"
 
-#define MAXLIFE 3
 #define COOLDOWN 100
 #define MAXSPEED 20
 

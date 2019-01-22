@@ -303,7 +303,8 @@ Drone::Drone(const int x, const int y)
 :
     Entity(x, y, dimension),
     Mob(x, y, dimension),
-    tick(100)
+    tick(100),
+    Smax(10)
 {
     sprite->setOrigin(16,16);
     sprite->setPosition(posX + 16, posY + 16);
@@ -316,13 +317,14 @@ bool Drone::update()
     int dx = Data::player->posX - posX + 16;
     int dy = Data::player->posY - posY + 5;
 
+    preShoot(dx, dy);
     setRotation(dx, dy);
 
     if(tick > 0)
         tick--;
     else
     {
-        tick = 100;
+        tick = rand() % 21 + 90;
         shoot(dx, dy);
     }
 
@@ -336,22 +338,22 @@ void Drone::setRotation(int x, int y)
     if(x > y && x > -y)
     {
         float t = (float)y / (float)x;
-        a =  57*t - 12*t*t*t;
+        a =  45*t;
     }
     else if(y > x && y > -x)
     {
         float t = (float)x / (float)y;
-        a = -57*t + 12*t*t*t + 90;
+        a = -45*t + 90;
     }
     else if(x < y && x < -y)
     {
         float t = (float)y / (float)x;
-        a =  57*t - 12*t*t*t + 180;
+        a =  45*t + 180;
     }
     else if(y < x && y < -x)
     {
         float t = (float)x / (float)y;
-        a = -57*t + 12*t*t*t + 270;
+        a = -45*t + 270;
     }
     else
         return;
@@ -365,24 +367,43 @@ void Drone::shoot(int x, int y)
 
     if(x > y && x > -y)
     {
-        vx = 10;
-        vy = 10 * y / x;
+        vx = Smax;
+        vy = (2*Smax*y + x) / (2*x);
     }
     else if(y > x && y > -x)
     {
-        vx = 10 * x / y;
-        vy = 10;
+        vx = Smax * x / y;
+        vy = Smax;
     }
     else if(x < y && x < -y)
     {
-        vx = -10;
-        vy = -10 * y / x;
+        vx = -Smax;
+        vy = -Smax * y / x;
     }
     else if(y < x && y < -x)
     {
-        vx = -10 * x / y;
-        vy = -10;
+        vx = -Smax * x / y;
+        vy = -Smax;
     }
 
     Data::effects.push_back(new Lazer(posX + 16, posY + 16, sf::Vector2f(vx, vy)));
+}
+
+void Drone::preShoot(int &x, int &y)
+{
+    int tx, ty;
+
+    if(x > 0)
+        tx = x / (4*Smax - Data::player->getSpeedX());
+    else
+        tx = -x / (4*Smax + Data::player->getSpeedX());
+
+    if(y > 0)
+        ty = y / (4*Smax - Data::player->getSpeedY());
+    else
+        ty = -y / (4*Smax + Data::player->getSpeedY());
+
+    int t = tx > ty ? tx : ty;
+    x += Data::player->getSpeedX() * t;
+    y += Data::player->getSpeedY() * t;
 }
