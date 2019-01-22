@@ -259,7 +259,14 @@ int** Map::readPGM(const std::string fileName)
         exit(1);
     }
 
-    ifs >> nbTileX;
+    ifs >> buffer;
+    while(buffer[0] == '#')
+    {
+        getline(ifs,buffer);
+        ifs >> buffer;
+    }
+
+    nbTileX = stoi(buffer, nullptr);
     ifs >> nbTileY;
     ifs >> greyLevel;
 
