@@ -22,16 +22,22 @@ Hitbox::Hitbox(const std::string fileName)
         exit(0);
     }
 
-    std::string buffer;
+    char buffer[256];
     ifs >> buffer;
 
-    if (buffer != "P1")
+    if (strcmp(buffer, "P1"))
     {
         std::cout << "Error reading hitbox in \"" << fileName << "\" : wrong file format" << std::endl;
         exit(1);
     }
 
-    ifs >> width;
+    ifs >> buffer;
+    while(buffer[0] == '#')
+    {
+        ifs.getline(buffer, 256);
+        ifs >> buffer;
+    }
+    width = atoi(buffer);
     ifs >> height;
 
     tab = new char*[height];

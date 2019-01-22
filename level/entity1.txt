@@ -104,4 +104,4 @@ current 20
 jellyfish 1
 20 11 0
 drone 1
-16 8 0
+36 10 0
