@@ -113,7 +113,6 @@ public:
 
 private:
     int tick;
-    int angle;
 
     void setRotation();
 

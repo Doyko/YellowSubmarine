@@ -303,8 +303,7 @@ Drone::Drone(const int x, const int y)
 :
     Entity(x, y, dimension),
     Mob(x, y, dimension),
-    tick(0),
-    angle(0)
+    tick(0)
 {
     sprite->setOrigin(16,16);
     sprite->setPosition(posX + 16, posY + 16);
@@ -321,32 +320,32 @@ bool Drone::update()
 
 void Drone::setRotation()
 {
-    int dx = Data::player->posX - posX + 32;
-    int dy = Data::player->posY - posY + 19;
+    int dx = Data::player->posX - posX + 16;
+    int dy = Data::player->posY - posY + 5;
     int a;
-
-
-
 
     if(dx > dy && dx > -dy)
     {
-        a =  (45*dy) / dx;
+        float t = (float)dy / (float)dx;
+        a =  57*t - 12*t*t*t;
     }
     else if(dy > dx && dy > -dx)
     {
-        a = (-45*dx) / dy + 90;
+        float t = (float)dx / (float)dy;
+        a = -57*t + 12*t*t*t + 90;
     }
     else if(dx < dy && dx < -dy)
     {
-        a =  (45*dy) / dx + 180;
+        float t = (float)dy / (float)dx;
+        a =  57*t - 12*t*t*t + 180;
     }
     else if(dy < dx && dy < -dx)
     {
-        a = (-45*dx) / dy + 270;
+        float t = (float)dx / (float)dy;
+        a = -57*t + 12*t*t*t + 270;
     }
     else
         return;
 
     sprite->setRotation(a);
-    angle = a;
 }
