@@ -50,6 +50,7 @@ private:
     Buff<Player> buffs;
 
     static sf::IntRect dimension;
+    static std::pair<int,int> center;
     static sf::IntRect animRight;
     static sf::IntRect animLeft;
     static int nbSprite;

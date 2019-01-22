@@ -1,6 +1,7 @@
 #include "player.h"
 
 sf::IntRect Player::dimension = sf::IntRect(0, 0, 64, 37);
+std::pair<int,int> Player::center = std::pair<int,int>(32, 19);
 sf::IntRect Player::animRight = sf::IntRect(0, 0, 64, 37);
 sf::IntRect Player::animLeft = sf::IntRect(256, 0, 64, 37);
 int Player::nbSprite = 4;
@@ -18,6 +19,8 @@ Player::Player(const int x, const int y)
     delete sprite;
     animations[int(AnimationIndex::moveRight)] = new Animation(&Data::textureEntity, Player::animRight, Player::nbSprite, Player::animSpeed);
     animations[int(AnimationIndex::moveLeft)] = new Animation(&Data::textureEntity, Player::animLeft, Player::nbSprite, Player::animSpeed);
+    animations[int(AnimationIndex::moveRight)]->setOrigin(center.first, center.second);
+    animations[int(AnimationIndex::moveLeft)]->setOrigin(center.first, center.second);
     sprite = animations[int(currentAnimation)]->currentSprite;
 }
 
@@ -86,7 +89,7 @@ bool Player::move(const int x, const int y)
     }
 
     posY = posY + moveY;
-    sprite->setPosition(posX, posY);
+    sprite->setPosition(posX + center.first, posY + center.second);
     return true;
 }
 
@@ -187,16 +190,16 @@ void Player::setRotation()
     if(speedY > 0)
     {
         if(currentAnimation == AnimationIndex::moveRight)
-            sprite->setRotation(7 * (float(speedY) / maxSpeed));
+            sprite->setRotation(10 * (float(speedY) / maxSpeed));
         else
-            sprite->setRotation(-7 * (float(speedY) / maxSpeed));
+            sprite->setRotation(-10 * (float(speedY) / maxSpeed));
     }
     else if(speedY < 0)
     {
         if(currentAnimation == AnimationIndex::moveLeft)
-            sprite->setRotation(-7 * (float(speedY) / maxSpeed));
+            sprite->setRotation(-10 * (float(speedY) / maxSpeed));
         else
-            sprite->setRotation(7 * (float(speedY) / maxSpeed));
+            sprite->setRotation(10 * (float(speedY) / maxSpeed));
     }
     else
         sprite->setRotation(0);

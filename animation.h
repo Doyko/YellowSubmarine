@@ -12,6 +12,7 @@ public:
     ~Animation();
 
     void setPosition(const int x, const int y);
+    void setOrigin(const int x, const int y);
 
     bool update();
 
