@@ -49,3 +49,15 @@ public :
     static sf::IntRect dimension;
     static sf::Vector2f speed;
 };
+
+class Lazer : public Projectile
+{
+public :
+
+    Lazer(const int x, const int y, const sf::Vector2f s);
+    ~Lazer();
+    bool update();
+
+
+    static sf::IntRect dimension;
+};

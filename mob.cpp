@@ -303,7 +303,7 @@ Drone::Drone(const int x, const int y)
 :
     Entity(x, y, dimension),
     Mob(x, y, dimension),
-    tick(0)
+    tick(100)
 {
     sprite->setOrigin(16,16);
     sprite->setPosition(posX + 16, posY + 16);
@@ -313,39 +313,76 @@ Drone::~Drone(){}
 
 bool Drone::update()
 {
-    setRotation();
+    int dx = Data::player->posX - posX + 16;
+    int dy = Data::player->posY - posY + 5;
+
+    setRotation(dx, dy);
+
+    if(tick > 0)
+        tick--;
+    else
+    {
+        tick = 100;
+        shoot(dx, dy);
+    }
 
     return false;
 }
 
-void Drone::setRotation()
+void Drone::setRotation(int x, int y)
 {
-    int dx = Data::player->posX - posX + 16;
-    int dy = Data::player->posY - posY + 5;
     int a;
 
-    if(dx > dy && dx > -dy)
+    if(x > y && x > -y)
     {
-        float t = (float)dy / (float)dx;
+        float t = (float)y / (float)x;
         a =  57*t - 12*t*t*t;
     }
-    else if(dy > dx && dy > -dx)
+    else if(y > x && y > -x)
     {
-        float t = (float)dx / (float)dy;
+        float t = (float)x / (float)y;
         a = -57*t + 12*t*t*t + 90;
     }
-    else if(dx < dy && dx < -dy)
+    else if(x < y && x < -y)
     {
-        float t = (float)dy / (float)dx;
+        float t = (float)y / (float)x;
         a =  57*t - 12*t*t*t + 180;
     }
-    else if(dy < dx && dy < -dx)
+    else if(y < x && y < -x)
     {
-        float t = (float)dx / (float)dy;
+        float t = (float)x / (float)y;
         a = -57*t + 12*t*t*t + 270;
     }
     else
         return;
 
     sprite->setRotation(a);
+}
+
+void Drone::shoot(int x, int y)
+{
+    int vx, vy;
+
+    if(x > y && x > -y)
+    {
+        vx = 10;
+        vy = 10 * y / x;
+    }
+    else if(y > x && y > -x)
+    {
+        vx = 10 * x / y;
+        vy = 10;
+    }
+    else if(x < y && x < -y)
+    {
+        vx = -10;
+        vy = -10 * y / x;
+    }
+    else if(y < x && y < -x)
+    {
+        vx = -10 * x / y;
+        vy = -10;
+    }
+
+    Data::effects.push_back(new Lazer(posX + 16, posY + 16, sf::Vector2f(vx, vy)));
 }

@@ -154,3 +154,39 @@ bool Ink::update()
 
     return move(speedX, speedY);
 }
+
+//-----Lazer-----
+
+sf::IntRect Lazer::dimension = sf::IntRect(384, 160, 8, 8);
+
+Lazer::Lazer(const int x, const int y, const sf::Vector2f s)
+:
+    Entity(x, y, Lazer::dimension),
+    Projectile(x, y, Lazer::dimension, s)
+{}
+
+Lazer::~Lazer()
+{
+
+}
+
+bool Lazer::update()
+{
+    if(checkCollision(Data::player))
+    {
+        Data::player->addLife(-1);
+        return true;
+    }
+
+    for(size_t i = 0; i < Data::entities.size(); i++)
+    {
+        if(checkCollision(Data::entities[i]))
+        {
+            Data::entities[i]->destroy();
+            Data::entities.erase(Data::entities.begin() + i);
+            return true;
+        }
+    }
+
+    return move(speedX, speedY);
+}
