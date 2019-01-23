@@ -16,6 +16,7 @@ bool Bonus::update()
     unsigned int t;
     if(this->checkCollision(Data::player))
     {
+        Data::soundMap["sound/power-up.wav"]->play();
         switch(type)
         {
         case buffType::invincibility:

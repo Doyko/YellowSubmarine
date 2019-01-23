@@ -66,7 +66,9 @@ private:
     sf::Event event;
     sf::Clock clock;
     sf::View view;
+    sf::Music menuMusic;
     sf::Music levelMusic;
+    sf::Music atmosphere;
     Map* map;
     Player* player;
 

@@ -79,12 +79,12 @@ Barricade::Barricade(const int x, const int y)
 
 Barricade::~Barricade()
 {
-
 }
 
 void Barricade::destroy()
 {
     Data::effects.push_back(new Debris(posX - 32, posY));
+    Data::soundMap["sound/wood.wav"]->play();
     delete this;
 }
 
@@ -252,6 +252,7 @@ bool Chest::update()
             delete sprite;
             sprite = new sf::Sprite(Data::textureEntity, Chest::dimSpriteOpen);
             sprite->setPosition(posX, posY);
+            Data::soundMap["sound/creak.wav"]->play();
         }
     }
     return false;

@@ -71,6 +71,7 @@ Octopus::~Octopus()
 
 bool Octopus::update()
 {
+    int d;
     if(checkCollision(Data::player))
     {
         if(Data::player->getLife() != 0)
@@ -87,6 +88,11 @@ bool Octopus::update()
             speedY = -5;
             sprite = spriteUp;
             Data::effects.push_back(new Ink(posX, posY + 32));
+
+            d = (Data::player->posX - posX)*(Data::player->posX - posX) +
+                (Data::player->posY - posY)*(Data::player->posY - posY);
+            if(d < RADIUS)
+                Data::soundMap["sound/octopus.wav"]->play();
         }
     }
     else
@@ -129,8 +135,8 @@ Mine::Mine(const int x, const int y)
 :
     Entity(x, y, Mine::dimension),
     Mob(x, y, Mine::dimension),
-    center(y),
-    tick(10)
+    tick(1),
+    dir(1)
 {
     speedY = 2;
 }
@@ -150,16 +156,18 @@ bool Mine::update()
 {
     if(checkCollision(Data::player))
         return true;
+
     tick--;
+    if(tick % 50 == 0)
+        move(0, dir);
+
     if(tick == 0)
     {
-        tick = 20;
-        if(posY > center)
-            speedY--;
-        else
-            speedY++;
-        move(0, speedY);
+        tick = 200;
+        dir = -dir;
     }
+
+
     return false;
 }
 
@@ -180,6 +188,8 @@ Shark::Shark(const int x, const int y)
     maxSpeed = 12;
     animations[int(AnimationIndex::moveRight)] = new Animation(&Data::textureEntity, Shark::animRight, Shark::nbSprite, Shark::animSpeed);
     animations[int(AnimationIndex::moveLeft)] = new Animation(&Data::textureEntity, Shark::animLeft, Shark::nbSprite, Shark::animSpeed);
+    animations[int(AnimationIndex::moveRight)]->setPosition(x, y);
+    animations[int(AnimationIndex::moveLeft)]->setPosition(x, y);
     sprite = animations[int(currentAnimation)]->currentSprite;
 }
 
@@ -200,10 +210,18 @@ void Shark::destroy()
 
 bool Shark::update()
 {
+    int d = (Data::player->posX - posX)*(Data::player->posX - posX) +
+        (Data::player->posY - posY)*(Data::player->posY - posY);
+
+    if(d > RADIUS)
+        return false;
+
     if(checkCollision(Data::player))
     {
         if(Data::player->getLife() != 0)
             Data::player->addLife(-1);
+        if(Data::soundMap["sound/bite.wav"]->getStatus() != sf::SoundSource::Status::Playing)
+            Data::soundMap["sound/bite.wav"]->play();
     }
 
     if(Data::player->posX > posX)
@@ -246,7 +264,7 @@ Jellyfish::Jellyfish(const int x, const int y)
 :
     Entity(x, y, Jellyfish::dimension),
     Mob(x, y, Jellyfish::dimension),
-    tick(100)
+    tick(rand()%21 + 90)
 {
     delete sprite;
     animation = new Animation(&Data::textureEntity, Jellyfish::dimension, Jellyfish::nbSprite, Jellyfish::animSpeed);
@@ -263,11 +281,12 @@ Jellyfish::~Jellyfish()
 bool Jellyfish::update()
 {
     tick--;
+
     if(tick < 0)
     {
         if(animation->update())
         {
-            tick = 100;
+            tick = rand()%21 + 90;
         }
         sprite = animation->currentSprite;
         sprite->setPosition(posX, posY);
@@ -275,6 +294,7 @@ bool Jellyfish::update()
 
     if(tick <= -30)
     {
+
         move(0,-1);
     }
     else if(tick % 14 == 0)
@@ -283,8 +303,11 @@ bool Jellyfish::update()
     }
 
     if(checkCollision(Data::player))
+    {
         Data::player->addLife(-1);
-
+        if(Data::soundMap["sound/squishy.wav"]->getStatus() != sf::SoundSource::Status::Playing)
+            Data::soundMap["sound/squishy.wav"]->play();
+    }
     return false;
 }
 
@@ -302,7 +325,7 @@ Drone::Drone(const int x, const int y)
 :
     Entity(x, y, dimension),
     Mob(x, y, dimension),
-    tick(100),
+    tick(rand() % 21 + 90),
     Smax(10)
 {
     sprite->setOrigin(16,16);
@@ -315,6 +338,9 @@ bool Drone::update()
 {
     int dx = Data::player->posX - posX + 16;
     int dy = Data::player->posY - posY + 5;
+
+    if(dx*dx + dy*dy > RADIUS)
+        return false;
 
     preShoot(dx, dy);
     setRotation(dx, dy);
@@ -385,12 +411,13 @@ void Drone::shoot(int x, int y)
         vy = -Smax;
     }
 
-    Data::effects.push_back(new Lazer(posX + 16, posY + 16, sf::Vector2f(vx, vy)));
+    Data::effects.push_back(new Lazer(posX + 16 + 3*vx, posY + 16 + 3*vy, sf::Vector2f(vx, vy)));
+    Data::soundMap["sound/laser.wav"]->play();
 }
 
 void Drone::preShoot(int &x, int &y)
 {
-    int tx, ty;
+    int tx, ty, t;
 
     if(x > 0)
         tx = x / (4*Smax - Data::player->getSpeedX());
@@ -402,7 +429,7 @@ void Drone::preShoot(int &x, int &y)
     else
         ty = -y / (4*Smax + Data::player->getSpeedY());
 
-    int t = tx > ty ? tx : ty;
+    t = tx > ty ? tx : ty;
     x += Data::player->getSpeedX() * t;
     y += Data::player->getSpeedY() * t;
 }

@@ -35,6 +35,7 @@ private:
 
     void setRotation();
     void setColorSprite();
+    void setSound();
 
     enum class AnimationIndex
     {

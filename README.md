@@ -21,5 +21,9 @@ And finally, execute the program:
 - In the menu, use *up* and *down* to select, and *return* to confirm.
 - In the game, use the arrows to move the submarine, and *space* to lauch a torpedo. The objective is to reach all treasures chest without loosing all your lifes.
 
-## Music credit
-https://www.bensound.com
+## Sound credit
+Music : https://www.bensound.com
+Sound : 
+- Freesound.org
+- http://www.jshaw.co.uk/
+- http://www.felixblume.com/

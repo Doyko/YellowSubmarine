@@ -21,14 +21,18 @@ bool Projectile::move(const int x, const int y)
     int moveY = y;
     bool flag = false;
 
-    while(moveX != 0 && hitbox->checkCollision(posX + moveX, posY))
+    while(moveX != 0
+        && (hitbox->checkCollision(posX + moveX, posY)
+        || hitbox->checkCollision(posX + moveX, posY, Data::explosable)))
     {
         moveX > 0 ? moveX-- : moveX++;
         flag = true;
     }
     posX = posX + moveX;
 
-    while(moveY != 0 && hitbox->checkCollision(posX, posY + moveY))
+    while(moveY != 0
+        && (hitbox->checkCollision(posX + moveX, posY)
+        || hitbox->checkCollision(posX + moveX, posY, Data::explosable)))
     {
         moveY > 0 ? moveY-- : moveY++;
         flag = true;
@@ -138,6 +142,8 @@ bool Ink::update()
         {
             Data::player->addLife(-1);
             Data::player->addBuff(buffType::slow, 250);
+            if(Data::soundMap["sound/drip.wav"]->getStatus() != sf::SoundSource::Status::Playing)
+                Data::soundMap["sound/drip.wav"]->play();
         }
         return true;
     }

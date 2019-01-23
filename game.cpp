@@ -14,8 +14,14 @@ Game::Game(const std::string name)
     hub.setTexture(Data::textureHub);
     message.setTexture(Data::textureMessage);
 
-    levelMusic.openFromFile("sound/enigmatic.wav");
+    menuMusic.openFromFile("sound/slowmotion.wav");
+    menuMusic.setLoop(true);
+    levelMusic.openFromFile("sound/deepblue.wav");
     levelMusic.setLoop(true);
+    atmosphere.openFromFile("sound/aquatic.wav");
+    atmosphere.setLoop(true);
+    atmosphere.setVolume(1000);
+    atmosphere.play();
 
     for(size_t i = 0; i < Data::soundList.size(); i++)
     {
@@ -49,6 +55,8 @@ void Game::menuLoop()
     int tick = 255;
     int choice = 0;
 
+    menuMusic.play();
+
     while(window.isOpen())
     {
         if(clock.getElapsedTime() >= sf::milliseconds(20))
@@ -61,7 +69,9 @@ void Game::menuLoop()
                 {
                     if(choice == 0)
                     {
+                        menuMusic.stop();
                         loop();
+                        menuMusic.play();
                         menuView();
                     }
                     else if(choice == 1)
@@ -91,6 +101,7 @@ void Game::menuLoop()
             window.display();
         }
     }
+
 }
 
 void Game::loop()

@@ -47,7 +47,7 @@ Buff<T>::Buff(T* t)
 {
     colorEffect[buffType::life] = NULL;
     colorEffect[buffType::quickfire] = NULL;
-    colorEffect[buffType::speed] = new sf::Color(0, 255, 255);
+    colorEffect[buffType::speed] = NULL;
     colorEffect[buffType::slow] = new sf::Color(127, 127, 127);
     colorEffect[buffType::invincibility] = new sf::Color(255, 255, 255, 127);
 

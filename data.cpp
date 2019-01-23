@@ -51,7 +51,17 @@ sf::Texture Data::textureMessage;
 std::vector<std::string> Data::soundList =
 {
     "sound/explosion.wav",
-    "sound/shoot.wav"
+    "sound/shoot.wav",
+    "sound/octopus.wav",
+    "sound/wood.wav",
+    "sound/creak.wav",
+    "sound/power-up.wav",
+    "sound/hit.wav",
+    "sound/laser.wav",
+    "sound/squishy.wav",
+    "sound/bite.wav",
+    "sound/drip.wav",
+    "sound/engine.wav"
 };
 std::map<std::string, sf::Sound*> Data::soundMap;
 std::vector<sf::SoundBuffer*> Data::soundBuffers;

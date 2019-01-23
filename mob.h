@@ -53,8 +53,8 @@ public:
 private:
 
     static sf::IntRect dimension;
-    int center;
     int tick;
+    int dir;
 };
 
 class Shark : public Mob

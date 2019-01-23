@@ -22,6 +22,7 @@ Player::Player(const int x, const int y)
     animations[int(AnimationIndex::moveRight)]->setOrigin(center.first, center.second);
     animations[int(AnimationIndex::moveLeft)]->setOrigin(center.first, center.second);
     sprite = animations[int(currentAnimation)]->currentSprite;
+    Data::soundMap["sound/engine.wav"]->setLoop(true);
 }
 
 Player::~Player()
@@ -58,6 +59,7 @@ bool Player::update()
     move(speedX/4, speedY/4);
 
     setRotation();
+    setSound();
 
     if(shootCD)
         shootCD--;
@@ -77,6 +79,7 @@ bool Player::move(const int x, const int y)
         || hitbox->checkCollision(posX + moveX, posY, Data::explosable)))
     {
         moveX > 0 ? moveX-- : moveX++;
+        speedX = 0;
     }
 
     posX = posX + moveX;
@@ -86,6 +89,7 @@ bool Player::move(const int x, const int y)
         || hitbox->checkCollision(posX, posY + moveY, Data::explosable)))
     {
         moveY > 0 ? moveY-- : moveY++;
+        speedY = 0;
     }
 
     posY = posY + moveY;
@@ -154,6 +158,7 @@ void Player::addLife(const int amount)
         if(life <= 0)
             Data::state = gameState::death;
         addBuff(buffType::invincibility, 50);
+        Data::soundMap["sound/hit.wav"]->play();
     }
 }
 
@@ -217,4 +222,32 @@ void Player::setColorSprite()
             sprite->setColor(*buffs.colorEffect[i]);
         }
     }
+}
+
+void Player::setSound()
+{
+    static int volume = 0;
+
+    if(volume == 0)
+        Data::soundMap["sound/engine.wav"]->stop();
+    else if(Data::soundMap["sound/engine.wav"]->getStatus() != sf::SoundSource::Status::Playing)
+        Data::soundMap["sound/engine.wav"]->play();
+
+    if(speedX == 0 && speedY == 0 && volume > 0)
+    {
+        volume--;
+        Data::soundMap["sound/engine.wav"]->setVolume(volume);
+    }
+    else if(speedX != 0 || speedY != 0)
+    {
+        volume = 50;
+        Data::soundMap["sound/engine.wav"]->setVolume(volume);
+    }
+
+    if(buffs.getDuration(buffType::speed) > 0)
+        Data::soundMap["sound/engine.wav"]->setPitch(1.5);
+    if(buffs.getDuration(buffType::slow) > 0)
+        Data::soundMap["sound/engine.wav"]->setPitch(0.5);
+    if(buffs.getDuration(buffType::speed) == 0 && buffs.getDuration(buffType::slow) == 0)
+        Data::soundMap["sound/engine.wav"]->setPitch(1);
 }
