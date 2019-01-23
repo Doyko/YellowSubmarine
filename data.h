@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include <stdlib.h>
 #include <time.h>
 #include "map.h"
@@ -42,6 +43,10 @@ public:
     static sf::Texture textureFG;
     static sf::Texture textureHub;
     static sf::Texture textureMessage;
+
+    static std::vector<std::string> soundList;
+    static std::map<std::string, sf::Sound*> soundMap;
+    static std::vector<sf::SoundBuffer*> soundBuffers;
 
     static Hitbox* hitboxEntity;
     static Hitbox* hitboxTile;

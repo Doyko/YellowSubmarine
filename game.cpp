@@ -14,6 +14,17 @@ Game::Game(const std::string name)
     hub.setTexture(Data::textureHub);
     message.setTexture(Data::textureMessage);
 
+    levelMusic.openFromFile("sound/enigmatic.wav");
+    levelMusic.setLoop(true);
+
+    for(size_t i = 0; i < Data::soundList.size(); i++)
+    {
+        Data::soundBuffers.push_back(new sf::SoundBuffer());
+        Data::soundMap[Data::soundList[i]] = new sf::Sound();
+        Data::soundBuffers[i]->loadFromFile(Data::soundList[i]);
+        Data::soundMap[Data::soundList[i]]->setBuffer(*Data::soundBuffers[i]);
+    }
+
     player = new Player(128, 32);
     Data::initPlayer(player);
 
@@ -26,6 +37,8 @@ Game::Game(const std::string name)
 Game::~Game()
 {
     clearVectors();
+    clearVector(Data::soundBuffers);
+    clearMap(Data::soundMap);
     delete player;
     delete map;
 }
@@ -87,6 +100,7 @@ void Game::loop()
 
     Data::state = gameState::play;
 
+    levelMusic.play();
     while(Data::state == gameState::play)
     {
         clearVectors();
@@ -130,6 +144,7 @@ void Game::loop()
             printMessage();
         }
     }
+    levelMusic.stop();
 }
 
 void Game::keyEvent()
@@ -221,7 +236,7 @@ void Game::drawMenu(const int choice, const int tick)
 
     if(tick == 0)
     {
-        player->setPosition(WINDOW_WIDTH / 2 - menu.getTextureRect().width / 2 + 40, WINDOW_HEIGHT / 2 + menu.getTextureRect().height / 2 - (2 - choice) * 70 + 15);
+        player->setPosition(WINDOW_WIDTH / 2 - menu.getTextureRect().width / 2 + 40, WINDOW_HEIGHT / 2 + menu.getTextureRect().height / 2 - (2 - choice) * 70 + 25);
         window.draw(*player->sprite);
     }
 }
@@ -396,6 +411,8 @@ void Game::readEntity(const std::string fileName) const
     int y;
     EntityType entity;
     int param;
+
+    Data::nbChest = 0;
 
     ifs >> x;
     ifs >> y;

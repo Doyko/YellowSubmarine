@@ -46,12 +46,16 @@ private:
     void clearVectors() const;
     template<typename T>
     void clearVector(std::vector<T> &vect) const;
+    template<typename T1, typename T2>
+    void clearMap(std::map<T1, T2> &map) const;
 
     void printMessage();
     void nextLevel();
     void printLevel();
     void readEntity(const std::string fileName) const;
     void addEntity(const EntityType e, const int x, const int y, const int p) const;
+
+    void startMusic();
 
     sf::RenderWindow window;
     sf::Sprite menu;
@@ -62,6 +66,7 @@ private:
     sf::Event event;
     sf::Clock clock;
     sf::View view;
+    sf::Music levelMusic;
     Map* map;
     Player* player;
 
@@ -100,4 +105,14 @@ void Game::clearVector(std::vector<T> &vect) const
         delete vect[i];
     }
     vect.clear();
+}
+
+template<typename T1, typename T2>
+void Game::clearMap(std::map<T1, T2> &map) const
+{
+    for(auto& i : map)
+    {
+        delete i.second;
+    }
+    map.clear();
 }

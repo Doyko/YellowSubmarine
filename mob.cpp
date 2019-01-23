@@ -27,7 +27,6 @@ bool Mob::move(const int x, const int y)
         || hitbox->checkCollision(posX + moveX, posY, Data::explosable)))
     {
         moveX > 0 ? moveX-- : moveX++;
-        speedX = 0;
         flag = true;
     }
     posX = posX + moveX;
@@ -37,7 +36,6 @@ bool Mob::move(const int x, const int y)
         || hitbox->checkCollision(posX, posY + moveY, Data::explosable)))
     {
         moveY > 0 ? moveY-- : moveY++;
-        speedY = 0;
         flag = true;
     }
 
@@ -82,26 +80,24 @@ bool Octopus::update()
     if(state == down)
     {
         tick--;
-        if(move(speedX, speedY) || tick == 0)
+        if(tick == 0)
         {
             state = up;
             tick = 30;
             speedY = -5;
             sprite = spriteUp;
-            sprite->setPosition(posX, posY);
             Data::effects.push_back(new Ink(posX, posY + 32));
         }
     }
     else
     {
         tick--;
-        if(move(speedX, speedY) || tick == 0)
+        if(tick == 0)
         {
             state = down;
             tick = 110;
             speedY = 1;
             sprite = spriteDown;
-            sprite->setPosition(posX, posY);
         }
         else
         {
@@ -113,6 +109,9 @@ bool Octopus::update()
                 speedY = -2;
         }
     }
+
+    move(speedX, speedY);
+
     return false;
 }
 

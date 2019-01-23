@@ -13,6 +13,7 @@ Explosion::Explosion(const int x, const int y)
 {
     delete sprite;
     sprite = animation->currentSprite;
+    Data::soundMap["sound/explosion.wav"]->play();
 }
 
 bool Explosion::update()
@@ -243,7 +244,7 @@ bool Chest::update()
         {
             Data::nbChest--;
             std::cout << "nbChest = " << Data::nbChest << '\n';
-            
+
             if(Data::nbChest <= 0)
                 Data::state = gameState::win;
 

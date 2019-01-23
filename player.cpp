@@ -106,6 +106,8 @@ void Player::shoot()
         Data::effects.push_back(new Torpedo(posX + sprite->getTextureRect().width, posY + sprite->getTextureRect().height / 2 + 3 + rot, Torpedo::dimRight, Torpedo::speedRight));
     else
         Data::effects.push_back(new Torpedo(posX - 25, posY + sprite->getTextureRect().height / 2 + 3, Torpedo::dimLeft, Torpedo::speedLeft));
+
+    Data::soundMap["sound/shoot.wav"]->play();
 }
 
 void Player::setDirection(const int dir)

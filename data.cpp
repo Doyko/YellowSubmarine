@@ -48,6 +48,14 @@ sf::Texture Data::textureMenu;
 sf::Texture Data::textureHub;
 sf::Texture Data::textureMessage;
 
+std::vector<std::string> Data::soundList =
+{
+    "sound/explosion.wav",
+    "sound/shoot.wav"
+};
+std::map<std::string, sf::Sound*> Data::soundMap;
+std::vector<sf::SoundBuffer*> Data::soundBuffers;
+
 Hitbox* Data::hitboxEntity = new Hitbox("hitbox/hitboxEntity.pbm");
 Hitbox* Data::hitboxTile = new Hitbox("hitbox/hitboxTile.pbm");
 
