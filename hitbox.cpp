@@ -2,7 +2,8 @@
 
 Hitbox::Hitbox()
 :
-    position({0,0}),
+    left(0),
+    top(0),
     width(0),
     height(0),
     tab(NULL)
@@ -10,7 +11,8 @@ Hitbox::Hitbox()
 
 Hitbox::Hitbox(const int w, const int h, char** t)
 :
-    position({0,0}),
+    left(0),
+    top(0),
     width(w),
     height(h),
     tab(t)
@@ -18,7 +20,8 @@ Hitbox::Hitbox(const int w, const int h, char** t)
 
 Hitbox::Hitbox(const std::string fileName)
 :
-    position({0,0}),
+    left(0),
+    top(0),
     width(0),
     height(0),
     tab(NULL)
@@ -63,9 +66,11 @@ Hitbox::Hitbox(const std::string fileName)
 
 Hitbox::Hitbox(const Hitbox& hb, const int x, const int y, const int w, const int h)
 :
-    position({0,0}),
+    left(0),
+    top(0),
     width(w),
-    height(h)
+    height(h),
+    tab(NULL)
 {
     tab = new char*[height];
 
@@ -81,8 +86,11 @@ Hitbox::Hitbox(const Hitbox& hb, const int x, const int y, const int w, const in
 
 Hitbox::Hitbox(const Hitbox& hb, const sf::IntRect dimension)
 :
+    left(0),
+    top(0),
     width(dimension.width),
-    height(dimension.height)
+    height(dimension.height),
+    tab(NULL)
 {
     tab = new char*[height];
 
@@ -105,6 +113,16 @@ Hitbox::~Hitbox()
     delete[] tab;
 }
 
+int Hitbox::getLeft() const
+{
+    return left;
+}
+
+int Hitbox::getTop() const
+{
+    return top;
+}
+
 int Hitbox::getWidth() const
 {
     return width;
@@ -115,14 +133,10 @@ int Hitbox::getHeight() const
     return height;
 }
 
-std::pair<int, int> Hitbox::getPosition()
-{
-    return position;
-}
 void Hitbox::setPosition(const int x, const int y)
 {
-    position.first = x;
-    position.second = y;
+    left = x;
+    top = y;
 }
 
 char Hitbox::operator()(const int x, const int y) const
