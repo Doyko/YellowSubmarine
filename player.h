@@ -23,6 +23,7 @@ public:
     void setDirection(const int dir);
     void setPosition(const int x, const int y);
     int getLife() const;
+    int getDistance(const int x, const int y) const;
     void addLife(const int amount);
     void setMaxLife();
     void setMaxSpeed();

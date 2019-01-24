@@ -251,3 +251,8 @@ void Player::setSound()
     if(buffs.getDuration(buffType::speed) == 0 && buffs.getDuration(buffType::slow) == 0)
         Data::soundMap["sound/engine.wav"]->setPitch(1);
 }
+
+int Player::getDistance(const int x, const int y) const
+{
+    return (posX - x)*(posX - x) + (posY - y)*(posY - y);
+}

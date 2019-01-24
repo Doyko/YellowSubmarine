@@ -71,7 +71,6 @@ Octopus::~Octopus()
 
 bool Octopus::update()
 {
-    int d;
     if(checkCollision(Data::player))
     {
         if(Data::player->getLife() != 0)
@@ -89,9 +88,7 @@ bool Octopus::update()
             sprite = spriteUp;
             Data::effects.push_back(new Ink(posX, posY + 32));
 
-            d = (Data::player->posX - posX)*(Data::player->posX - posX) +
-                (Data::player->posY - posY)*(Data::player->posY - posY);
-            if(d < RADIUS)
+            if(Data::player->getDistance(posX, posY) < RADIUS)
                 Data::soundMap["sound/octopus.wav"]->play();
         }
     }
@@ -210,10 +207,7 @@ void Shark::destroy()
 
 bool Shark::update()
 {
-    int d = (Data::player->posX - posX)*(Data::player->posX - posX) +
-        (Data::player->posY - posY)*(Data::player->posY - posY);
-
-    if(d > RADIUS)
+    if(Data::player->getDistance(posX, posY) > RADIUS)
         return false;
 
     if(checkCollision(Data::player))
