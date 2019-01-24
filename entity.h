@@ -61,7 +61,7 @@ public:
     Entity(const int x, const int y, const sf::IntRect dimension);
     virtual ~Entity();
     virtual void destroy();
-
+    virtual bool move(const int x, const int y);
     virtual bool update();
 
     int posX;
@@ -80,7 +80,6 @@ public:
     int getSpeedX() const;
     int getSpeedY() const;
     void setSpeed(const int x, const int y);
-    virtual bool move(const int x, const int y);
     void changeSpeed(const int x, const int y);
 
     int maxSpeed;
@@ -100,7 +99,9 @@ public:
     ~TangibleEntity();
 
     virtual bool checkCollision(const TangibleEntity* te) const;
-    virtual bool checkCollision() const;
+    virtual bool checkCollision(const std::vector<TangibleEntity*> v) const;
+    virtual bool checkCollisionMap() const;
+    virtual bool move(const int x, const int y);
 
     Hitbox* hitbox;
 };

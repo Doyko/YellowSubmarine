@@ -12,7 +12,6 @@ public :
     Mob(const int x, const int y, const sf::IntRect dimension);
 
     bool update();
-    bool move(const int x, const int y);
 };
 
 class Octopus : public Mob

@@ -12,7 +12,6 @@ public:
 
     Projectile(const int x, const int y, const sf::IntRect dimension, const sf::Vector2f speed);
     bool update();
-    bool move(const int x, const int y);
     virtual ~Projectile() = 0;
 };
 

@@ -18,7 +18,6 @@ public:
     ~Player();
 
     bool update();
-    bool move(const int x, const int y);
     void shoot();
     void setDirection(const int dir);
     void setPosition(const int x, const int y);

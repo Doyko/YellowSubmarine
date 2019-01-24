@@ -91,9 +91,6 @@ public:
     static sf::IntRect jellyfish;
 
 private:
-
-    bool move(const int x, const int y);
-
     int tick;
     bool snare;
 };

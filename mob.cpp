@@ -16,34 +16,6 @@ bool Mob::update()
     return true;
 }
 
-bool Mob::move(const int x, const int y)
-{
-    int moveX = x;
-    int moveY = y;
-    bool flag = false;
-
-    while(moveX != 0
-        && (hitbox->checkCollision(posX + moveX, posY)
-        || hitbox->checkCollision(posX + moveX, posY, Data::explosable)))
-    {
-        moveX > 0 ? moveX-- : moveX++;
-        flag = true;
-    }
-    posX = posX + moveX;
-
-    while(moveY != 0
-        && (hitbox->checkCollision(posX, posY + moveY)
-        || hitbox->checkCollision(posX, posY + moveY, Data::explosable)))
-    {
-        moveY > 0 ? moveY-- : moveY++;
-        flag = true;
-    }
-
-    posY = posY + moveY;
-    sprite->setPosition(posX, posY);
-    return flag;
-}
-
 //-----Octopus-----
 
 sf::IntRect Octopus::dimension = sf::IntRect(96, 64, 32, 32);
@@ -151,19 +123,19 @@ void Mine::destroy()
 
 bool Mine::update()
 {
+    int speedx = 0;
     if(checkCollision(Data::player))
         return true;
 
     tick--;
     if(tick % 50 == 0)
-        move(0, dir);
+        move(speedx, dir);
 
     if(tick == 0)
     {
         tick = 200;
         dir = -dir;
     }
-
 
     return false;
 }

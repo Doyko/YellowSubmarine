@@ -147,20 +147,21 @@ char Hitbox::operator()(const int x, const int y) const
         return '\0';
 }
 
-bool Hitbox::checkCollision(const int x, const int y, const Hitbox* hb, const int hbX, const int hbY) const
+bool Hitbox::checkCollision(const Hitbox* hb) const
 {
-    int xmin = x > hbX ? x : hbX;
-    int xmax = x + width < hbX + hb->getWidth() ? x + width : hbX + hb->getWidth();
-    int ymin = y > hbY ? y : hbY;
-    int ymax = y + height < hbY + hb->getHeight() ? y + height : hbY + hb->getHeight();
+    //find the intercection of the two hitbox
+    int xmin = left > hb->getLeft() ? left : hb->getLeft();
+    int xmax = left + width < hb->getLeft() + hb->getWidth() ? left + width : hb->getLeft() + hb->getWidth();
+    int ymin = top > hb->getTop() ? top : hb->getTop();
+    int ymax = top + height < hb->getTop() + hb->getHeight() ? top + height : hb->getTop() + hb->getHeight();
 
     int InterWidth = xmax - xmin;
     int InterHeight = ymax - ymin;
 
-    int OffsetX = xmin - x;
-    int OffsetY = ymin - y;
-    int OffsetHBX = xmin - hbX;
-    int OffsetHBY = ymin - hbY;
+    int OffsetX = xmin - left;
+    int OffsetY = ymin - top;
+    int OffsetHBX = xmin - hb->getLeft();
+    int OffsetHBY = ymin - hb->getTop();
 
     for(int i = 0; i < InterWidth; i++)
     {
@@ -168,68 +169,6 @@ bool Hitbox::checkCollision(const int x, const int y, const Hitbox* hb, const in
         {
             if((*this)(i + OffsetX, j + OffsetY) == '1' && (*hb)(i + OffsetHBX, j + OffsetHBY) == '1')
                 return true;
-        }
-    }
-    return false;
-}
-
-bool Hitbox::checkCollision(const int x, const int y, const std::vector<TangibleEntity*> v)
-{
-    for(auto & it : v)
-    {
-        if(checkCollision(x,y, it->hitbox, it->posX, it->posY))
-            return true;
-    }
-    return false;
-}
-
-bool Hitbox::checkCollision(const int x, const int y) const
-{
-    int xmin = x;
-    int xmax = x + width - 1;
-    int ymin = y;
-    int ymax = y + height - 1;
-
-    if(xmin < 0 || xmax >= Data::map->getNbTileX() * TILE_WIDTH)
-        return true;
-
-    if(ymin < 0 || ymax >= Data::map->getNbTileY() * TILE_HEIGHT)
-        return true;
-
-    for(int i = xmin/TILE_WIDTH; i <= xmax / TILE_WIDTH; i++)
-    {
-        for(int j = ymin / TILE_HEIGHT; j <= ymax / TILE_HEIGHT; j++)
-        {
-            if((*Data::map)(j, i) != NULL && (*Data::map)(j, i)->getTangibility())
-            {
-                if(checkCollision(x, y, (*Data::map)(j, i)->hitbox, i * 32, j * 32))
-                {
-                    return true;
-                }
-            }
-        }
-    }
-    return false;
-}
-
-bool Hitbox::checkCollision(const int x, const int y, const Tile* t, const int xTile, const int yTile) const
-{
-    int xTileRelatif = xTile * TILE_WIDTH - x;
-    int yTileRelatif = yTile * TILE_HEIGHT - y;
-
-    int xmin = 0 > xTileRelatif ? 0 : xTileRelatif;
-    int ymin = 0 > yTileRelatif ? 0 : yTileRelatif;
-    int xmax = width < xTileRelatif + TILE_WIDTH ? width : xTileRelatif + TILE_WIDTH;
-    int ymax = height < yTileRelatif + TILE_HEIGHT ? height : yTileRelatif + TILE_HEIGHT;
-
-    for (int i = xmin; i < xmax; i++)
-    {
-        for (int j = ymin; j < ymax; j++)
-        {
-            if ((*this)(i, j) == '1')
-            {
-                return true;
-            }
         }
     }
     return false;

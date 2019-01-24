@@ -15,34 +15,6 @@ bool Projectile::update()
     return move(speedX, speedY);
 }
 
-bool Projectile::move(const int x, const int y)
-{
-    int moveX = x;
-    int moveY = y;
-    bool flag = false;
-
-    while(moveX != 0
-        && (hitbox->checkCollision(posX + moveX, posY)
-        || hitbox->checkCollision(posX + moveX, posY, Data::explosable)))
-    {
-        moveX > 0 ? moveX-- : moveX++;
-        flag = true;
-    }
-    posX = posX + moveX;
-
-    while(moveY != 0
-        && (hitbox->checkCollision(posX + moveX, posY)
-        || hitbox->checkCollision(posX + moveX, posY, Data::explosable)))
-    {
-        moveY > 0 ? moveY-- : moveY++;
-        flag = true;
-    }
-
-    posY = posY + moveY;
-    sprite->setPosition(posX, posY);
-    return flag;
-}
-
 Projectile::~Projectile()
 {
 

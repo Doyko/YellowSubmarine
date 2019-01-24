@@ -69,34 +69,6 @@ bool Player::update()
     return true;
 }
 
-bool Player::move(const int x, const int y)
-{
-    int moveX = x;
-    int moveY = y;
-
-    while(moveX != 0
-        && (hitbox->checkCollision(posX + moveX, posY)
-        || hitbox->checkCollision(posX + moveX, posY, Data::explosable)))
-    {
-        moveX > 0 ? moveX-- : moveX++;
-        speedX = 0;
-    }
-
-    posX = posX + moveX;
-
-    while(moveY != 0
-        && (hitbox->checkCollision(posX, posY + moveY)
-        || hitbox->checkCollision(posX, posY + moveY, Data::explosable)))
-    {
-        moveY > 0 ? moveY-- : moveY++;
-        speedY = 0;
-    }
-
-    posY = posY + moveY;
-    sprite->setPosition(posX + center.first, posY + center.second);
-    return true;
-}
-
 void Player::shoot()
 {
     if(shootCD != 0)
