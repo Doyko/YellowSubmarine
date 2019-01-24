@@ -22,6 +22,8 @@ public:
 
     int getWidth() const;
     int getHeight() const;
+    std::pair<int, int> getPosition();
+    void setPosition(const int x, const int y);
     char operator()(const int x, const int y) const;
     bool checkCollision(const int x, const int y, const Hitbox* hb, const int hbX, const int hbY) const;
     bool checkCollision(const int x, const int y) const;
@@ -29,6 +31,7 @@ public:
     bool checkCollision(const int x, const int y, const std::vector<TangibleEntity*> v);
 
 private :
+    std::pair<int, int> position;
     int width;
     int height;
     char** tab;

@@ -2,18 +2,26 @@
 
 Hitbox::Hitbox()
 :
+    position({0,0}),
     width(0),
     height(0),
     tab(NULL)
 {}
 
-Hitbox::Hitbox(const int w, const int h, char** t):
+Hitbox::Hitbox(const int w, const int h, char** t)
+:
+    position({0,0}),
     width(w),
     height(h),
     tab(t)
 {}
 
 Hitbox::Hitbox(const std::string fileName)
+:
+    position({0,0}),
+    width(0),
+    height(0),
+    tab(NULL)
 {
     std::ifstream ifs(fileName);
     if(!ifs)
@@ -55,6 +63,7 @@ Hitbox::Hitbox(const std::string fileName)
 
 Hitbox::Hitbox(const Hitbox& hb, const int x, const int y, const int w, const int h)
 :
+    position({0,0}),
     width(w),
     height(h)
 {
@@ -104,6 +113,16 @@ int Hitbox::getWidth() const
 int Hitbox::getHeight() const
 {
     return height;
+}
+
+std::pair<int, int> Hitbox::getPosition()
+{
+    return position;
+}
+void Hitbox::setPosition(const int x, const int y)
+{
+    position.first = x;
+    position.second = y;
 }
 
 char Hitbox::operator()(const int x, const int y) const
