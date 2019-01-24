@@ -151,7 +151,7 @@ void Game::loop()
         }
         if(Data::state == gameState::death)
         {
-            level = 1;
+            //level = 1;
             printMessage();
         }
     }

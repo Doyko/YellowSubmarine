@@ -111,6 +111,36 @@ void Player::setPosition(const int x, const int y)
     sprite->setRotation(0);
 }
 
+bool Player::move(const int x, const int y)
+{
+    int moveX = x;
+    int moveY = y;
+    bool flag = false;
+    hitbox->setPosition(posX + moveX, posY);
+
+    while(moveX != 0 && (checkCollisionMap() || checkCollision(Data::explosable)))
+    {
+        moveX > 0 ? moveX-- : moveX++;
+        hitbox->setPosition(posX + moveX, posY);
+        speedX = 0;
+        flag = true;
+    }
+    posX = posX + moveX;
+    hitbox->setPosition(posX, posY + moveY);
+
+    while(moveY != 0 && (checkCollisionMap() || checkCollision(Data::explosable)))
+    {
+        moveY > 0 ? moveY-- : moveY++;
+        hitbox->setPosition(posX, posY + moveY);
+        speedY = 0;
+        flag = true;
+    }
+
+    posY = posY + moveY;
+    sprite->setPosition(posX + sprite->getOrigin().x, posY + sprite->getOrigin().y);
+    return flag;
+}
+
 int Player::getLife() const
 {
     return life;

@@ -16,6 +16,36 @@ bool Mob::update()
     return true;
 }
 
+bool Mob::move(const int x, const int y)
+{
+    int moveX = x;
+    int moveY = y;
+    bool flag = false;
+    hitbox->setPosition(posX + moveX, posY);
+
+    while(moveX != 0 && (checkCollisionMap() || checkCollision(Data::explosable)))
+    {
+        moveX > 0 ? moveX-- : moveX++;
+        hitbox->setPosition(posX + moveX, posY);
+        speedX = 0;
+        flag = true;
+    }
+    posX = posX + moveX;
+    hitbox->setPosition(posX, posY + moveY);
+
+    while(moveY != 0 && (checkCollisionMap() || checkCollision(Data::explosable)))
+    {
+        moveY > 0 ? moveY-- : moveY++;
+        hitbox->setPosition(posX, posY + moveY);
+        speedY = 0;
+        flag = true;
+    }
+
+    posY = posY + moveY;
+    sprite->setPosition(posX + sprite->getOrigin().x, posY + sprite->getOrigin().y);
+    return flag;
+}
+
 //-----Octopus-----
 
 sf::IntRect Octopus::dimension = sf::IntRect(96, 64, 32, 32);
