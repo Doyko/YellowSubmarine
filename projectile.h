@@ -49,12 +49,12 @@ public :
     static sf::Vector2f speed;
 };
 
-class Lazer : public Projectile
+class Laser : public Projectile
 {
 public :
 
-    Lazer(const int x, const int y, const sf::Vector2f s);
-    ~Lazer();
+    Laser(const int x, const int y, const sf::Vector2f s);
+    ~Laser();
     bool update();
 
 

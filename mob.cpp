@@ -407,7 +407,7 @@ void Drone::shoot(int x, int y)
         vy = -Smax;
     }
 
-    Data::effects.push_back(new Lazer(posX + 16 + 3*vx, posY + 16 + 3*vy, sf::Vector2f(vx, vy)));
+    Data::effects.push_back(new Laser(posX + 16 + 3*vx, posY + 16 + 3*vy, sf::Vector2f(vx, vy)));
     Data::soundMap["sound/laser.wav"]->play();
 }
 

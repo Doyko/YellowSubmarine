@@ -133,22 +133,22 @@ bool Ink::update()
     return move(speedX, speedY);
 }
 
-//-----Lazer-----
+//-----Laser-----
 
-sf::IntRect Lazer::dimension = sf::IntRect(384, 160, 8, 8);
+sf::IntRect Laser::dimension = sf::IntRect(384, 160, 8, 8);
 
-Lazer::Lazer(const int x, const int y, const sf::Vector2f s)
+Laser::Laser(const int x, const int y, const sf::Vector2f s)
 :
-    Entity(x, y, Lazer::dimension),
-    Projectile(x, y, Lazer::dimension, s)
+    Entity(x, y, Laser::dimension),
+    Projectile(x, y, Laser::dimension, s)
 {}
 
-Lazer::~Lazer()
+Laser::~Laser()
 {
 
 }
 
-bool Lazer::update()
+bool Laser::update()
 {
     if(checkCollision(Data::player))
     {
