@@ -242,7 +242,7 @@ void Player::setSound()
     }
     else if(speedX != 0 || speedY != 0)
     {
-        volume = 50;
+        volume = 15;
         Data::soundMap["sound/engine.wav"]->setVolume(volume);
     }
 

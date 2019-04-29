@@ -219,8 +219,7 @@ bool Chest::update()
         if(checkCollision(Data::player))
         {
             Data::nbChest--;
-            std::cout << "nbChest = " << Data::nbChest << '\n';
-
+            
             if(Data::nbChest <= 0)
                 Data::state = gameState::win;
 
